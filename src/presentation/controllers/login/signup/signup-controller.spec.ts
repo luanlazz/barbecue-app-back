@@ -1,11 +1,13 @@
 import { SignUpController } from './signup-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
-import { AddAccount, AddAccountParams } from '@/domain/usecases/account/add-account'
-import { AccountModel } from '@/domain/models/account'
-import { throwError } from '@/domain/test/test-helper'
 import { ServerError, MissingParamError } from '@/presentation/errors'
 import { serverError, badRequest } from '@/presentation/helpers/http/http-helper'
 import { Validation } from '@/presentation/protocols/validation'
+import { AddAccount, AddAccountParams } from '@/domain/usecases/account/add-account'
+import { AuthenticationModel } from '@/domain/models/authentication'
+import { AccountModel } from '@/domain/models/account'
+import { throwError } from '@/domain/test/test-helper'
+import { Authentication, AuthParams } from '@/domain/usecases/account/authentication'
 
 const mockAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
@@ -25,37 +27,54 @@ const mockValidation = (): Validation => {
   return new ValidationStub()
 }
 
+const mockAuthentication = (): Authentication => {
+  class AuthenticationStub implements Authentication {
+    async auth (authParams: AuthParams): Promise<AuthenticationModel> {
+      return Promise.resolve(mockAuthenticationModel())
+    }
+  }
+  return new AuthenticationStub()
+}
+
 type SutTypes = {
   sut: SignUpController
   addAccountStub: AddAccount
   validationStub: Validation
+  authenticationStub: Authentication
 }
 
 const makeSut = (): SutTypes => {
   const addAccountStub = mockAddAccount()
   const validationStub = mockValidation()
-  const sut = new SignUpController(addAccountStub, validationStub)
+  const authenticationStub = mockAuthentication()
+  const sut = new SignUpController(addAccountStub, validationStub, authenticationStub)
   return {
     sut,
     addAccountStub,
-    validationStub
+    validationStub,
+    authenticationStub
   }
 }
 
 const mockAccountModel = (): AccountModel => ({
   id: 'any_id',
   name: 'any_name',
-  email: 'any_email',
+  email: 'any_email@mail.com',
   password: 'any_password'
 })
 
 const mockRequest = (): HttpRequest => ({
   body: {
     name: 'any_name',
-    email: 'any_email',
+    email: 'any_email@mail.com',
     password: 'any_password',
     passwordConfirmation: 'any_password'
   }
+})
+
+const mockAuthenticationModel = (): AuthenticationModel => ({
+  ...mockAccountModel(),
+  accessToken: 'any_token'
 })
 
 describe('SignUp Controller', () => {
@@ -65,7 +84,7 @@ describe('SignUp Controller', () => {
     await sut.handle(mockRequest())
     expect(addSpy).toHaveBeenCalledWith({
       name: 'any_name',
-      email: 'any_email',
+      email: 'any_email@mail.com',
       password: 'any_password'
     })
   })
@@ -89,5 +108,15 @@ describe('SignUp Controller', () => {
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new MissingParamError('any_field'))
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
+  })
+
+  test('Should call Authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut()
+    const authSpy = jest.spyOn(authenticationStub, 'auth')
+    await sut.handle(mockRequest())
+    expect(authSpy).toHaveBeenCalledWith({
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    })
   })
 })
