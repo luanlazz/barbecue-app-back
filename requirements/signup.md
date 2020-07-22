@@ -12,5 +12,5 @@ Error return:
 
 ❌ 400 badRequest: invalid value in field or compare error;
 ❌ 403 forbidden: email in use;
-❌ 404: notFound: route doesn't exists;
+❌ 404 notFound: route doesn't exists;
 ❌ 500 serverError: any error in DB or data layer;
