@@ -1,7 +1,7 @@
 import { SignUpController } from './signup-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { ServerError, MissingParamError, EmailInUseError } from '@/presentation/errors'
-import { serverError, badRequest, forbidden } from '@/presentation/helpers/http/http-helper'
+import { serverError, badRequest, forbidden, ok } from '@/presentation/helpers/http/http-helper'
 import { Validation } from '@/presentation/protocols/validation'
 import { AddAccount, AddAccountParams } from '@/domain/usecases/account/add-account'
 import { AuthenticationModel } from '@/domain/models/authentication'
@@ -132,5 +132,11 @@ describe('SignUp Controller', () => {
     jest.spyOn(authenticationStub, 'auth').mockImplementation(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 200 and account on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok(mockAuthenticationModel()))
   })
 })
