@@ -5,6 +5,7 @@ import { AccountModel } from '@/domain/models/account'
 import { throwError } from '@/domain/test/test-helper'
 import { ServerError } from '@/presentation/errors'
 import { serverError } from '@/presentation/helpers/http/http-helper'
+import { Validation } from '@/presentation/protocols/validation'
 
 const mockAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
@@ -15,17 +16,29 @@ const mockAddAccount = (): AddAccount => {
   return new AddAccountStub()
 }
 
+const mockValidation = (): Validation => {
+  class ValidationStub implements Validation {
+    validate (input: any): Error {
+      return null
+    }
+  }
+  return new ValidationStub()
+}
+
 type SutTypes = {
   sut: SignUpController
   addAccountStub: AddAccount
+  validationStub: Validation
 }
 
 const makeSut = (): SutTypes => {
   const addAccountStub = mockAddAccount()
-  const sut = new SignUpController(addAccountStub)
+  const validationStub = mockValidation()
+  const sut = new SignUpController(addAccountStub, validationStub)
   return {
     sut,
-    addAccountStub
+    addAccountStub,
+    validationStub
   }
 }
 
@@ -62,5 +75,12 @@ describe('SignUp Controller', () => {
     jest.spyOn(addAccountStub, 'add').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('Should call Validation with correct value', async () => {
+    const { sut, validationStub } = makeSut()
+    const validateSpy = jest.spyOn(validationStub, 'validate')
+    await sut.handle(mockRequest())
+    expect(validateSpy).toHaveBeenCalledWith(mockRequest().body)
   })
 })
