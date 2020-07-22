@@ -3,8 +3,8 @@ import { HttpRequest } from '@/presentation/protocols/http'
 import { AddAccount, AddAccountParams } from '@/domain/usecases/account/add-account'
 import { AccountModel } from '@/domain/models/account'
 import { throwError } from '@/domain/test/test-helper'
-import { ServerError } from '@/presentation/errors'
-import { serverError } from '@/presentation/helpers/http/http-helper'
+import { ServerError, MissingParamError } from '@/presentation/errors'
+import { serverError, badRequest } from '@/presentation/helpers/http/http-helper'
 import { Validation } from '@/presentation/protocols/validation'
 
 const mockAddAccount = (): AddAccount => {
@@ -82,5 +82,12 @@ describe('SignUp Controller', () => {
     const validateSpy = jest.spyOn(validationStub, 'validate')
     await sut.handle(mockRequest())
     expect(validateSpy).toHaveBeenCalledWith(mockRequest().body)
+  })
+
+  test('Should return 400 if Validation returns an error', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new MissingParamError('any_field'))
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
   })
 })
