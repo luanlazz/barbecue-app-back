@@ -1,6 +1,7 @@
 import { DbAddAccount } from './db-add-account'
 import { AddAccountParams } from '@/domain/usecases/account/add-account'
 import { Hasher } from '@/data/protocols/cryptography/hasher'
+import { throwError } from '@/domain/test'
 
 const mockHasher = (): Hasher => {
   class HasherStub implements Hasher {
@@ -37,5 +38,12 @@ describe('DbAddAccount use case', () => {
     const hashSpy = jest.spyOn(hasherStub, 'hash')
     await sut.add(mockAddAccountParams())
     expect(hashSpy).toHaveBeenCalledWith('any_password')
+  })
+
+  test('Should throw if Hasher throws', async () => {
+    const { sut, hasherStub } = makeSut()
+    jest.spyOn(hasherStub, 'hash').mockImplementation(throwError)
+    const promise = sut.add(mockAddAccountParams())
+    await expect(promise).rejects.toThrow()
   })
 })
