@@ -5,6 +5,6 @@ export class RequiredFieldValidation implements Validation {
   constructor (private readonly field: any) {}
 
   validate (input: any): Error {
-    return new MissingParamError(this.field)
+    return input[this.field] ? null : new MissingParamError(this.field)
   }
 }
