@@ -1,37 +1,9 @@
 import { DbAddAccount } from './db-add-account'
-import { AddAccountParams } from '@/domain/usecases/account/add-account'
+import { mockAddAccountRepository, mockHasher, mockLoadAccountByEmailRepository } from '@/data/test'
 import { Hasher } from '@/data/protocols/cryptography/hasher'
 import { DbAddAccountRepository } from '@/data/protocols/db/account/db-add-account-repository'
 import { DbLoadAccountByEmailRepository } from '@/data/protocols/db/account/db-load-account-by-email-repository'
-import { throwError } from '@/domain/test'
-import { AccountModel } from '@/domain/models/account'
-
-const mockHasher = (): Hasher => {
-  class HasherStub implements Hasher {
-    async hash (value: string): Promise<string> {
-      return Promise.resolve('hashed_password')
-    }
-  }
-  return new HasherStub()
-}
-
-const mockAddAccountRepository = (): DbAddAccountRepository => {
-  class DbAddAccountRepositoryStub implements DbAddAccountRepository {
-    async add (accountData: AddAccountParams): Promise<AccountModel> {
-      return Promise.resolve(mockAccountModel())
-    }
-  }
-  return new DbAddAccountRepositoryStub()
-}
-
-const mockLoadAccountByEmailRepository = (): DbLoadAccountByEmailRepository => {
-  class DbLoadAccountByEmailRepositoryStub implements DbLoadAccountByEmailRepository {
-    async loadByEmail (email: string): Promise<AccountModel> {
-      return Promise.resolve(null)
-    }
-  }
-  return new DbLoadAccountByEmailRepositoryStub()
-}
+import { throwError, mockAccountModel, mockAddAccountParams } from '@/domain/test'
 
 type SutTypes = {
   sut: DbAddAccount
@@ -52,19 +24,6 @@ const makeSut = (): SutTypes => {
     dbLoadAccountByEmailRepositoryStub
   }
 }
-
-const mockAccountModel = (): AccountModel => ({
-  id: 'any_id',
-  name: 'any_name',
-  email: 'any_email@mail.com',
-  password: 'hashed_password'
-})
-
-const mockAddAccountParams = (): AddAccountParams => ({
-  name: 'any_name',
-  email: 'any_email@mail.com',
-  password: 'any_password'
-})
 
 describe('DbAddAccount use case', () => {
   test('Should call Hasher with correct value', async () => {
