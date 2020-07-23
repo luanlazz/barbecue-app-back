@@ -3,11 +3,14 @@ import { InvalidParamError } from '@/presentation/errors'
 
 export class CompareFieldsValidation implements Validation {
   constructor (
-    private readonly field: any,
-    private readonly otherField: any
+    private readonly field: string,
+    private readonly fieldToCompare: string
   ) {}
 
   validate (input: any): Error {
-    return new InvalidParamError(this.otherField)
+    console.log(input[this.field] !== input[this.fieldToCompare])
+    if (input[this.field] !== input[this.fieldToCompare]) {
+      return new InvalidParamError(this.fieldToCompare)
+    }
   }
 }
