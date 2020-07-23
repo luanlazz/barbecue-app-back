@@ -2,39 +2,11 @@ import { SignUpController } from './signup-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { ServerError, MissingParamError, EmailInUseError } from '@/presentation/errors'
 import { serverError, badRequest, forbidden, ok } from '@/presentation/helpers/http/http-helper'
+import { mockAddAccount, mockAuthentication, mockValidation } from '@/presentation/test'
 import { Validation } from '@/presentation/protocols/validation'
-import { AddAccount, AddAccountParams } from '@/domain/usecases/account/add-account'
-import { AuthenticationModel } from '@/domain/models/authentication'
-import { AccountModel } from '@/domain/models/account'
-import { throwError } from '@/domain/test/test-helper'
-import { Authentication, AuthParams } from '@/domain/usecases/account/authentication'
-
-const mockAddAccount = (): AddAccount => {
-  class AddAccountStub implements AddAccount {
-    async add (account: AddAccountParams): Promise<AccountModel> {
-      return await Promise.resolve(mockAccountModel())
-    }
-  }
-  return new AddAccountStub()
-}
-
-const mockValidation = (): Validation => {
-  class ValidationStub implements Validation {
-    validate (input: any): Error {
-      return null
-    }
-  }
-  return new ValidationStub()
-}
-
-const mockAuthentication = (): Authentication => {
-  class AuthenticationStub implements Authentication {
-    async auth (authParams: AuthParams): Promise<AuthenticationModel> {
-      return Promise.resolve(mockAuthenticationModel())
-    }
-  }
-  return new AuthenticationStub()
-}
+import { AddAccount } from '@/domain/usecases/account/add-account'
+import { Authentication } from '@/domain/usecases/account/authentication'
+import { mockAuthenticationModel, throwError } from '@/domain/test'
 
 type SutTypes = {
   sut: SignUpController
@@ -56,13 +28,6 @@ const makeSut = (): SutTypes => {
   }
 }
 
-const mockAccountModel = (): AccountModel => ({
-  id: 'any_id',
-  name: 'any_name',
-  email: 'any_email@mail.com',
-  password: 'any_password'
-})
-
 const mockRequest = (): HttpRequest => ({
   body: {
     name: 'any_name',
@@ -70,11 +35,6 @@ const mockRequest = (): HttpRequest => ({
     password: 'any_password',
     passwordConfirmation: 'any_password'
   }
-})
-
-const mockAuthenticationModel = (): AuthenticationModel => ({
-  ...mockAccountModel(),
-  accessToken: 'any_token'
 })
 
 describe('SignUp Controller', () => {
