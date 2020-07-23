@@ -1,16 +1,8 @@
 import { EmailValidation } from './email-validation'
 import { InvalidParamError } from '@/presentation/errors'
 import { EmailValidator } from '@/validation/protocols/email-validation'
+import { mockEmailValidator } from '@/validation/test'
 import faker from 'faker'
-
-const mockEmailValidator = (): EmailValidator => {
-  class EmailValidatorStub implements EmailValidator {
-    isValid (email: string): boolean {
-      return true
-    }
-  }
-  return new EmailValidatorStub()
-}
 
 type SutTypes = {
   sut: EmailValidation
