@@ -1,8 +1,9 @@
 import { DbAuthentication } from './db-authentication'
 import { LoadAccountByEmailRepository } from '@/data/protocols/db/account/load-account-by-email-repository'
 import { HasherComparer } from '@/data/protocols/cryptography/hasher-comparer'
+import { UpdateAccessTokenRepository } from '@/data/protocols/db/account/update-access-token-repository'
 import { Encrypter } from '@/data/protocols/cryptography/encrypter'
-import { mockLoadAccountByEmailRepository, mockHasherComparer, mockEncrypter } from '@/data/test'
+import { mockLoadAccountByEmailRepository, mockHasherComparer, mockEncrypter, mockUpdateAccessTokenRepository } from '@/data/test'
 import { mockAuthParams, throwError } from '@/domain/test'
 
 type SutTypes = {
@@ -10,18 +11,21 @@ type SutTypes = {
   loadAccountByEmailStub: LoadAccountByEmailRepository
   hasherComparerStub: HasherComparer
   encrypterStub: Encrypter
+  updateAccessTokenRepositoryStub: UpdateAccessTokenRepository
 }
 
 const makeSut = (): SutTypes => {
   const loadAccountByEmailStub = mockLoadAccountByEmailRepository()
   const hasherComparerStub = mockHasherComparer()
   const encrypterStub = mockEncrypter()
-  const sut = new DbAuthentication(loadAccountByEmailStub, hasherComparerStub, encrypterStub)
+  const updateAccessTokenRepositoryStub = mockUpdateAccessTokenRepository()
+  const sut = new DbAuthentication(loadAccountByEmailStub, hasherComparerStub, encrypterStub, updateAccessTokenRepositoryStub)
   return {
     sut,
     loadAccountByEmailStub,
     hasherComparerStub,
-    encrypterStub
+    encrypterStub,
+    updateAccessTokenRepositoryStub
   }
 }
 
@@ -80,5 +84,12 @@ describe('Authentication use case', () => {
     jest.spyOn(encrypterStub, 'encrypt').mockImplementation(throwError)
     const promise = sut.auth(mockAuthParams())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call UpdateAccessTokenRepository with correct values', async () => {
+    const { sut, updateAccessTokenRepositoryStub } = makeSut()
+    const updateAccessTokenSpy = jest.spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken')
+    await sut.auth(mockAuthParams())
+    expect(updateAccessTokenSpy).toHaveBeenCalledWith('any_id', 'encrypt_token')
   })
 })
