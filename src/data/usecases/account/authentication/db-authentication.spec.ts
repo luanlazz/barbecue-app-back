@@ -1,7 +1,7 @@
 import { DbAuthentication } from './db-authentication'
 import { LoadAccountByEmailRepository } from '@/data/protocols/db/account/load-account-by-email-repository'
 import { mockLoadAccountByEmailRepository } from '@/data/test'
-import { AuthParams } from '@/domain/usecases/account/authentication'
+import { mockAuthParams } from '@/domain/test'
 
 type SutTypes = {
   sut: DbAuthentication
@@ -16,11 +16,6 @@ const makeSut = (): SutTypes => {
     loadAccountByEmailStub
   }
 }
-
-const mockAuthParams = (): AuthParams => ({
-  email: 'any_email@mail.com',
-  password: 'any_password'
-})
 
 describe('Authentication use case', () => {
   test('Should call LoadAccountByEmailRepository with correct email', async () => {
