@@ -1,7 +1,7 @@
 import { DbAuthentication } from './db-authentication'
 import { LoadAccountByEmailRepository } from '@/data/protocols/db/account/load-account-by-email-repository'
 import { mockLoadAccountByEmailRepository } from '@/data/test'
-import { mockAuthParams } from '@/domain/test'
+import { mockAuthParams, throwError } from '@/domain/test'
 
 type SutTypes = {
   sut: DbAuthentication
@@ -23,5 +23,12 @@ describe('Authentication use case', () => {
     const loadByEmailSpy = jest.spyOn(loadAccountByEmailStub, 'loadByEmail')
     await sut.auth(mockAuthParams())
     expect(loadByEmailSpy).toHaveBeenCalledWith('any_email@mail.com')
+  })
+
+  test('Should throw if LoadAccountByEmailRepository throws', async () => {
+    const { sut, loadAccountByEmailStub } = makeSut()
+    jest.spyOn(loadAccountByEmailStub, 'loadByEmail').mockImplementation(throwError)
+    const promise = sut.auth(mockAuthParams())
+    await expect(promise).rejects.toThrow()
   })
 })
