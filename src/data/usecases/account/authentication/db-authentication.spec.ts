@@ -1,19 +1,23 @@
 import { DbAuthentication } from './db-authentication'
 import { LoadAccountByEmailRepository } from '@/data/protocols/db/account/load-account-by-email-repository'
-import { mockLoadAccountByEmailRepository } from '@/data/test'
+import { HasherComparer } from '@/data/protocols/cryptography/hasher-comparer'
+import { mockLoadAccountByEmailRepository, mockHasherComparer } from '@/data/test'
 import { mockAuthParams, throwError } from '@/domain/test'
 
 type SutTypes = {
   sut: DbAuthentication
   loadAccountByEmailStub: LoadAccountByEmailRepository
+  hasherComparerStub: HasherComparer
 }
 
 const makeSut = (): SutTypes => {
   const loadAccountByEmailStub = mockLoadAccountByEmailRepository()
-  const sut = new DbAuthentication(loadAccountByEmailStub)
+  const hasherComparerStub = mockHasherComparer()
+  const sut = new DbAuthentication(loadAccountByEmailStub, hasherComparerStub)
   return {
     sut,
-    loadAccountByEmailStub
+    loadAccountByEmailStub,
+    hasherComparerStub
   }
 }
 
@@ -37,5 +41,12 @@ describe('Authentication use case', () => {
     jest.spyOn(loadAccountByEmailStub, 'loadByEmail').mockReturnValueOnce(null)
     const accessToken = await sut.auth(mockAuthParams())
     expect(accessToken).toBeNull()
+  })
+
+  test('Should call HasherComparer with correct values', async () => {
+    const { sut, hasherComparerStub } = makeSut()
+    const comparerSpy = jest.spyOn(hasherComparerStub, 'comparer')
+    await sut.auth(mockAuthParams())
+    expect(comparerSpy).toHaveBeenCalledWith('any_password', 'any_password')
   })
 })
