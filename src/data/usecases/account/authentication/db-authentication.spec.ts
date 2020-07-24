@@ -4,7 +4,7 @@ import { HasherComparer } from '@/data/protocols/cryptography/hasher-comparer'
 import { UpdateAccessTokenRepository } from '@/data/protocols/db/account/update-access-token-repository'
 import { Encrypter } from '@/data/protocols/cryptography/encrypter'
 import { mockLoadAccountByEmailRepository, mockHasherComparer, mockEncrypter, mockUpdateAccessTokenRepository } from '@/data/test'
-import { mockAuthParams, throwError } from '@/domain/test'
+import { mockAuthParams, throwError, mockAuthenticationModel } from '@/domain/test'
 
 type SutTypes = {
   sut: DbAuthentication
@@ -98,5 +98,12 @@ describe('Authentication use case', () => {
     jest.spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken').mockImplementation(throwError)
     const promise = sut.auth(mockAuthParams())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return account with access token on success', async () => {
+    const { sut } = makeSut()
+    const accessToken = await sut.auth(mockAuthParams())
+    expect(accessToken).toBeTruthy()
+    expect(accessToken).toEqual(mockAuthenticationModel())
   })
 })
