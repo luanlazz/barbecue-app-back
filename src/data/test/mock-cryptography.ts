@@ -1,5 +1,6 @@
 import { Hasher } from '@/data/protocols/cryptography/hasher'
 import { HasherComparer } from '../protocols/cryptography/hasher-comparer'
+import { Encrypter } from '../protocols/cryptography/encrypter'
 
 export const mockHasher = (): Hasher => {
   class HasherStub implements Hasher {
@@ -17,4 +18,13 @@ export const mockHasherComparer = (): HasherComparer => {
     }
   }
   return new HasherComparerStub()
+}
+
+export const mockEncrypter = (): Encrypter => {
+  class EncrypterStub implements Encrypter {
+    async encrypt (value: string): Promise<string> {
+      return Promise.resolve('encrypt_token')
+    }
+  }
+  return new EncrypterStub()
 }
