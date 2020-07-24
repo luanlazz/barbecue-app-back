@@ -31,4 +31,11 @@ describe('Authentication use case', () => {
     const promise = sut.auth(mockAuthParams())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return null if LoadAccountByEmailRepository return null', async () => {
+    const { sut, loadAccountByEmailStub } = makeSut()
+    jest.spyOn(loadAccountByEmailStub, 'loadByEmail').mockReturnValueOnce(null)
+    const accessToken = await sut.auth(mockAuthParams())
+    expect(accessToken).toBeNull()
+  })
 })
