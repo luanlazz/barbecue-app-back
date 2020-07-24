@@ -92,4 +92,11 @@ describe('Authentication use case', () => {
     await sut.auth(mockAuthParams())
     expect(updateAccessTokenSpy).toHaveBeenCalledWith('any_id', 'encrypt_token')
   })
+
+  test('Should throw if UpdateAccessTokenRepository throws', async () => {
+    const { sut, updateAccessTokenRepositoryStub } = makeSut()
+    jest.spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken').mockImplementation(throwError)
+    const promise = sut.auth(mockAuthParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
