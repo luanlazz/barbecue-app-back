@@ -18,7 +18,7 @@ export const mockAccountModel = (): AccountModel => ({
 
 export const mockAuthenticationModel = (): AuthenticationModel => ({
   ...mockAccountModel(),
-  accessToken: 'any_token'
+  accessToken: 'encrypt_token'
 })
 
 export const mockAuthParams = (): AuthParams => ({
