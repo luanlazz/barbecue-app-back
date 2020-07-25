@@ -1,6 +1,7 @@
 dist
 node_modules
 coverage
+.vscode
 
 .editorconfig
 globalConfig.json
