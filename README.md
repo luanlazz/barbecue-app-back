@@ -6,6 +6,7 @@
 ## Features
 
 1. [Sign up](./requirements/signup.md)
+1. [Login](./requirements/login.md)
 
 ## Principles
 

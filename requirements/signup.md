@@ -17,8 +17,8 @@
 2. ✅ 400 badRequest: password and confirm password is not equal;
 3. ✅ 400 badRequest: email is invalid;
 4. ✅ 403 forbidden: email in use;
-5. ✅ 404: notFound: route doesn't exists;
+5. ✅ 404 notFound: route doesn't exists;
 6. ✅ 500 serverError: hasher error;
 7. ✅ 500 serverError: add account in DB;
 8. ✅ 500 serverError: generate access token;
-9. ❌ 500 serverError: update access token in DB;
+9. ✅ 500 serverError: update access token in DB;
