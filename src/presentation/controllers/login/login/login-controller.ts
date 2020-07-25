@@ -1,7 +1,7 @@
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { Controller } from '@/presentation/protocols/controller'
 import { Validation } from '@/presentation/protocols/validation'
-import { badRequest, serverError, unauthorized } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError, unauthorized, ok } from '@/presentation/helpers/http/http-helper'
 import { Authentication } from '@/domain/usecases/account/authentication'
 
 export class LoginController implements Controller {
@@ -24,7 +24,7 @@ export class LoginController implements Controller {
         return unauthorized()
       }
 
-      return Promise.resolve(null)
+      return ok(account)
     } catch (error) {
       return serverError(error)
     }
