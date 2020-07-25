@@ -1,7 +1,7 @@
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { Controller } from '@/presentation/protocols/controller'
 import { Validation } from '@/presentation/protocols/validation'
-import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError, unauthorized } from '@/presentation/helpers/http/http-helper'
 import { Authentication } from '@/domain/usecases/account/authentication'
 
 export class LoginController implements Controller {
@@ -17,10 +17,12 @@ export class LoginController implements Controller {
         return badRequest(error)
       }
 
-      await this.authentication.auth({
-        email: httpRequest.body.email,
-        password: httpRequest.body.password
-      })
+      const { email, password } = httpRequest.body
+
+      const account = await this.authentication.auth({ email, password })
+      if (!account) {
+        return unauthorized()
+      }
 
       return Promise.resolve(null)
     } catch (error) {
