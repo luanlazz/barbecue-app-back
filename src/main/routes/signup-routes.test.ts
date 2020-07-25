@@ -1,4 +1,5 @@
 import app from '@/main/config/app'
+import env from '@/main/config/env'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import request from 'supertest'
 import { Collection } from 'mongodb'
@@ -7,7 +8,7 @@ let accountCollection: Collection
 
 describe('SignUp Routes', () => {
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL)
+    await MongoHelper.connect(env.mongoUrl)
   })
 
   afterAll(async () => {

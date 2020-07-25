@@ -2,13 +2,14 @@ import { AccountMongoRepository } from './account'
 import { mockAddAccountParams } from '@/domain/test'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { Collection } from 'mongodb'
+import env from '@/main/config/env'
 import faker from 'faker'
 
 let accountCollection: Collection
 
 describe('Account Mongo Repository', () => {
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL)
+    await MongoHelper.connect(env.mongoUrl)
   })
 
   afterAll(async () => {
