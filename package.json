@@ -1,8 +1,11 @@
 {
+  "author": "Luan Lazzari",
   "name": "back",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "license": "ISC",
+  "keywords": [],
   "scripts": {
     "start": "node dist/main/server.js",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
@@ -17,9 +20,6 @@
     "test:ci": "npm test -- --coverage",
     "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info"
   },
-  "keywords": [],
-  "author": "Luan Lazzari",
-  "license": "ISC",
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.2.1",
     "@types/bcrypt": "^3.0.0",
