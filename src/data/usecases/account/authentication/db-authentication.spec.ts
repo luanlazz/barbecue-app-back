@@ -55,7 +55,7 @@ describe('Authentication use case', () => {
     const { sut, hasherCompareStub } = makeSut()
     const compareSpy = jest.spyOn(hasherCompareStub, 'compare')
     await sut.auth(mockAuthParams())
-    expect(compareSpy).toHaveBeenCalledWith('any_password', 'any_password')
+    expect(compareSpy).toHaveBeenCalledWith('any_password', 'hash_password')
   })
 
   test('Should throw if HasherCompare throws', async () => {
