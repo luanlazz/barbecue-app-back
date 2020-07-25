@@ -1,5 +1,4 @@
 import app from '@/main/config/app'
-import env from '@/main/config/env'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import request from 'supertest'
 import { Collection } from 'mongodb'
@@ -8,7 +7,7 @@ let accountCollection: Collection
 
 describe('SignUp Routes', () => {
   beforeAll(async () => {
-    await MongoHelper.connect(env.mongoUrl)
+    await MongoHelper.connect(process.env.MONGO_URL)
   })
 
   afterAll(async () => {
@@ -16,7 +15,7 @@ describe('SignUp Routes', () => {
   })
 
   beforeEach(async () => {
-    accountCollection = MongoHelper.getCollection('accounts')
+    accountCollection = await MongoHelper.getCollection('accounts')
     await accountCollection.deleteMany({})
   })
 
