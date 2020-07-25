@@ -1,0 +1,28 @@
+version: "3"
+services:
+  mongo:
+    container_name: mongo-container
+    image: mongo:3
+    restart: always
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"
+  api:
+    container_name: api-container
+    image: node:12
+    working_dir: /usr/src/barbecue
+    restart: always
+    command: bash -c "npm install --only=prod && npm run start"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/barbecue
+    volumes:
+      - ./dist/:/usr/src/barbecue/dist/
+      - ./package.json:/usr/src/barbecue/package.json
+    ports:
+      - "5050:5050"
+      - "9222:9222"
+    links:
+      - mongo
+volumes:
+  mongodata:
