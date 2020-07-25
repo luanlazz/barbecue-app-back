@@ -1,22 +1,26 @@
 import { LoginController } from './login-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
-import { mockValidation } from '@/presentation/test'
 import { Validation } from '@/presentation/protocols/validation'
 import { MissingParamError, ServerError } from '@/presentation/errors'
 import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
+import { mockValidation, mockAuthentication } from '@/presentation/test'
 import { throwError } from '@/domain/test'
+import { Authentication } from '@/domain/usecases/account/authentication'
 
 type SutTypes = {
   sut: LoginController
   validationStub: Validation
+  authenticationStub: Authentication
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = mockValidation()
-  const sut = new LoginController(validationStub)
+  const authenticationStub = mockAuthentication()
+  const sut = new LoginController(validationStub, authenticationStub)
   return {
     sut,
-    validationStub
+    validationStub,
+    authenticationStub
   }
 }
 
@@ -32,10 +36,7 @@ describe('SignUp Controller', () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
     await sut.handle(mockRequest())
-    expect(validateSpy).toHaveBeenCalledWith({
-      email: 'any_email@mail.com',
-      password: 'any_password'
-    })
+    expect(validateSpy).toHaveBeenCalledWith(mockRequest().body)
   })
 
   test('should return 400 if Validation return an error', async () => {
@@ -50,5 +51,12 @@ describe('SignUp Controller', () => {
     jest.spyOn(validationStub, 'validate').mockImplementation(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('should call Authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut()
+    const authSpy = jest.spyOn(authenticationStub, 'auth')
+    await sut.handle(mockRequest())
+    expect(authSpy).toHaveBeenCalledWith(mockRequest().body)
   })
 })
