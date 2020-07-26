@@ -29,6 +29,13 @@ describe('Authentication use case', () => {
     expect(decryptSpy).toHaveBeenCalledWith('any_token')
   })
 
+  test('Should return null if Decrypter returns null', async () => {
+    const { sut, decrypterStub } = makeSut()
+    jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(Promise.resolve(null))
+    const account = await sut.loadByToken('any_token')
+    expect(account).toBeNull()
+  })
+
   test('Should call LoadAccountByEmailRepository with correct email', async () => {
     const { sut, loadAccountByTokenStub } = makeSut()
     const loadByTokenSpy = jest.spyOn(loadAccountByTokenStub, 'loadByToken')
