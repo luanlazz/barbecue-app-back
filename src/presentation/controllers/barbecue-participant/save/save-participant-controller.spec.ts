@@ -2,9 +2,10 @@ import { SaveParticipantController } from './save-participant-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validation } from '@/presentation/protocols/validation'
 import { mockValidation } from '@/presentation/test'
-import { badRequest } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
 import { mockSaveParticipant } from '@/presentation/test/mock-participant'
 import { SaveParticipant } from '@/domain/usecases/barbecue-participant/save-barbecue-participant'
+import { throwError } from '@/domain/test'
 
 type SutTypes = {
   sut: SaveParticipantController
@@ -61,5 +62,12 @@ describe('SaveBarbecue Controller', () => {
       participantId: 'any_participant_id',
       ...mockRequest().body
     })
+  })
+
+  test('should return throws if SaveParticipant throws', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockImplementation(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
