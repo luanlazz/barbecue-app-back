@@ -14,6 +14,8 @@ export default {
   }],
   tags: [{
     name: 'Login'
+  }, {
+    name: 'Barbecue'
   }],
   paths,
   schemas,
