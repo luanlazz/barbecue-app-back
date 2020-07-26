@@ -20,9 +20,9 @@ const makeSut = (): SutTypes => {
 describe('SaveBarbecue use case', () => {
   test('Should call SaveBarbecue with correct values', async () => {
     const { sut, saveBarbecueRepositoryStub } = makeSut()
-    const hashSpy = jest.spyOn(saveBarbecueRepositoryStub, 'save')
+    const saveSpy = jest.spyOn(saveBarbecueRepositoryStub, 'save')
     await sut.save(mockBarbecueParams())
-    expect(hashSpy).toHaveBeenCalledWith(mockBarbecueParams())
+    expect(saveSpy).toHaveBeenCalledWith(mockBarbecueParams())
   })
 
   test('Should throws if SaveBarbecue throws', async () => {
