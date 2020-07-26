@@ -2,13 +2,14 @@
 
 ### Success
 
-1. ✅ validate required fields (date and description);
-2. ❌ validate date;
-3. ✅ optional fields (observation, cost drink, cost food);
-4. ✅ validate access token;
-5. ✅ validate barbecue id;
-6. ✅ create the barbecue or update if exists;
-7. ✅ return 200 with barbecue create;
+1. ✅ put in route /api/barbecue/:barbecueId?;
+2. ✅ validate required fields (date and description);
+3. ❌ validate date;
+4. ✅ optional fields (observation, cost drink, cost food);
+5. ✅ validate access token;
+6. ✅ validate barbecue id;
+7. ✅ create the barbecue or update if exists;
+8. ✅ return 200 with barbecue create;
 
 ### Exceptions
 
