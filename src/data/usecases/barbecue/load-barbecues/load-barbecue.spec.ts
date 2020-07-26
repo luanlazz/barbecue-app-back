@@ -1,16 +1,16 @@
-import { DbLoadBarbecue } from './load-barbecue'
+import { DbLoadBarbecues } from './load-barbecue'
 import { mockLoadBarbecuesRepository } from '@/data/test'
 import { LoadBarbecuesRepository } from '@/data/protocols/db/barbecue/load-barbecue-repository'
 import { throwError, mockBarbecueList } from '@/domain/test'
 
 type SutTypes = {
-  sut: DbLoadBarbecue
+  sut: DbLoadBarbecues
   loadBarbecuesRepositoryStub: LoadBarbecuesRepository
 }
 
 const makeSut = (): SutTypes => {
   const loadBarbecuesRepositoryStub = mockLoadBarbecuesRepository()
-  const sut = new DbLoadBarbecue(loadBarbecuesRepositoryStub)
+  const sut = new DbLoadBarbecues(loadBarbecuesRepositoryStub)
   return {
     sut,
     loadBarbecuesRepositoryStub
