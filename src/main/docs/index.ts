@@ -10,8 +10,7 @@ export default {
     version: '1.0.0'
   },
   servers: [{
-    url: '/api',
-    description: 'Base url api'
+    url: '/api'
   }],
   tags: [{
     name: 'Login'
