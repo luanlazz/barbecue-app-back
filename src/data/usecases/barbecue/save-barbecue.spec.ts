@@ -1,7 +1,7 @@
 import { DbSaveBarbecue } from './save-barbecue'
 import { SaveBarbecueRepository } from '@/data/protocols/db/barbecue/save-barbecue-repository'
 import { mockSaveBarbecueRepository } from '@/data/test'
-import { mockBarbecueParams } from '@/domain/test'
+import { mockBarbecueParams, throwError } from '@/domain/test'
 
 type SutTypes = {
   sut: DbSaveBarbecue
@@ -23,5 +23,12 @@ describe('SaveBarbecue use case', () => {
     const hashSpy = jest.spyOn(saveBarbecueRepositoryStub, 'save')
     await sut.save(mockBarbecueParams())
     expect(hashSpy).toHaveBeenCalledWith(mockBarbecueParams())
+  })
+
+  test('Should throws if SaveBarbecue throws', async () => {
+    const { sut, saveBarbecueRepositoryStub } = makeSut()
+    jest.spyOn(saveBarbecueRepositoryStub, 'save').mockImplementation(throwError)
+    const barbecue = sut.save(mockBarbecueParams())
+    await expect(barbecue).rejects.toThrow()
   })
 })
