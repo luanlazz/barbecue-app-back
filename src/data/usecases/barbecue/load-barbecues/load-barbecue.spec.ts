@@ -1,7 +1,7 @@
 import { DbLoadBarbecue } from './load-barbecue'
 import { mockLoadBarbecuesRepository } from '@/data/test'
 import { LoadBarbecuesRepository } from '@/data/protocols/db/barbecue/load-barbecue-repository'
-import { throwError } from '@/domain/test'
+import { throwError, mockBarbecueList } from '@/domain/test'
 
 type SutTypes = {
   sut: DbLoadBarbecue
@@ -30,5 +30,11 @@ describe('LoadBarbecue use case', () => {
     jest.spyOn(loadBarbecuesRepositoryStub, 'loadAll').mockImplementation(throwError)
     const barbecue = sut.load('any_account_id')
     await expect(barbecue).rejects.toThrow()
+  })
+
+  test('Should a list of barbecues on success', async () => {
+    const { sut } = makeSut()
+    const barbecues = await sut.load('any_account_id')
+    expect(barbecues).toEqual(mockBarbecueList())
   })
 })
