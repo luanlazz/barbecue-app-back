@@ -2,7 +2,7 @@ import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { Controller } from '@/presentation/protocols/controller'
 import { Validation } from '@/presentation/protocols/validation'
 
-export class AddBarbecueController implements Controller {
+export class SaveBarbecueController implements Controller {
   constructor (
     private readonly validation: Validation
   ) {}

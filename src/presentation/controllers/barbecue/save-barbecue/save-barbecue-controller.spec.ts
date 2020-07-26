@@ -1,16 +1,16 @@
-import { AddBarbecueController } from './add-barbecue-controller'
+import { SaveBarbecueController } from './save-barbecue-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validation } from '@/presentation/protocols/validation'
 import { mockValidation } from '@/presentation/test'
 
 type SutTypes = {
-  sut: AddBarbecueController
+  sut: SaveBarbecueController
   validationStub: Validation
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = mockValidation()
-  const sut = new AddBarbecueController(validationStub)
+  const sut = new SaveBarbecueController(validationStub)
   return {
     sut,
     validationStub
@@ -27,7 +27,7 @@ const mockRequest = (): HttpRequest => ({
   }
 })
 
-describe('AddBarbecue Controller', () => {
+describe('SaveBarbecue Controller', () => {
   test('should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
