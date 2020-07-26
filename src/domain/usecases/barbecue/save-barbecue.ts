@@ -2,6 +2,7 @@ import { BarbecueModel } from '@/domain/models/barbecue'
 
 export type barbecueParams = {
   id?: string
+  accountId: string
   date: Date
   description: string
   observation: string
