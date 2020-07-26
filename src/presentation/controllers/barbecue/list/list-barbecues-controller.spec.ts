@@ -1,9 +1,9 @@
 import { LoadBarbecuesController } from './list-barbecues-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { mockLoadBarbecues } from '@/presentation/test/mock-barbecue'
-import { serverError, noContent } from '@/presentation/helpers/http/http-helper'
+import { serverError, noContent, ok } from '@/presentation/helpers/http/http-helper'
 import { LoadBarbecues } from '@/domain/usecases/barbecue/list-barbecues'
-import { throwError } from '@/domain/test'
+import { throwError, mockBarbecueList } from '@/domain/test'
 
 type SutTypes = {
   sut: LoadBarbecuesController
@@ -43,5 +43,11 @@ describe('SaveBarbecue Controller', () => {
     jest.spyOn(loadBarbecuesStub, 'load').mockReturnValueOnce(Promise.resolve([]))
     const barbecues = await sut.handle(mockRequest())
     expect(barbecues).toEqual(noContent())
+  })
+
+  test('should return 200 with barbecues on success', async () => {
+    const { sut } = makeSut()
+    const barbecues = await sut.handle(mockRequest())
+    expect(barbecues).toEqual(ok(mockBarbecueList()))
   })
 })
