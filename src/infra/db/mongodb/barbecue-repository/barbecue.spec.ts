@@ -65,5 +65,11 @@ describe('Barbecue Mongo Repository', () => {
       expect(barbecueResult[0].id).toBeTruthy()
       expect(barbecueResult[1].id).toBeTruthy()
     })
+
+    test('Should return a empty list if no find any barbecue', async () => {
+      const sut = makeSut()
+      const barbecueResult = await sut.loadAll('any_account_id')
+      expect(barbecueResult.length).toBe(0)
+    })
   })
 })
