@@ -55,5 +55,21 @@ describe('Barbecue Routes', () => {
         .send(mockBarbecueParams())
         .expect(200)
     })
+
+    test('Should save a new barbecue and return on success', async () => {
+      const barbecueBase = mockBarbecueParams()
+      const res = await barbecueCollection.insertOne(barbecueBase)
+      const barbecueId = res.ops[0]._id
+      const barbecueNew = {
+        ...barbecueBase,
+        description: 'new description'
+      }
+      const accessToken = await makeAccessToken()
+      await request(app)
+        .put(`/api/barbecue/${barbecueId}`)
+        .set('x-access-token', accessToken)
+        .send(barbecueNew)
+        .expect(200)
+    })
   })
 })
