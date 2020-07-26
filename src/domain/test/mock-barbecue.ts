@@ -2,7 +2,7 @@ import { BarbecueModel } from '../models/barbecue'
 import { barbecueParams } from '../usecases/barbecue/save-barbecue'
 
 export const mockBarbecueParams = (): barbecueParams => ({
-  id: 'any_id',
+  barbecueId: 'any_barbecue_id',
   accountId: 'any_account_id',
   date: new Date('2020-01-08'),
   description: 'any_description',

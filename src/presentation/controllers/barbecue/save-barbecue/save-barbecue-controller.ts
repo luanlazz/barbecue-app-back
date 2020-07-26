@@ -16,10 +16,12 @@ export class SaveBarbecueController implements Controller {
       if (error) return badRequest(error)
 
       const { barbecueId } = httpRequest.params
+      const { accountId } = httpRequest
       const { date, description, observation, valueTotalDrink, valueTotalFood } = httpRequest.body
 
       const barbecue = await this.saveBarbecue.save({
-        id: barbecueId,
+        barbecueId,
+        accountId,
         date,
         description,
         observation,
