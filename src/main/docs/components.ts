@@ -1,4 +1,4 @@
-import { badRequest, forbidden, notFound, serverError, unauthorized } from './components/'
+import { badRequest, forbidden, noContent, notFound, serverError, unauthorized } from './components/'
 import { apiKeyAuthSchema } from './schemas/api-key-schema'
 
 export default {
@@ -7,6 +7,7 @@ export default {
   },
   badRequest,
   forbidden,
+  noContent,
   notFound,
   serverError,
   unauthorized

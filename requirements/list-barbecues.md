@@ -10,6 +10,6 @@
 
 ### Exceptions
 
-1. ✅ 401 unauthorized: if not receive a valid access token;
+1. ✅ 403 forbidden: if not receive a valid access token;
 2. ✅ 404 notFound: if route doesn't exists;
 3. ✅ 500 serverError: any error in data or infra layer;

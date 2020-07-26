@@ -3,6 +3,7 @@ import {
   loginParamsSchema,
   signUpParamsSchema,
   barbecueSchema,
+  barbecuesSchema,
   saveBarbecueParamsSchema,
   errorSchema
 } from './schemas/'
@@ -12,6 +13,7 @@ export default {
   signUpParams: signUpParamsSchema,
   loginParams: loginParamsSchema,
   barbecue: barbecueSchema,
+  barbecues: barbecuesSchema,
   saveBarbecueParams: saveBarbecueParamsSchema,
   error: errorSchema
 }
