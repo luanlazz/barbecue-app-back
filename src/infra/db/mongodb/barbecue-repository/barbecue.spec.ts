@@ -37,4 +37,33 @@ describe('Barbecue Mongo Repository', () => {
       expect(barbecueResult.valueTotalFood).toEqual(barbecueParams.valueTotalFood)
     })
   })
+
+  describe('loadAll', () => {
+    test('Should return a list of barbecues on success', async () => {
+      const sut = makeSut()
+      await barbecueCollection.insertMany([{
+        barbecueId: 'any_barbecue_id',
+        accountId: 'same_account_id',
+        date: new Date('2020-01-08'),
+        description: 'any_description',
+        observation: 'any_observation',
+        valueTotalDrink: 0,
+        valueTotalFood: 0
+      }, {
+        barbecueId: 'other_barbecue_id',
+        accountId: 'same_account_id',
+        date: new Date('2020-02-08'),
+        description: 'other_description',
+        observation: 'other_observation',
+        valueTotalDrink: 0,
+        valueTotalFood: 0
+      }])
+      const barbecueResult = await sut.loadAll('same_account_id')
+      expect(barbecueResult.length).toBe(2)
+      expect(barbecueResult[0]).toBeTruthy()
+      expect(barbecueResult[1]).toBeTruthy()
+      expect(barbecueResult[0].id).toBeTruthy()
+      expect(barbecueResult[1].id).toBeTruthy()
+    })
+  })
 })
