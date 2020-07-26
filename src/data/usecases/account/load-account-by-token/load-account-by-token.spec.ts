@@ -2,7 +2,7 @@ import { DbLoadAccountByToken } from './load-account-by-token'
 import { Decrypter } from '@/data/protocols/cryptography/decrypter'
 import { mockLoadAccountByTokenRepository, mockDecrypter } from '@/data/test'
 import { LoadAccountByToken } from '@/domain/usecases/account/load-account-by-token'
-import { throwError } from '@/domain/test'
+import { throwError, mockAccountModel } from '@/domain/test'
 
 type SutTypes = {
   sut: DbLoadAccountByToken
@@ -46,7 +46,13 @@ describe('Authentication use case', () => {
   test('Should throws if LoadAccountByEmailRepository throws', async () => {
     const { sut, loadAccountByTokenStub } = makeSut()
     jest.spyOn(loadAccountByTokenStub, 'loadByToken').mockImplementation(throwError)
-    const error = sut.loadByToken('any_token')
-    await expect(error).rejects.toThrow()
+    const account = sut.loadByToken('any_token')
+    await expect(account).rejects.toThrow()
+  })
+
+  test('Should return an account on success', async () => {
+    const { sut } = makeSut()
+    const account = await sut.loadByToken('any_token')
+    expect(account).toEqual(mockAccountModel())
   })
 })
