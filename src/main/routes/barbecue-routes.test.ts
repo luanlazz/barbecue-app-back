@@ -100,5 +100,14 @@ describe('Barbecue Routes', () => {
         .send(mockBarbecueParams())
         .expect(200)
     })
+
+    test('Should return 204 if barbecues is empty', async () => {
+      const { accessToken } = await makeAccessToken()
+      await request(app)
+        .get('/api/barbecue')
+        .set('x-access-token', accessToken)
+        .send(mockBarbecueParams())
+        .expect(204)
+    })
   })
 })
