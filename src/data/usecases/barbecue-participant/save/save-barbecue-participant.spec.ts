@@ -1,7 +1,7 @@
 import { DbSaveParticipant } from './save-barbecue-participant'
 import { SaveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-save-participant'
 import { mockSaveParticipantRepository } from '@/data/test'
-import { mockParticipantParams, throwError } from '@/domain/test'
+import { mockParticipantParams, throwError, mockParticipantModel } from '@/domain/test'
 
 type SutTypes = {
   sut: DbSaveParticipant
@@ -30,5 +30,11 @@ describe('SaveParticipant use case', () => {
     jest.spyOn(saveParticipantRepositoryStub, 'save').mockImplementation(throwError)
     const participants = sut.save(mockParticipantParams())
     await expect(participants).rejects.toThrow()
+  })
+
+  test('Should return participants on success', async () => {
+    const { sut } = makeSut()
+    const participants = await sut.save(mockParticipantParams())
+    expect(participants).toEqual([mockParticipantModel()])
   })
 })
