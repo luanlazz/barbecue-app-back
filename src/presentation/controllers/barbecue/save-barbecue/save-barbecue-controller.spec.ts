@@ -33,7 +33,8 @@ const mockRequest = (): HttpRequest => ({
     observation: 'any_observation',
     valueTotalDrink: 0,
     valueTotalFood: 0
-  }
+  },
+  accountId: 'any_account_id'
 })
 
 describe('SaveBarbecue Controller', () => {
@@ -56,7 +57,8 @@ describe('SaveBarbecue Controller', () => {
     const saveSpy = jest.spyOn(saveBarbecueStub, 'save')
     await sut.handle(mockRequest())
     expect(saveSpy).toHaveBeenCalledWith({
-      id: 'any_barbecue_id',
+      barbecueId: 'any_barbecue_id',
+      accountId: 'any_account_id',
       ...mockRequest().body
     })
   })
