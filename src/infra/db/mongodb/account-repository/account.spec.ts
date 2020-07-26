@@ -1,5 +1,5 @@
 import { AccountMongoRepository } from './account'
-import { mockAddAccountParams } from '@/domain/test'
+import { mockAddAccountParams, mockAuthenticationModel } from '@/domain/test'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { Collection } from 'mongodb'
 import faker from 'faker'
@@ -43,6 +43,19 @@ describe('Account Mongo Repository', () => {
       const accountInsert = mockAddAccountParams()
       await accountCollection.insertOne(accountInsert)
       const account = await sut.loadByEmail(accountInsert.email)
+      expect(account).toBeTruthy()
+      expect(account.name).toBe(accountInsert.name)
+      expect(account.email).toBe(accountInsert.email)
+      expect(account.password).toBe(accountInsert.password)
+    })
+  })
+
+  describe('loadByToken', () => {
+    test('Should return an account on loadByToken success', async () => {
+      const sut = makeSut()
+      const accountInsert = mockAuthenticationModel()
+      await accountCollection.insertOne(accountInsert)
+      const account = await sut.loadByToken(accountInsert.accessToken)
       expect(account).toBeTruthy()
       expect(account.name).toBe(accountInsert.name)
       expect(account.email).toBe(accountInsert.email)
