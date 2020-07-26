@@ -40,6 +40,13 @@ describe('Barbecue Routes', () => {
   })
 
   describe('Save route', () => {
+    test('Should return 403 on save barbecue without accessToken', async () => {
+      await request(app)
+        .put('/api/barbecue')
+        .send(mockBarbecueParams())
+        .expect(403)
+    })
+
     test('Should save a new barbecue and return on success', async () => {
       const accessToken = await makeAccessToken()
       await request(app)
