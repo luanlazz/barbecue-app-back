@@ -2,9 +2,9 @@ import { SaveBarbecueController } from './save-barbecue-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validation } from '@/presentation/protocols/validation'
 import { mockValidation, mockSaveBarbecue } from '@/presentation/test'
-import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError, ok } from '@/presentation/helpers/http/http-helper'
 import { SaveBarbecue } from '@/domain/usecases/barbecue/save-barbecue'
-import { throwError } from '@/domain/test'
+import { throwError, mockBarbecueModel } from '@/domain/test'
 
 type SutTypes = {
   sut: SaveBarbecueController
@@ -24,6 +24,9 @@ const makeSut = (): SutTypes => {
 }
 
 const mockRequest = (): HttpRequest => ({
+  params: {
+    barbecueId: 'any_barbecue_id'
+  },
   body: {
     date: 'any_date',
     description: 'any_description',
@@ -52,7 +55,10 @@ describe('SaveBarbecue Controller', () => {
     const { sut, saveBarbecueStub } = makeSut()
     const saveSpy = jest.spyOn(saveBarbecueStub, 'save')
     await sut.handle(mockRequest())
-    expect(saveSpy).toHaveBeenCalledWith(mockRequest().body)
+    expect(saveSpy).toHaveBeenCalledWith({
+      id: 'any_barbecue_id',
+      ...mockRequest().body
+    })
   })
 
   test('should throw if SaveBarbecue throws', async () => {
@@ -60,5 +66,11 @@ describe('SaveBarbecue Controller', () => {
     jest.spyOn(validationStub, 'validate').mockImplementation(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return a barbecue on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok(mockBarbecueModel()))
   })
 })
