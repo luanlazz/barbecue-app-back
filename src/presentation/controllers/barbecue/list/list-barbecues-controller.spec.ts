@@ -1,7 +1,7 @@
 import { LoadBarbecuesController } from './list-barbecues-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { mockLoadBarbecues } from '@/presentation/test/mock-barbecue'
-import { serverError } from '@/presentation/helpers/http/http-helper'
+import { serverError, noContent } from '@/presentation/helpers/http/http-helper'
 import { LoadBarbecues } from '@/domain/usecases/barbecue/list-barbecues'
 import { throwError } from '@/domain/test'
 
@@ -36,5 +36,12 @@ describe('SaveBarbecue Controller', () => {
     jest.spyOn(loadBarbecuesStub, 'load').mockImplementation(throwError)
     const barbecues = await sut.handle(mockRequest())
     expect(barbecues).toEqual(serverError(new Error()))
+  })
+
+  test('should return 204 if LoadBarbecues returns empty list', async () => {
+    const { sut, loadBarbecuesStub } = makeSut()
+    jest.spyOn(loadBarbecuesStub, 'load').mockReturnValueOnce(Promise.resolve([]))
+    const barbecues = await sut.handle(mockRequest())
+    expect(barbecues).toEqual(noContent())
   })
 })
