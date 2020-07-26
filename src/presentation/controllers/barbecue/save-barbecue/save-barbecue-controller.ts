@@ -1,7 +1,7 @@
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { Controller } from '@/presentation/protocols/controller'
 import { Validation } from '@/presentation/protocols/validation'
-import { badRequest } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
 import { SaveBarbecue } from '@/domain/usecases/barbecue/save-barbecue'
 
 export class SaveBarbecueController implements Controller {
@@ -11,13 +11,17 @@ export class SaveBarbecueController implements Controller {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const error = this.validation.validate(httpRequest.body)
-    if (error) return badRequest(error)
+    try {
+      const error = this.validation.validate(httpRequest.body)
+      if (error) return badRequest(error)
 
-    const { date, description, observation, valueTotalDrink, valueTotalFood } = httpRequest.body
+      const { date, description, observation, valueTotalDrink, valueTotalFood } = httpRequest.body
 
-    await this.saveBarbecue.save({ date, description, observation, valueTotalDrink, valueTotalFood })
+      await this.saveBarbecue.save({ date, description, observation, valueTotalDrink, valueTotalFood })
 
-    return Promise.resolve(null)
+      return Promise.resolve(null)
+    } catch (error) {
+      return serverError(error)
+    }
   }
 }
