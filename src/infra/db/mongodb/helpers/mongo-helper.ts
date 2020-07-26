@@ -27,5 +27,9 @@ export const MongoHelper = {
   map (data: any): any {
     const { _id, ...obj } = data
     return { id: _id, ...obj }
+  },
+
+  mapCollection (array: any[]): any {
+    return array.map(data => this.map(data))
   }
 }

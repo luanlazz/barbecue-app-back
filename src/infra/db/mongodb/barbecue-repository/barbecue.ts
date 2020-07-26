@@ -3,8 +3,10 @@ import { SaveBarbecueRepository } from '@/data/protocols/db/barbecue/save-barbec
 import { barbecueParams } from '@/domain/usecases/barbecue/save-barbecue'
 import { BarbecueModel } from '@/domain/models/barbecue'
 import { ObjectId } from 'mongodb'
+import { LoadBarbecuesRepository } from '@/data/protocols/db/barbecue/load-barbecue-repository'
 
-export class BarbecueMongoRepository implements SaveBarbecueRepository {
+export class BarbecueMongoRepository implements SaveBarbecueRepository,
+                                                LoadBarbecuesRepository {
   async save (barbecue: barbecueParams): Promise<BarbecueModel> {
     const barbecueCollection = await MongoHelper.getCollection('barbecues')
 
@@ -27,5 +29,13 @@ export class BarbecueMongoRepository implements SaveBarbecueRepository {
     })
 
     return MongoHelper.map(result.value)
+  }
+
+  async loadAll (accountId: string): Promise<BarbecueModel[]> {
+    const barbecueCollection = await MongoHelper.getCollection('barbecues')
+    const barbecues = await barbecueCollection.find({
+      accountId: accountId
+    }).toArray()
+    return MongoHelper.mapCollection(barbecues)
   }
 }
