@@ -6,7 +6,7 @@ export class DbSaveParticipant implements SaveParticipant {
   constructor (private readonly saveParticipantRepository: SaveParticipantRepository) {}
 
   async save (participant: SaveParticipantParams): Promise<ParticipantModel[]> {
-    await this.saveParticipantRepository.save(participant)
-    return Promise.resolve(null)
+    const participants = await this.saveParticipantRepository.save(participant)
+    return participants
   }
 }
