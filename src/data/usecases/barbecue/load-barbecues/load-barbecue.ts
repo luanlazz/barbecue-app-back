@@ -6,7 +6,7 @@ export class DbLoadBarbecue implements LoadBarbecues {
   constructor (private readonly loadBarbecuesRepository: LoadBarbecuesRepository) {}
 
   async load (accountId: string): Promise<BarbecueModel[]> {
-    await this.loadBarbecuesRepository.loadAll(accountId)
-    return Promise.resolve(null)
+    const barbecues = await this.loadBarbecuesRepository.loadAll(accountId)
+    return barbecues
   }
 }
