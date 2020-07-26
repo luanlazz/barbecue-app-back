@@ -1,20 +1,24 @@
 import { SaveBarbecueController } from './save-barbecue-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validation } from '@/presentation/protocols/validation'
-import { mockValidation } from '@/presentation/test'
+import { mockValidation, mockSaveBarbecue } from '@/presentation/test'
 import { badRequest } from '@/presentation/helpers/http/http-helper'
+import { SaveBarbecue } from '@/domain/usecases/barbecue/save-barbecue'
 
 type SutTypes = {
   sut: SaveBarbecueController
   validationStub: Validation
+  saveBarbecueStub: SaveBarbecue
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = mockValidation()
-  const sut = new SaveBarbecueController(validationStub)
+  const saveBarbecueStub = mockSaveBarbecue()
+  const sut = new SaveBarbecueController(validationStub, saveBarbecueStub)
   return {
     sut,
-    validationStub
+    validationStub,
+    saveBarbecueStub
   }
 }
 
@@ -41,5 +45,12 @@ describe('SaveBarbecue Controller', () => {
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new Error()))
+  })
+
+  test('should call SaveBarbecue with correct values', async () => {
+    const { sut, saveBarbecueStub } = makeSut()
+    const saveSpy = jest.spyOn(saveBarbecueStub, 'save')
+    await sut.handle(mockRequest())
+    expect(saveSpy).toHaveBeenCalledWith(mockRequest().body)
   })
 })
