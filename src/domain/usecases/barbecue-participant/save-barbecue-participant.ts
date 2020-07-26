@@ -10,5 +10,5 @@ export type SaveParticipantParams = {
 }
 
 export interface SaveParticipant {
-  save (participant: SaveParticipantParams): Promise<ParticipantModel>
+  save (participant: SaveParticipantParams): Promise<ParticipantModel[]>
 }

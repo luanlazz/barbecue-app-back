@@ -4,8 +4,8 @@ import { mockParticipantModel } from '@/domain/test'
 
 export const mockSaveParticipant = (): SaveParticipant => {
   class SaveParticipantStub implements SaveParticipant {
-    async save (participant: SaveParticipantParams): Promise<ParticipantModel> {
-      return await Promise.resolve(mockParticipantModel())
+    async save (participant: SaveParticipantParams): Promise<ParticipantModel[]> {
+      return await Promise.resolve([mockParticipantModel()])
     }
   }
   return new SaveParticipantStub()

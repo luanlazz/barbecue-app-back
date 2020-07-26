@@ -1,7 +1,7 @@
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { Controller } from '@/presentation/protocols/controller'
 import { Validation } from '@/presentation/protocols/validation'
-import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError, ok } from '@/presentation/helpers/http/http-helper'
 import { SaveParticipant } from '@/domain/usecases/barbecue-participant/save-barbecue-participant'
 
 export class SaveParticipantController implements Controller {
@@ -18,9 +18,9 @@ export class SaveParticipantController implements Controller {
       const { name, food, drink, pay } = httpRequest.body
       const { barbecueId, participantId } = httpRequest.params
 
-      await this.saveParticipant.save({ barbecueId, participantId, name, food, drink, pay })
+      const participants = await this.saveParticipant.save({ barbecueId, participantId, name, food, drink, pay })
 
-      return Promise.resolve(null)
+      return ok(participants)
     } catch (error) {
       return serverError(error)
     }
