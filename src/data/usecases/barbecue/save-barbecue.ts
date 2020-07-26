@@ -6,7 +6,7 @@ export class DbSaveBarbecue implements SaveBarbecue {
   constructor (private readonly saveBarbecueRepository: SaveBarbecueRepository) {}
 
   async save (barbecue: barbecueParams): Promise<BarbecueModel> {
-    await this.saveBarbecueRepository.save(barbecue)
-    return Promise.resolve(null)
+    const barbecueSave = await this.saveBarbecueRepository.save(barbecue)
+    return barbecueSave
   }
 }
