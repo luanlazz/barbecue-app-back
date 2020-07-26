@@ -9,7 +9,12 @@ import request from 'supertest'
 let barbecueCollection: Collection
 let accountCollection: Collection
 
-const makeAccessToken = async (): Promise<string> => {
+type mockAccount = {
+  accessToken: string
+  accountId: string
+}
+
+const makeAccessToken = async (): Promise<mockAccount> => {
   const res = await accountCollection.insertOne(mockAddAccountParams())
   const id = res.ops[0]._id
   const accessToken = sign({ id }, env.jwtSecret)
@@ -20,7 +25,10 @@ const makeAccessToken = async (): Promise<string> => {
       accessToken
     }
   })
-  return accessToken
+  return {
+    accessToken,
+    accountId: id
+  }
 }
 
 describe('Barbecue Routes', () => {
@@ -48,7 +56,7 @@ describe('Barbecue Routes', () => {
     })
 
     test('Should save a new barbecue and return on success', async () => {
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       await request(app)
         .put('/api/barbecue')
         .set('x-access-token', accessToken)
@@ -64,7 +72,7 @@ describe('Barbecue Routes', () => {
         ...barbecueBase,
         description: 'new description'
       }
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       await request(app)
         .put(`/api/barbecue/${barbecueId}`)
         .set('x-access-token', accessToken)
@@ -76,9 +84,21 @@ describe('Barbecue Routes', () => {
   describe('LoadBarbecues route', () => {
     test('Should return 403 on load barbecues without accessToken', async () => {
       await request(app)
-        .put('/api/barbecue')
+        .get('/api/barbecue')
         .send(mockBarbecueParams())
         .expect(403)
+    })
+
+    test('Should return 200 on success', async () => {
+      const { accessToken, accountId } = await makeAccessToken()
+      const barbecueBase = mockBarbecueParams()
+      barbecueBase.accountId = accountId
+      await barbecueCollection.insertOne(barbecueBase)
+      await request(app)
+        .get('/api/barbecue')
+        .set('x-access-token', accessToken)
+        .send(mockBarbecueParams())
+        .expect(200)
     })
   })
 })
