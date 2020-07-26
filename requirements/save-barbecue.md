@@ -2,7 +2,7 @@
 
 ### Success
 
-1. ✅ put in route /api/barbecue/:barbecueId?;
+1. ✅ put in route /api/barbecue/:barbecueId;
 2. ✅ validate required fields (date and description);
 3. ❌ validate date;
 4. ✅ optional fields (observation, cost drink, cost food);
