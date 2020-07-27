@@ -20,8 +20,7 @@ export class ParticipantsMongoRepository implements SaveParticipantRepository {
         pay: participant.pay
       }
     }, {
-      upsert: true,
-      returnOriginal: false
+      upsert: true
     })
 
     return null
