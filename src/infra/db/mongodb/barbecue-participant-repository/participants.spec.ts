@@ -120,5 +120,12 @@ describe('Participants Mongo Repository', () => {
       expect(participants[3]).toBeTruthy()
       expect(participants[3].id).toBeTruthy()
     })
+
+    test('Should return a empty list if no find any participant', async () => {
+      const sut = makeSut()
+      const barbecueId = await makeBarbecue()
+      const participants = await sut.load(barbecueId)
+      expect(participants.length).toBe(0)
+    })
   })
 })
