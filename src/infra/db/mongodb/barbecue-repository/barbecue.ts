@@ -13,8 +13,8 @@ export class BarbecueMongoRepository implements SaveBarbecueRepository,
     if (!barbecue.barbecueId) barbecue.barbecueId = new ObjectId().toHexString()
 
     const result = await barbecueCollection.findOneAndUpdate({
-      _id: barbecue.barbecueId,
-      accountId: barbecue.accountId
+      _id: new ObjectId(barbecue.barbecueId),
+      accountId: new ObjectId(barbecue.accountId)
     }, {
       $set: {
         date: barbecue.date,
@@ -34,7 +34,7 @@ export class BarbecueMongoRepository implements SaveBarbecueRepository,
   async loadAll (accountId: string): Promise<BarbecueModel[]> {
     const barbecueCollection = await MongoHelper.getCollection('barbecues')
     const barbecues = await barbecueCollection.find({
-      accountId: accountId
+      accountId: new ObjectId(accountId)
     }).toArray()
     return MongoHelper.mapCollection(barbecues)
   }

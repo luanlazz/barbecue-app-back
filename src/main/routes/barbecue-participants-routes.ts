@@ -4,5 +4,5 @@ import { auth } from '@/main/middlewares/auth/auth'
 import { Router } from 'express'
 
 export default (route: Router): void => {
-  route.put('/barbecue/:barbecueId/participants', auth, adaptRoute(makeSaveParticipantController()))
+  route.put('/barbecue/:barbecueId/participants/:participantId?', auth, adaptRoute(makeSaveParticipantController()))
 }

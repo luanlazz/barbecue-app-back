@@ -14,8 +14,8 @@ export class ParticipantsMongoRepository implements SaveParticipantRepository,
     if (!participant.participantId) participant.participantId = new ObjectId().toHexString()
 
     await participantCollection.findOneAndUpdate({
-      _id: participant.participantId,
-      barbecueId: participant.barbecueId
+      _id: new ObjectId(participant.participantId),
+      barbecueId: new ObjectId(participant.barbecueId)
     }, {
       $set: {
         name: participant.name,
@@ -33,7 +33,7 @@ export class ParticipantsMongoRepository implements SaveParticipantRepository,
   async load (barbecueId: string): Promise<ParticipantModel[]> {
     const participantCollection = await MongoHelper.getCollection('participants')
     const participantsRes = await participantCollection.find({
-      barbecueId: barbecueId
+      barbecueId: new ObjectId(barbecueId)
     }).toArray()
 
     const { valueTotalDrink, valueTotalFood } = await this.getTotal(barbecueId)
