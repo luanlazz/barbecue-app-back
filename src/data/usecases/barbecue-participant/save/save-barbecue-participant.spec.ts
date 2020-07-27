@@ -43,6 +43,13 @@ describe('SaveParticipant use case', () => {
     expect(loadSpy).toHaveBeenCalledWith(mockParticipantParams().barbecueId)
   })
 
+  test('Should throws if LoadParticipantsByBqRepository throws', async () => {
+    const { sut, loadParticipantsByBqRepositoryStub } = makeSut()
+    jest.spyOn(loadParticipantsByBqRepositoryStub, 'load').mockImplementation(throwError)
+    const participants = sut.save(mockParticipantParams())
+    await expect(participants).rejects.toThrow()
+  })
+
   test('Should return participants on success', async () => {
     const { sut } = makeSut()
     const participants = await sut.save(mockParticipantParams())
