@@ -2,7 +2,7 @@ import { DbSaveParticipant } from './save-barbecue-participant'
 import { SaveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-save-participant'
 import { LoadParticipantsByBqRepository } from '@/data/protocols/db/barbecue-participant/db-load-participants-by-bq'
 import { mockSaveParticipantRepository, mockLoadParticipantByBqRepository } from '@/data/test'
-import { mockParticipantParams, throwError, mockParticipantModel } from '@/domain/test'
+import { mockParticipantParams, throwError, mockParticipantsModel } from '@/domain/test'
 
 type SutTypes = {
   sut: DbSaveParticipant
@@ -53,6 +53,6 @@ describe('SaveParticipant use case', () => {
   test('Should return participants on success', async () => {
     const { sut } = makeSut()
     const participants = await sut.save(mockParticipantParams())
-    expect(participants).toEqual([mockParticipantModel()])
+    expect(participants).toEqual(mockParticipantsModel())
   })
 })
