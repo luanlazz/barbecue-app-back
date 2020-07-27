@@ -6,6 +6,51 @@ import { Collection } from 'mongodb'
 let participantsCollection: Collection
 let barbecueCollection: Collection
 
+const makeBarbecue = async (valueTotalDrink: number = 0, valueTotalFood: number = 0): Promise<string> => {
+  const barbecue = {
+    accountId: '5f1b89c1480b9674bd2d724c',
+    date: '25/08/2020',
+    description: 'Primeiro churras!',
+    observation: 'teste',
+    valueTotalDrink,
+    valueTotalFood
+  }
+
+  const res = await barbecueCollection.insertOne(barbecue)
+  return res.ops[0]._id
+}
+
+const makeParticipants = async (barbecueId: string): Promise<void> => {
+  await participantsCollection.insertMany([{
+    barbecueId,
+    participantId: 'participant_one',
+    name: 'one_name',
+    food: true,
+    drink: false,
+    pay: false
+  }, {
+    barbecueId,
+    participantId: 'participant_two',
+    name: 'two_name',
+    food: false,
+    drink: true,
+    pay: false
+  }, {
+    barbecueId,
+    participantId: 'participant_two',
+    name: 'three_name',
+    food: true,
+    drink: true,
+    pay: false
+  }, {
+    barbecueId,
+    participantId: 'participant_two',
+    name: 'four_name',
+    food: true,
+    drink: true,
+    pay: false
+  }])
+}
 describe('Participants Mongo Repository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
@@ -56,48 +101,8 @@ describe('Participants Mongo Repository', () => {
 
   describe('load', () => {
     test('Should load return list of participants', async () => {
-      const barbecue = {
-        accountId: '5f1b89c1480b9674bd2d724c',
-        date: '25/08/2020',
-        description: 'Primeiro churras!',
-        observation: 'teste',
-        valueTotalDrink: 90,
-        valueTotalFood: 150
-      }
-
-      const res = await barbecueCollection.insertOne(barbecue)
-      const barbecueId = res.ops[0]._id
-
-      await participantsCollection.insertMany([{
-        barbecueId,
-        participantId: 'participant_one',
-        name: 'one_name',
-        food: true,
-        drink: false,
-        pay: false
-      }, {
-        barbecueId,
-        participantId: 'participant_two',
-        name: 'two_name',
-        food: false,
-        drink: true,
-        pay: false
-      }, {
-        barbecueId,
-        participantId: 'participant_two',
-        name: 'three_name',
-        food: true,
-        drink: true,
-        pay: false
-      }, {
-        barbecueId,
-        participantId: 'participant_two',
-        name: 'four_name',
-        food: true,
-        drink: true,
-        pay: false
-      }])
-
+      const barbecueId = await makeBarbecue(90, 150)
+      await makeParticipants(barbecueId)
       const sut = makeSut()
       const participants = await sut.load(barbecueId)
       expect(participants[0]).toBeTruthy()
@@ -108,6 +113,21 @@ describe('Participants Mongo Repository', () => {
       expect(participants[2].value).toBe(80)
       expect(participants[3]).toBeTruthy()
       expect(participants[3].value).toBe(80)
+    })
+
+    test('Should load return list of participants with value 0', async () => {
+      const barbecueId = await makeBarbecue()
+      await makeParticipants(barbecueId)
+      const sut = makeSut()
+      const participants = await sut.load(barbecueId)
+      expect(participants[0]).toBeTruthy()
+      expect(participants[0].value).toBe(0)
+      expect(participants[1]).toBeTruthy()
+      expect(participants[1].value).toBe(0)
+      expect(participants[2]).toBeTruthy()
+      expect(participants[2].value).toBe(0)
+      expect(participants[3]).toBeTruthy()
+      expect(participants[3].value).toBe(0)
     })
   })
 })
