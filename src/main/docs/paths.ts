@@ -1,7 +1,8 @@
-import { signUpPath, loginPath, barbecuePath } from './paths/'
+import { signUpPath, loginPath, barbecuePath, participantPath } from './paths/'
 
 export default {
   '/signup': signUpPath,
   '/login': loginPath,
-  '/barbecue': barbecuePath
+  '/barbecue': barbecuePath,
+  '/participant': participantPath
 }

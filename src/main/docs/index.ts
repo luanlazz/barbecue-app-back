@@ -16,6 +16,8 @@ export default {
     name: 'Login'
   }, {
     name: 'Barbecue'
+  }, {
+    name: 'Participants'
   }],
   paths,
   schemas,
