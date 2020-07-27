@@ -68,9 +68,9 @@ describe('SaveBarbecue Controller', () => {
     })
   })
 
-  test('should return throws if SaveParticipant throws', async () => {
-    const { sut, validationStub } = makeSut()
-    jest.spyOn(validationStub, 'validate').mockImplementation(throwError)
+  test('should throws if SaveParticipant throws', async () => {
+    const { sut, saveParticipantStub } = makeSut()
+    jest.spyOn(saveParticipantStub, 'save').mockImplementation(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
   })
@@ -80,6 +80,13 @@ describe('SaveBarbecue Controller', () => {
     const loadByIdSpy = jest.spyOn(loadBarbecueByIdStub, 'loadById')
     await sut.handle(mockRequest())
     expect(loadByIdSpy).toHaveBeenCalledWith(mockRequest().params.barbecueId)
+  })
+
+  test('should throws if LoadBarbecueById throws', async () => {
+    const { sut, loadBarbecueByIdStub } = makeSut()
+    jest.spyOn(loadBarbecueByIdStub, 'loadById').mockImplementation(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('should return participants on success', async () => {
