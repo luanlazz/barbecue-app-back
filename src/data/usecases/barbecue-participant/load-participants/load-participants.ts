@@ -6,7 +6,7 @@ export class DbLoadParticipants implements LoadParticipants {
   constructor (private readonly loadParticipantsByBqRepository: LoadParticipantsByBqRepository) {}
 
   async load (barbecueId: string): Promise<ParticipantModel[]> {
-    await this.loadParticipantsByBqRepository.load(barbecueId)
-    return Promise.resolve(null)
+    const participants = await this.loadParticipantsByBqRepository.load(barbecueId)
+    return participants
   }
 }
