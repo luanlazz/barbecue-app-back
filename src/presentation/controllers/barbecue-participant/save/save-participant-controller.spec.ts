@@ -1,26 +1,30 @@
 import { SaveParticipantController } from './save-participant-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validation } from '@/presentation/protocols/validation'
-import { mockValidation } from '@/presentation/test'
+import { mockValidation, mockLoadBarbecueById } from '@/presentation/test'
 import { badRequest, serverError, ok } from '@/presentation/helpers/http/http-helper'
 import { mockSaveParticipant } from '@/presentation/test/mock-participant'
 import { SaveParticipant } from '@/domain/usecases/barbecue-participant/save-barbecue-participant'
-import { throwError, mockParticipantModel } from '@/domain/test'
+import { throwError, mockParticipantsModel } from '@/domain/test'
+import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
 
 type SutTypes = {
   sut: SaveParticipantController
   validationStub: Validation
   saveParticipantStub: SaveParticipant
+  loadBarbecueByIdStub: LoadBarbecueById
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = mockValidation()
   const saveParticipantStub = mockSaveParticipant()
-  const sut = new SaveParticipantController(validationStub, saveParticipantStub)
+  const loadBarbecueByIdStub = mockLoadBarbecueById()
+  const sut = new SaveParticipantController(validationStub, saveParticipantStub, loadBarbecueByIdStub)
   return {
     sut,
     validationStub,
-    saveParticipantStub
+    saveParticipantStub,
+    loadBarbecueByIdStub
   }
 }
 
@@ -71,9 +75,16 @@ describe('SaveBarbecue Controller', () => {
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
+  test('should call LoadBarbecueById with correct values', async () => {
+    const { sut, loadBarbecueByIdStub } = makeSut()
+    const loadByIdSpy = jest.spyOn(loadBarbecueByIdStub, 'loadById')
+    await sut.handle(mockRequest())
+    expect(loadByIdSpy).toHaveBeenCalledWith(mockRequest().params.barbecueId)
+  })
+
   test('should return participants on success', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(ok([mockParticipantModel()]))
+    expect(httpResponse).toEqual(ok(mockParticipantsModel()))
   })
 })
