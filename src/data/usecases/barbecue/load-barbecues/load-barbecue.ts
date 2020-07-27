@@ -1,5 +1,5 @@
 import { BarbecueModel } from '@/domain/models/barbecue'
-import { LoadBarbecues } from '@/domain/usecases/barbecue/list-barbecues'
+import { LoadBarbecues } from '@/domain/usecases/barbecue/load-barbecues'
 import { LoadBarbecuesRepository } from '@/data/protocols/db/barbecue/load-barbecue-repository'
 
 export class DbLoadBarbecues implements LoadBarbecues {

@@ -1,7 +1,7 @@
 import { SaveBarbecue, barbecueParams } from '@/domain/usecases/barbecue/save-barbecue'
 import { BarbecueModel } from '@/domain/models/barbecue'
 import { mockBarbecueModel, mockBarbecueList } from '@/domain/test'
-import { LoadBarbecues } from '@/domain/usecases/barbecue/list-barbecues'
+import { LoadBarbecues } from '@/domain/usecases/barbecue/load-barbecues'
 
 export const mockSaveBarbecue = (): SaveBarbecue => {
   class SaveBarbecueStub implements SaveBarbecue {

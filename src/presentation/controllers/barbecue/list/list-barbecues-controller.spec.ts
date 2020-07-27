@@ -2,7 +2,7 @@ import { LoadBarbecuesController } from './list-barbecues-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { mockLoadBarbecues } from '@/presentation/test/mock-barbecue'
 import { serverError, noContent, ok } from '@/presentation/helpers/http/http-helper'
-import { LoadBarbecues } from '@/domain/usecases/barbecue/list-barbecues'
+import { LoadBarbecues } from '@/domain/usecases/barbecue/load-barbecues'
 import { throwError, mockBarbecueList } from '@/domain/test'
 
 type SutTypes = {

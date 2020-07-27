@@ -1,7 +1,7 @@
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { Controller } from '@/presentation/protocols/controller'
 import { serverError, noContent, ok } from '@/presentation/helpers/http/http-helper'
-import { LoadBarbecues } from '@/domain/usecases/barbecue/list-barbecues'
+import { LoadBarbecues } from '@/domain/usecases/barbecue/load-barbecues'
 
 export class LoadBarbecuesController implements Controller {
   constructor (private readonly loadBarbecues: LoadBarbecues) {}
