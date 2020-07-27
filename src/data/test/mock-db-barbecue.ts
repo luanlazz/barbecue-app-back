@@ -1,5 +1,6 @@
 import { SaveBarbecueRepository } from '@/data/protocols/db/barbecue/save-barbecue-repository'
 import { LoadBarbecuesRepository } from '@/data/protocols/db/barbecue/load-barbecue-repository'
+import { LoadBarbecueByIdRepository } from '@/data/protocols/db/barbecue/load-barbecue-by-id-repository'
 import { BarbecueModel } from '@/domain/models/barbecue'
 import { mockBarbecueModel, mockBarbecueList } from '@/domain/test'
 import { barbecueParams } from '@/domain/usecases/barbecue/save-barbecue'
@@ -20,4 +21,13 @@ export const mockLoadBarbecuesRepository = (): LoadBarbecuesRepository => {
     }
   }
   return new LoadBarbecuesRepositoryStub()
+}
+
+export const mockLoadBarbecueByIdRepository = (): LoadBarbecueByIdRepository => {
+  class LoadBarbecueByIdRepositoryStub implements LoadBarbecueByIdRepository {
+    async loadById (accountId: string): Promise<BarbecueModel> {
+      return Promise.resolve(mockBarbecueModel())
+    }
+  }
+  return new LoadBarbecueByIdRepositoryStub()
 }
