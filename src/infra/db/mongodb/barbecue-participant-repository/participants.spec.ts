@@ -33,5 +33,22 @@ describe('Participants Mongo Repository', () => {
       })
       expect(participant).toBeTruthy()
     })
+
+    test('Should update a participant if its not new', async () => {
+      const sut = makeSut()
+      const participantParams = mockParticipantParams()
+      const res = await participantsCollection.insertOne(participantParams)
+      const id = res.ops[0]._id
+      participantParams.participantId = id
+      participantParams.name = 'other_name'
+      await sut.save(participantParams)
+      const participant = await participantsCollection.findOne({
+        _id: id,
+        barbecueId: participantParams.barbecueId
+      })
+      console.log('participant', participant)
+      expect(participant).toBeTruthy()
+      expect(participant.name).toBe('other_name')
+    })
   })
 })
