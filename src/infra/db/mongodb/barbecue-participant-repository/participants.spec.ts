@@ -51,6 +51,7 @@ const makeParticipants = async (barbecueId: string): Promise<void> => {
     pay: false
   }])
 }
+
 describe('Participants Mongo Repository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
@@ -74,7 +75,10 @@ describe('Participants Mongo Repository', () => {
   describe('save', () => {
     test('Should save a participant if its new', async () => {
       const sut = makeSut()
+      const barbecueId = await makeBarbecue()
       const participantParams = mockParticipantParams()
+      participantParams.barbecueId = barbecueId
+      participantParams.participantId = null
       await sut.save(participantParams)
       const participant = participantsCollection.findOne({
         barbecueId: participantParams.barbecueId
@@ -84,7 +88,9 @@ describe('Participants Mongo Repository', () => {
 
     test('Should update a participant if its not new', async () => {
       const sut = makeSut()
+      const barbecueId = await makeBarbecue()
       const participantParams = mockParticipantParams()
+      participantParams.barbecueId = barbecueId
       const res = await participantsCollection.insertOne(participantParams)
       const id = res.ops[0]._id
       participantParams.participantId = id
@@ -106,28 +112,13 @@ describe('Participants Mongo Repository', () => {
       const sut = makeSut()
       const participants = await sut.load(barbecueId)
       expect(participants[0]).toBeTruthy()
-      expect(participants[0].value).toBe(50)
+      expect(participants[0].id).toBeTruthy()
       expect(participants[1]).toBeTruthy()
-      expect(participants[1].value).toBe(30)
+      expect(participants[1].id).toBeTruthy()
       expect(participants[2]).toBeTruthy()
-      expect(participants[2].value).toBe(80)
+      expect(participants[2].id).toBeTruthy()
       expect(participants[3]).toBeTruthy()
-      expect(participants[3].value).toBe(80)
-    })
-
-    test('Should load return list of participants with value 0', async () => {
-      const barbecueId = await makeBarbecue()
-      await makeParticipants(barbecueId)
-      const sut = makeSut()
-      const participants = await sut.load(barbecueId)
-      expect(participants[0]).toBeTruthy()
-      expect(participants[0].value).toBe(0)
-      expect(participants[1]).toBeTruthy()
-      expect(participants[1].value).toBe(0)
-      expect(participants[2]).toBeTruthy()
-      expect(participants[2].value).toBe(0)
-      expect(participants[3]).toBeTruthy()
-      expect(participants[3].value).toBe(0)
+      expect(participants[3].id).toBeTruthy()
     })
   })
 })
