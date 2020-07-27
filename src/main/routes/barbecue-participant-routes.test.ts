@@ -82,5 +82,19 @@ describe('Participants Routes', () => {
         .send(participant)
         .expect(200)
     })
+
+    test('Should update a participant on success', async () => {
+      const barbecueId = await makeBarbecue()
+      const participant = mockParticipantParams()
+      participant.barbecueId = barbecueId
+      const res = await participantsCollection.insertOne(participant)
+      const participantId = res.ops[0]._id
+      const { accessToken } = await makeAccessToken()
+      await request(app)
+        .put(`/api/barbecue/${barbecueId}/participants/${participantId}`)
+        .set('x-access-token', accessToken)
+        .send(participant)
+        .expect(200)
+    })
   })
 })
