@@ -1,12 +1,50 @@
+import env from '@/main/config/env'
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
-import { mockParticipantParams } from '@/domain/test'
+import { mockAddAccountParams, mockParticipantParams } from '@/domain/test'
 import { Collection } from 'mongodb'
+import { sign } from 'jsonwebtoken'
 import request from 'supertest'
 
 let accountCollection: Collection
 let barbecueCollection: Collection
 let participantsCollection: Collection
+
+type mockAccount = {
+  accessToken: string
+  accountId: string
+}
+
+const makeAccessToken = async (): Promise<mockAccount> => {
+  const res = await accountCollection.insertOne(mockAddAccountParams())
+  const id = res.ops[0]._id
+  const accessToken = sign({ id }, env.jwtSecret)
+  await accountCollection.updateOne({
+    _id: id
+  }, {
+    $set: {
+      accessToken
+    }
+  })
+  return {
+    accessToken,
+    accountId: id
+  }
+}
+
+const makeBarbecue = async (valueTotalDrink: number = 0, valueTotalFood: number = 0): Promise<string> => {
+  const barbecue = {
+    accountId: '5f1b89c1480b9674bd2d724c',
+    date: '25/08/2020',
+    description: 'Primeiro churras!',
+    observation: 'teste',
+    valueTotalDrink,
+    valueTotalFood
+  }
+
+  const res = await barbecueCollection.insertOne(barbecue)
+  return res.ops[0]._id
+}
 
 describe('Participants Routes', () => {
   beforeAll(async () => {
@@ -27,11 +65,22 @@ describe('Participants Routes', () => {
   })
 
   describe('Save participant', () => {
-    test('Should return 403 on save save participant without accessToken', async () => {
+    test('Should return 403 on save participant without accessToken', async () => {
       await request(app)
-        .put('/api/barbecue/123123123/participants')
+        .put('/api/barbecue/any_barbecue_id/participants')
         .send(mockParticipantParams())
         .expect(403)
+    })
+
+    test('Should save a participant on success', async () => {
+      const barbecueId = await makeBarbecue()
+      const participant = mockParticipantParams()
+      const { accessToken } = await makeAccessToken()
+      await request(app)
+        .put(`/api/barbecue/${barbecueId}/participants`)
+        .set('x-access-token', accessToken)
+        .send(participant)
+        .expect(200)
     })
   })
 })
