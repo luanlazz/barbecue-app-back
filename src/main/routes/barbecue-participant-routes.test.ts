@@ -2,7 +2,7 @@ import env from '@/main/config/env'
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { mockAddAccountParams, mockParticipantParams } from '@/domain/test'
-import { Collection } from 'mongodb'
+import { Collection, ObjectID } from 'mongodb'
 import { sign } from 'jsonwebtoken'
 import request from 'supertest'
 
@@ -95,6 +95,16 @@ describe('Participants Routes', () => {
         .set('x-access-token', accessToken)
         .send(participant)
         .expect(200)
+    })
+  })
+
+  describe('LoadBarbecues route', () => {
+    const barbecueId = new ObjectID().toHexString()
+    test('Should return 403 on load participants without accessToken', async () => {
+      await request(app)
+        .get(`/api/barbecue/${barbecueId}/participants`)
+        .send()
+        .expect(403)
     })
   })
 })
