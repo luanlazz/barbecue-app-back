@@ -13,10 +13,17 @@ const makeSut = (): SutTypes => {
 }
 
 describe('CalculateContribution use case', () => {
-  test('Should call CalculateContribution with correct values', async () => {
+  test('Should call CalculateContribution with correct values', () => {
     const { sut } = makeSut()
     const calculateSpy = jest.spyOn(sut, 'calculate')
-    await sut.calculate(mockBarbecueModel(), mockParticipantsModel())
+    sut.calculate(mockBarbecueModel(), mockParticipantsModel())
     expect(calculateSpy).toHaveBeenCalledWith(mockBarbecueModel(), mockParticipantsModel())
+  })
+
+  test('Should return participants on success', () => {
+    const { sut } = makeSut()
+    const participants = sut.calculate(mockBarbecueModel(), mockParticipantsModel())
+    expect(participants.length).toBeTruthy()
+    expect(participants[0].id).toBeTruthy()
   })
 })
