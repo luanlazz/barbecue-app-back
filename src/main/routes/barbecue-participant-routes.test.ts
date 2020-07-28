@@ -138,5 +138,15 @@ describe('Participants Routes', () => {
         .send()
         .expect(200)
     })
+
+    test('Should return 200 on success', async () => {
+      const { accessToken } = await makeAccessToken()
+      const barbecueId = await makeBarbecue()
+      await request(app)
+        .get(`/api/barbecue/${barbecueId}/participants`)
+        .set('x-access-token', accessToken)
+        .send()
+        .expect(204)
+    })
   })
 })
