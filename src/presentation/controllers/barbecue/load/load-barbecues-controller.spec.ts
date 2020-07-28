@@ -1,4 +1,4 @@
-import { LoadBarbecuesController } from './list-barbecues-controller'
+import { LoadBarbecuesController } from './load-barbecues-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { mockLoadBarbecues } from '@/presentation/test/mock-barbecue'
 import { serverError, noContent, ok } from '@/presentation/helpers/http/http-helper'
