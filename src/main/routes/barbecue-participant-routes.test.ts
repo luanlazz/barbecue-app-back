@@ -99,12 +99,44 @@ describe('Participants Routes', () => {
   })
 
   describe('LoadBarbecues route', () => {
-    const barbecueId = new ObjectID().toHexString()
     test('Should return 403 on load participants without accessToken', async () => {
+      const barbecueId = new ObjectID().toHexString()
       await request(app)
         .get(`/api/barbecue/${barbecueId}/participants`)
         .send()
         .expect(403)
+    })
+
+    test('Should return 200 on success', async () => {
+      const { accessToken } = await makeAccessToken()
+      const barbecueId = await makeBarbecue()
+      await participantsCollection.insertMany([{
+        barbecueId,
+        name: 'any_name',
+        food: true,
+        drink: true,
+        pay: false,
+        value: 10
+      }, {
+        barbecueId,
+        name: 'any_name',
+        food: true,
+        drink: true,
+        pay: false,
+        value: 20
+      }, {
+        barbecueId,
+        name: 'any_name',
+        food: true,
+        drink: true,
+        pay: false,
+        value: 30
+      }])
+      await request(app)
+        .get(`/api/barbecue/${barbecueId}/participants`)
+        .set('x-access-token', accessToken)
+        .send()
+        .expect(200)
     })
   })
 })
