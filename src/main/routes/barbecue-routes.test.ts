@@ -71,6 +71,31 @@ describe('Barbecue Routes', () => {
         .send(barbecue)
         .expect(200)
     })
+
+    test('Should save exists barbecue and return 200', async () => {
+      const { accessToken, accountId } = await makeAccessToken()
+      const res = await barbecueCollection.insertOne({
+        accountId,
+        date: new Date('01/08/2020'),
+        description: 'any_description',
+        observation: 'any_observation',
+        valueTotalDrink: 100,
+        valueTotalFood: 100
+      })
+      const barbecueId = res.ops[0]._id
+      const barbecue = {
+        date: new Date('01/08/2020'),
+        description: 'other_description',
+        observation: 'other_observation',
+        valueTotalDrink: 100,
+        valueTotalFood: 100
+      }
+      await request(app)
+        .put(`/api/barbecue/${barbecueId}`)
+        .set('x-access-token', accessToken)
+        .send(barbecue)
+        .expect(200)
+    })
   })
 
   describe('LoadBarbecues route', () => {
