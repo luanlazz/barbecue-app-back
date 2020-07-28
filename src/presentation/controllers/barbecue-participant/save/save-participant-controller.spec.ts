@@ -3,28 +3,32 @@ import { HttpRequest } from '@/presentation/protocols/http'
 import { Validation } from '@/presentation/protocols/validation'
 import { mockValidation, mockLoadBarbecueById } from '@/presentation/test'
 import { badRequest, serverError, ok } from '@/presentation/helpers/http/http-helper'
-import { mockSaveParticipant } from '@/presentation/test/mock-participant'
+import { mockSaveParticipant, mockCalculateContribution } from '@/presentation/test/mock-participant'
 import { SaveParticipant } from '@/domain/usecases/barbecue-participant/save-participant'
-import { throwError, mockParticipantsModel } from '@/domain/test'
+import { throwError, mockParticipantsModel, mockBarbecueModel } from '@/domain/test'
 import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
+import { CalculateContribution } from '@/domain/usecases/barbecue-participant/calculate-contribution'
 
 type SutTypes = {
   sut: SaveParticipantController
   validationStub: Validation
   saveParticipantStub: SaveParticipant
   loadBarbecueByIdStub: LoadBarbecueById
+  calculateContributionStub: CalculateContribution
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = mockValidation()
   const saveParticipantStub = mockSaveParticipant()
   const loadBarbecueByIdStub = mockLoadBarbecueById()
-  const sut = new SaveParticipantController(validationStub, saveParticipantStub, loadBarbecueByIdStub)
+  const calculateContributionStub = mockCalculateContribution()
+  const sut = new SaveParticipantController(validationStub, saveParticipantStub, loadBarbecueByIdStub, calculateContributionStub)
   return {
     sut,
     validationStub,
     saveParticipantStub,
-    loadBarbecueByIdStub
+    loadBarbecueByIdStub,
+    calculateContributionStub
   }
 }
 
@@ -87,6 +91,13 @@ describe('SaveBarbecue Controller', () => {
     jest.spyOn(loadBarbecueByIdStub, 'loadById').mockImplementation(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('should call CalculateContribution with correct values', async () => {
+    const { sut, calculateContributionStub } = makeSut()
+    const calculateSpy = jest.spyOn(calculateContributionStub, 'calculate')
+    await sut.handle(mockRequest())
+    expect(calculateSpy).toHaveBeenCalledWith(mockBarbecueModel(), mockParticipantsModel())
   })
 
   test('should return participants on success', async () => {

@@ -1,12 +1,12 @@
-import { CalculateContribution } from './calculate-contribution'
+import { ApplicationCalculateContribution } from './calculate-contribution'
 import { mockBarbecueModel, mockParticipantsModel } from '@/domain/test'
 
 type SutTypes = {
-  sut: CalculateContribution
+  sut: ApplicationCalculateContribution
 }
 
 const makeSut = (): SutTypes => {
-  const sut = new CalculateContribution()
+  const sut = new ApplicationCalculateContribution()
   return {
     sut
   }
