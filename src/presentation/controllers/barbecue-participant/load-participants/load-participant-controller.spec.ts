@@ -3,7 +3,7 @@ import { HttpRequest } from '@/presentation/protocols/http'
 import { mockLoadParticipants } from '@/presentation/test/mock-participant'
 import { LoadParticipants } from '@/domain/usecases/barbecue-participant/load-participants'
 import { throwError } from '@/domain/test'
-import { serverError } from '@/presentation/helpers/http/http-helper'
+import { serverError, noContent } from '@/presentation/helpers/http/http-helper'
 
 type SutTypes = {
   sut: LoadParticipantsController
@@ -38,5 +38,12 @@ describe('LoadParticipant Controller', () => {
     jest.spyOn(loadParticipantsStub, 'load').mockImplementation(throwError)
     const participants = await sut.handle(mockRequest())
     expect(participants).toEqual(serverError(new Error()))
+  })
+
+  test('should return 204 if LoadParticipants returns empty list', async () => {
+    const { sut, loadParticipantsStub } = makeSut()
+    jest.spyOn(loadParticipantsStub, 'load').mockReturnValueOnce(Promise.resolve([]))
+    const participants = await sut.handle(mockRequest())
+    expect(participants).toEqual(noContent())
   })
 })
