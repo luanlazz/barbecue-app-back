@@ -23,7 +23,7 @@ const mockRequest = (): HttpRequest => ({
   accountId: 'any_account_id'
 })
 
-describe('SaveBarbecue Controller', () => {
+describe('LoadBarbecue Controller', () => {
   test('should call LoadBarbecues with correct account id', async () => {
     const { sut, loadBarbecuesStub } = makeSut()
     const loadSpy = jest.spyOn(loadBarbecuesStub, 'load')
