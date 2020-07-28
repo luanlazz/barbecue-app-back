@@ -2,7 +2,7 @@ import env from '@/main/config/env'
 import { BarbecueMongoRepository } from './barbecue'
 import { mockBarbecueParams, mockAddAccountParams } from '@/domain/test'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
-import { Collection } from 'mongodb'
+import { Collection, ObjectID } from 'mongodb'
 import { sign } from 'jsonwebtoken'
 
 let barbecueCollection: Collection
@@ -10,7 +10,7 @@ let accountCollection: Collection
 
 const makeBarbecue = async (valueTotalDrink: number = 0, valueTotalFood: number = 0): Promise<string> => {
   const barbecue = {
-    accountId: '5f1b89c1480b9674bd2d724c',
+    accountId: new ObjectID('5f1b89c1480b9674bd2d724c'),
     date: '25/08/2020',
     description: 'Primeiro churras!',
     observation: 'teste',
@@ -117,6 +117,16 @@ describe('Barbecue Mongo Repository', () => {
       const { accountId } = await makeAccessToken()
       const barbecueResult = await sut.loadAll(accountId)
       expect(barbecueResult.length).toBe(0)
+    })
+  })
+
+  describe('loadById', () => {
+    test('Should return a barbecue on success', async () => {
+      const sut = makeSut()
+      const barbecueId = await makeBarbecue()
+      const barbecueResult = await sut.loadById(barbecueId)
+      expect(barbecueResult).toBeTruthy()
+      expect(barbecueResult.id).toBeTruthy()
     })
   })
 })
