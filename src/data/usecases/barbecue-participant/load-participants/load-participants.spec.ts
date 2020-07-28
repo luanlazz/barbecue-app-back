@@ -2,23 +2,28 @@ import { DbLoadParticipants } from './load-participants'
 import { mockLoadParticipantByBqRepository, mockLoadBarbecueByIdRepository } from '@/data/test'
 import { LoadParticipantsByBqRepository } from '@/data/protocols/db/barbecue-participant/db-load-participants-by-bq'
 import { mockParticipantsModel } from '@/domain/test/mock-participant'
-import { throwError } from '@/domain/test'
+import { throwError, mockBarbecueModel } from '@/domain/test'
 import { LoadBarbecueByIdRepository } from '@/data/protocols/db/barbecue/load-barbecue-by-id-repository'
+import { mockCalculateContribution } from '@/presentation/test/mock-participant'
+import { CalculateContribution } from '@/domain/usecases/barbecue-participant/calculate-contribution'
 
 type SutTypes = {
   sut: DbLoadParticipants
   loadParticipantsByBqRepositoryStub: LoadParticipantsByBqRepository
   loadBarbecueByIdRepositoryStub: LoadBarbecueByIdRepository
+  calculateContributionStub: CalculateContribution
 }
 
 const makeSut = (): SutTypes => {
   const loadParticipantsByBqRepositoryStub = mockLoadParticipantByBqRepository()
   const loadBarbecueByIdRepositoryStub = mockLoadBarbecueByIdRepository()
-  const sut = new DbLoadParticipants(loadParticipantsByBqRepositoryStub, loadBarbecueByIdRepositoryStub)
+  const calculateContributionStub = mockCalculateContribution()
+  const sut = new DbLoadParticipants(loadParticipantsByBqRepositoryStub, loadBarbecueByIdRepositoryStub, calculateContributionStub)
   return {
     sut,
     loadParticipantsByBqRepositoryStub,
-    loadBarbecueByIdRepositoryStub
+    loadBarbecueByIdRepositoryStub,
+    calculateContributionStub
   }
 }
 
@@ -49,6 +54,13 @@ describe('LoadParticipants use case', () => {
     jest.spyOn(loadBarbecueByIdRepositoryStub, 'loadById').mockImplementation(throwError)
     const barbecue = sut.load('any_barbecue_id')
     await expect(barbecue).rejects.toThrow()
+  })
+
+  test('Should call CalculateContribution with correct values', async () => {
+    const { sut, calculateContributionStub } = makeSut()
+    const calculateSpy = jest.spyOn(calculateContributionStub, 'calculate')
+    await sut.load('any_barbecue_id')
+    expect(calculateSpy).toHaveBeenCalledWith(mockBarbecueModel(), mockParticipantsModel())
   })
 
   test('Should a list of participants on success', async () => {
