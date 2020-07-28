@@ -1,23 +1,23 @@
 import { DbLoadAccountByToken } from './load-account-by-token'
 import { Decrypter } from '@/data/protocols/cryptography/decrypter'
+import { LoadAccountByTokenRepository } from '@/data/protocols/db/account/load-account-by-token-repository'
 import { mockLoadAccountByTokenRepository, mockDecrypter } from '@/data/test'
-import { LoadAccountByToken } from '@/domain/usecases/account/load-account-by-token'
 import { throwError, mockAccountModel } from '@/domain/test'
 
 type SutTypes = {
   sut: DbLoadAccountByToken
   decrypterStub: Decrypter
-  loadAccountByTokenStub: LoadAccountByToken
+  loadAccountByTokenRepositoryStub: LoadAccountByTokenRepository
 }
 
 const makeSut = (): SutTypes => {
   const decrypterStub = mockDecrypter()
-  const loadAccountByTokenStub = mockLoadAccountByTokenRepository()
-  const sut = new DbLoadAccountByToken(decrypterStub, loadAccountByTokenStub)
+  const loadAccountByTokenRepositoryStub = mockLoadAccountByTokenRepository()
+  const sut = new DbLoadAccountByToken(decrypterStub, loadAccountByTokenRepositoryStub)
   return {
     sut,
     decrypterStub,
-    loadAccountByTokenStub
+    loadAccountByTokenRepositoryStub
   }
 }
 
@@ -37,15 +37,15 @@ describe('Authentication use case', () => {
   })
 
   test('Should call LoadAccountByEmailRepository with correct email', async () => {
-    const { sut, loadAccountByTokenStub } = makeSut()
-    const loadByTokenSpy = jest.spyOn(loadAccountByTokenStub, 'loadByToken')
+    const { sut, loadAccountByTokenRepositoryStub } = makeSut()
+    const loadByTokenSpy = jest.spyOn(loadAccountByTokenRepositoryStub, 'loadByToken')
     await sut.loadByToken('any_token')
     expect(loadByTokenSpy).toHaveBeenCalledWith('any_token')
   })
 
   test('Should throws if LoadAccountByEmailRepository throws', async () => {
-    const { sut, loadAccountByTokenStub } = makeSut()
-    jest.spyOn(loadAccountByTokenStub, 'loadByToken').mockImplementation(throwError)
+    const { sut, loadAccountByTokenRepositoryStub } = makeSut()
+    jest.spyOn(loadAccountByTokenRepositoryStub, 'loadByToken').mockImplementation(throwError)
     const account = sut.loadByToken('any_token')
     await expect(account).rejects.toThrow()
   })
