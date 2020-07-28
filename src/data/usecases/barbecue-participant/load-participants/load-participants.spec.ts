@@ -73,6 +73,9 @@ describe('LoadParticipants use case', () => {
   test('Should a list of participants on success', async () => {
     const { sut } = makeSut()
     const participants = await sut.load('any_barbecue_id')
-    expect(participants).toEqual(mockParticipantsModel())
+    expect(participants.length).toBeTruthy()
+    expect(participants[0].value).toBeTruthy()
+    expect(participants[1].value).toBeTruthy()
+    expect(participants[2].value).toBeTruthy()
   })
 })
