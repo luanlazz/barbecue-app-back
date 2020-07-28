@@ -54,6 +54,23 @@ describe('Barbecue Routes', () => {
         .send(mockBarbecueParams())
         .expect(403)
     })
+
+    test('Should return 200 on save barbecue with valid accessToken', async () => {
+      const { accessToken } = await makeAccessToken()
+      const barbecue = {
+        barbecueId: null,
+        date: new Date('01/08/2020'),
+        description: 'any_description',
+        observation: 'any_observation',
+        valueTotalDrink: 100,
+        valueTotalFood: 100
+      }
+      await request(app)
+        .put('/api/barbecue')
+        .set('x-access-token', accessToken)
+        .send(barbecue)
+        .expect(200)
+    })
   })
 
   describe('LoadBarbecues route', () => {
