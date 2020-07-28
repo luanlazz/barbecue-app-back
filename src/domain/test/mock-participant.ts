@@ -16,8 +16,24 @@ export const mockParticipantsModel = (): ParticipantModel[] => ([{
   food: true,
   drink: true,
   pay: false,
-  value: 10
+  value: 0
 }, {
+  id: 'any_participant_id',
+  name: 'any_name',
+  food: true,
+  drink: true,
+  pay: false,
+  value: 0
+}, {
+  id: 'any_participant_id',
+  name: 'any_name',
+  food: true,
+  drink: true,
+  pay: false,
+  value: 0
+}])
+
+export const mockParticipantsContribution = (): ParticipantModel[] => ([{
   id: 'any_participant_id',
   name: 'any_name',
   food: true,
@@ -31,6 +47,13 @@ export const mockParticipantsModel = (): ParticipantModel[] => ([{
   drink: true,
   pay: false,
   value: 20
+}, {
+  id: 'any_participant_id',
+  name: 'any_name',
+  food: true,
+  drink: true,
+  pay: false,
+  value: 30
 }])
 
 export const mockParticipantParams = (): SaveParticipantParams => ({

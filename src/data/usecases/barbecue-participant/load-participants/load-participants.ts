@@ -14,7 +14,7 @@ export class DbLoadParticipants implements LoadParticipants {
   async load (barbecueId: string): Promise<ParticipantModel[]> {
     const participants = await this.loadParticipantsByBqRepository.load(barbecueId)
     const barbecue = await this.loadBarbecueByIdRepository.loadById(barbecueId)
-    this.calculateContribution.calculate(barbecue, participants)
-    return participants
+    const participantsCalc = this.calculateContribution.calculate(barbecue, participants)
+    return participantsCalc
   }
 }
