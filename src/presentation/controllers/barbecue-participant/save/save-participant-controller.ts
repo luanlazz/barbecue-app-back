@@ -26,9 +26,9 @@ export class SaveParticipantController implements Controller {
 
       const barbecue = await this.loadBarbecueById.loadById(barbecueId)
 
-      this.calculateContribution.calculate(barbecue, participants)
+      const participantsContribution = this.calculateContribution.calculate(barbecue, participants)
 
-      return ok(participants)
+      return ok(participantsContribution)
     } catch (error) {
       return serverError(error)
     }
