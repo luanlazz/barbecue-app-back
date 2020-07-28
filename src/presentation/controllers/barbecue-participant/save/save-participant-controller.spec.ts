@@ -75,11 +75,18 @@ describe('SaveBarbecue Controller', () => {
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
-  test('should call LoadBarbecueById with correct values', async () => {
+  test('should call LoadParticipants with correct values', async () => {
     const { sut, loadParticipantsStub } = makeSut()
     const loadSpy = jest.spyOn(loadParticipantsStub, 'load')
     await sut.handle(mockRequest())
     expect(loadSpy).toHaveBeenCalledWith(mockRequest().params.barbecueId)
+  })
+
+  test('should throws if LoadParticipants throws', async () => {
+    const { sut, loadParticipantsStub } = makeSut()
+    jest.spyOn(loadParticipantsStub, 'load').mockImplementation(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('should return participants on success', async () => {
