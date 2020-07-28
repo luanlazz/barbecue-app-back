@@ -52,8 +52,8 @@ describe('LoadParticipants use case', () => {
   test('Should throws if LoadBarbecueByIdRepository throws', async () => {
     const { sut, loadBarbecueByIdRepositoryStub } = makeSut()
     jest.spyOn(loadBarbecueByIdRepositoryStub, 'loadById').mockImplementation(throwError)
-    const barbecue = sut.load('any_barbecue_id')
-    await expect(barbecue).rejects.toThrow()
+    const participants = sut.load('any_barbecue_id')
+    await expect(participants).rejects.toThrow()
   })
 
   test('Should call CalculateContribution with correct values', async () => {
@@ -61,6 +61,13 @@ describe('LoadParticipants use case', () => {
     const calculateSpy = jest.spyOn(calculateContributionStub, 'calculate')
     await sut.load('any_barbecue_id')
     expect(calculateSpy).toHaveBeenCalledWith(mockBarbecueModel(), mockParticipantsModel())
+  })
+
+  test('Should throws if CalculateContribution throws', async () => {
+    const { sut, calculateContributionStub } = makeSut()
+    jest.spyOn(calculateContributionStub, 'calculate').mockImplementation(throwError)
+    const participants = sut.load('any_barbecue_id')
+    await expect(participants).rejects.toThrow()
   })
 
   test('Should a list of participants on success', async () => {
