@@ -4,9 +4,11 @@ import { barbecueParams } from '@/domain/usecases/barbecue/save-barbecue'
 import { BarbecueModel } from '@/domain/models/barbecue'
 import { ObjectId } from 'mongodb'
 import { LoadBarbecuesRepository } from '@/data/protocols/db/barbecue/load-barbecue-repository'
+import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
 
 export class BarbecueMongoRepository implements SaveBarbecueRepository,
-                                                LoadBarbecuesRepository {
+                                                LoadBarbecuesRepository,
+                                                LoadBarbecueById {
   async save (barbecue: barbecueParams): Promise<BarbecueModel> {
     const barbecueCollection = await MongoHelper.getCollection('barbecues')
 
@@ -37,5 +39,13 @@ export class BarbecueMongoRepository implements SaveBarbecueRepository,
       accountId: new ObjectId(accountId)
     }).toArray()
     return MongoHelper.mapCollection(barbecues)
+  }
+
+  async loadById (barbecueId: string): Promise<BarbecueModel> {
+    const barbecueCollection = await MongoHelper.getCollection('barbecues')
+    const barbecue = await barbecueCollection.findOne({
+      _id: new ObjectId(barbecueId)
+    })
+    return barbecue && MongoHelper.map(barbecue)
   }
 }
