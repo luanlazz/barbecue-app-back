@@ -102,7 +102,7 @@ describe('Barbecue Routes', () => {
     test('Should return 403 on load barbecues without accessToken', async () => {
       await request(app)
         .get('/api/barbecue')
-        .send(mockBarbecueParams())
+        .send()
         .expect(403)
     })
 
@@ -114,7 +114,7 @@ describe('Barbecue Routes', () => {
       await request(app)
         .get('/api/barbecue')
         .set('x-access-token', accessToken)
-        .send(mockBarbecueParams())
+        .send()
         .expect(200)
     })
 
@@ -123,7 +123,7 @@ describe('Barbecue Routes', () => {
       await request(app)
         .get('/api/barbecue')
         .set('x-access-token', accessToken)
-        .send(mockBarbecueParams())
+        .send()
         .expect(204)
     })
   })
