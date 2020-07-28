@@ -128,5 +128,12 @@ describe('Barbecue Mongo Repository', () => {
       expect(barbecueResult).toBeTruthy()
       expect(barbecueResult.id).toBeTruthy()
     })
+
+    test('Should return null if no exists any barbecue', async () => {
+      const sut = makeSut()
+      const barbecueResult = await sut.loadById(new ObjectID().toHexString())
+      expect(barbecueResult).toBeFalsy()
+      expect(barbecueResult).toBeNull()
+    })
   })
 })
