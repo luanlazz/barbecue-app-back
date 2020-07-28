@@ -1,4 +1,4 @@
-import { SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-barbecue-participant'
+import { SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-participant'
 
 export interface SaveParticipantRepository {
   save(participant: SaveParticipantParams): Promise<void>

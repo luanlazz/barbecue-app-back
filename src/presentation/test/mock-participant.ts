@@ -1,7 +1,7 @@
-import { SaveParticipant, SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-barbecue-participant'
+import { SaveParticipant, SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-participant'
 import { ParticipantModel } from '@/domain/models/participant'
 import { mockParticipantsModel } from '@/domain/test'
-import { LoadParticipants } from '@/domain/usecases/barbecue-participant/load-barbecue-participants'
+import { LoadParticipants } from '@/domain/usecases/barbecue-participant/load-participants'
 
 export const mockSaveParticipant = (): SaveParticipant => {
   class SaveParticipantStub implements SaveParticipant {

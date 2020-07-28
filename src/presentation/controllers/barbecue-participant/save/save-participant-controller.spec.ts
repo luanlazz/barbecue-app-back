@@ -4,7 +4,7 @@ import { Validation } from '@/presentation/protocols/validation'
 import { mockValidation, mockLoadBarbecueById } from '@/presentation/test'
 import { badRequest, serverError, ok } from '@/presentation/helpers/http/http-helper'
 import { mockSaveParticipant } from '@/presentation/test/mock-participant'
-import { SaveParticipant } from '@/domain/usecases/barbecue-participant/save-barbecue-participant'
+import { SaveParticipant } from '@/domain/usecases/barbecue-participant/save-participant'
 import { throwError, mockParticipantsModel } from '@/domain/test'
 import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
 

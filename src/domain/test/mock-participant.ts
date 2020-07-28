@@ -1,5 +1,5 @@
 import { ParticipantModel } from '@/domain/models/participant'
-import { SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-barbecue-participant'
+import { SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-participant'
 
 export const mockParticipantModel = (): ParticipantModel => ({
   id: 'any_participant_id',

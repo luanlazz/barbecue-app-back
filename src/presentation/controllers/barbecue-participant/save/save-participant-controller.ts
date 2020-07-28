@@ -2,7 +2,7 @@ import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { Controller } from '@/presentation/protocols/controller'
 import { Validation } from '@/presentation/protocols/validation'
 import { badRequest, serverError, ok } from '@/presentation/helpers/http/http-helper'
-import { SaveParticipant } from '@/domain/usecases/barbecue-participant/save-barbecue-participant'
+import { SaveParticipant } from '@/domain/usecases/barbecue-participant/save-participant'
 import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
 
 export class SaveParticipantController implements Controller {
