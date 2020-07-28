@@ -4,5 +4,5 @@ import { ParticipantsMongoRepository } from '@/infra/db/mongodb/barbecue-partici
 
 export const makeDbSaveParticipant = (): SaveParticipant => {
   const participantsMongoRepository = new ParticipantsMongoRepository()
-  return new DbSaveParticipant(participantsMongoRepository, participantsMongoRepository)
+  return new DbSaveParticipant(participantsMongoRepository)
 }
