@@ -1,5 +1,3 @@
-import { ParticipantModel } from '@/domain/models/participant'
-
 export type SaveParticipantParams = {
   barbecueId: string
   participantId: string
@@ -10,5 +8,5 @@ export type SaveParticipantParams = {
 }
 
 export interface SaveParticipant {
-  save (participant: SaveParticipantParams): Promise<ParticipantModel[]>
+  save (participant: SaveParticipantParams): Promise<void>
 }

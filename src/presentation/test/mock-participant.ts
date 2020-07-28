@@ -7,8 +7,8 @@ import { BarbecueModel } from '@/domain/models/barbecue'
 
 export const mockSaveParticipant = (): SaveParticipant => {
   class SaveParticipantStub implements SaveParticipant {
-    async save (participant: SaveParticipantParams): Promise<ParticipantModel[]> {
-      return await Promise.resolve(mockParticipantsModel())
+    async save (participant: SaveParticipantParams): Promise<void> {
+      return await Promise.resolve()
     }
   }
   return new SaveParticipantStub()

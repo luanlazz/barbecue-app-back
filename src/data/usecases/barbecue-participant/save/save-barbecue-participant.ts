@@ -1,17 +1,12 @@
 import { SaveParticipant, SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-participant'
 import { SaveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-save-participant'
-import { LoadParticipantsByBqRepository } from '@/data/protocols/db/barbecue-participant/db-load-participants-by-bq'
-import { ParticipantModel } from '@/domain/models/participant'
 
 export class DbSaveParticipant implements SaveParticipant {
   constructor (
-    private readonly saveParticipantRepository: SaveParticipantRepository,
-    private readonly loadParticipantsByBqRepository: LoadParticipantsByBqRepository
+    private readonly saveParticipantRepository: SaveParticipantRepository
   ) {}
 
-  async save (participant: SaveParticipantParams): Promise<ParticipantModel[]> {
+  async save (participant: SaveParticipantParams): Promise<void> {
     await this.saveParticipantRepository.save(participant)
-    const participants = await this.loadParticipantsByBqRepository.load(participant.barbecueId)
-    return participants
   }
 }
