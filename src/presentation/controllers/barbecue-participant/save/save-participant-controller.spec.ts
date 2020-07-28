@@ -1,34 +1,30 @@
 import { SaveParticipantController } from './save-participant-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validation } from '@/presentation/protocols/validation'
-import { mockValidation, mockLoadBarbecueById } from '@/presentation/test'
+import { mockValidation } from '@/presentation/test'
 import { badRequest, serverError, ok } from '@/presentation/helpers/http/http-helper'
-import { mockSaveParticipant, mockCalculateContribution } from '@/presentation/test/mock-participant'
+import { mockSaveParticipant, mockLoadParticipants } from '@/presentation/test/mock-participant'
 import { SaveParticipant } from '@/domain/usecases/barbecue-participant/save-participant'
-import { throwError, mockParticipantsModel, mockBarbecueModel } from '@/domain/test'
-import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
-import { CalculateContribution } from '@/domain/usecases/barbecue-participant/calculate-contribution'
+import { throwError, mockParticipantsModel } from '@/domain/test'
+import { LoadParticipants } from '@/domain/usecases/barbecue-participant/load-participants'
 
 type SutTypes = {
   sut: SaveParticipantController
   validationStub: Validation
   saveParticipantStub: SaveParticipant
-  loadBarbecueByIdStub: LoadBarbecueById
-  calculateContributionStub: CalculateContribution
+  loadParticipantsStub: LoadParticipants
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = mockValidation()
   const saveParticipantStub = mockSaveParticipant()
-  const loadBarbecueByIdStub = mockLoadBarbecueById()
-  const calculateContributionStub = mockCalculateContribution()
-  const sut = new SaveParticipantController(validationStub, saveParticipantStub, loadBarbecueByIdStub, calculateContributionStub)
+  const loadParticipantsStub = mockLoadParticipants()
+  const sut = new SaveParticipantController(validationStub, saveParticipantStub, loadParticipantsStub)
   return {
     sut,
     validationStub,
     saveParticipantStub,
-    loadBarbecueByIdStub,
-    calculateContributionStub
+    loadParticipantsStub
   }
 }
 
@@ -80,24 +76,10 @@ describe('SaveBarbecue Controller', () => {
   })
 
   test('should call LoadBarbecueById with correct values', async () => {
-    const { sut, loadBarbecueByIdStub } = makeSut()
-    const loadByIdSpy = jest.spyOn(loadBarbecueByIdStub, 'loadById')
+    const { sut, loadParticipantsStub } = makeSut()
+    const loadSpy = jest.spyOn(loadParticipantsStub, 'load')
     await sut.handle(mockRequest())
-    expect(loadByIdSpy).toHaveBeenCalledWith(mockRequest().params.barbecueId)
-  })
-
-  test('should throws if LoadBarbecueById throws', async () => {
-    const { sut, loadBarbecueByIdStub } = makeSut()
-    jest.spyOn(loadBarbecueByIdStub, 'loadById').mockImplementation(throwError)
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(serverError(new Error()))
-  })
-
-  test('should call CalculateContribution with correct values', async () => {
-    const { sut, calculateContributionStub } = makeSut()
-    const calculateSpy = jest.spyOn(calculateContributionStub, 'calculate')
-    await sut.handle(mockRequest())
-    expect(calculateSpy).toHaveBeenCalledWith(mockBarbecueModel(), mockParticipantsModel())
+    expect(loadSpy).toHaveBeenCalledWith(mockRequest().params.barbecueId)
   })
 
   test('should return participants on success', async () => {
