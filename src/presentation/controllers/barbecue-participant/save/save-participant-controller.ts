@@ -4,12 +4,14 @@ import { Validation } from '@/presentation/protocols/validation'
 import { badRequest, serverError, ok } from '@/presentation/helpers/http/http-helper'
 import { SaveParticipant } from '@/domain/usecases/barbecue-participant/save-participant'
 import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
+import { CalculateContribution } from '@/domain/usecases/barbecue-participant/calculate-contribution'
 
 export class SaveParticipantController implements Controller {
   constructor (
     private readonly validation: Validation,
     private readonly saveParticipant: SaveParticipant,
-    private readonly loadBarbecueById: LoadBarbecueById
+    private readonly loadBarbecueById: LoadBarbecueById,
+    private readonly calculateContribution: CalculateContribution
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -22,7 +24,9 @@ export class SaveParticipantController implements Controller {
 
       const participants = await this.saveParticipant.save({ barbecueId, participantId, name, food, drink, pay })
 
-      await this.loadBarbecueById.loadById(barbecueId)
+      const barbecue = await this.loadBarbecueById.loadById(barbecueId)
+
+      this.calculateContribution.calculate(barbecue, participants)
 
       return ok(participants)
     } catch (error) {

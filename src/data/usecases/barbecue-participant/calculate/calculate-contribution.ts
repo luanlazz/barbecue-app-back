@@ -1,8 +1,8 @@
-import { calculateContribution } from '@/domain/usecases/barbecue-participant/calculate-contribution'
+import { CalculateContribution } from '@/domain/usecases/barbecue-participant/calculate-contribution'
 import { ParticipantModel } from '@/domain/models/participant'
 import { BarbecueModel } from '@/domain/models/barbecue'
 
-export class CalculateContribution implements calculateContribution {
+export class ApplicationCalculateContribution implements CalculateContribution {
   calculate (barbecue: BarbecueModel, participants: ParticipantModel[]): ParticipantModel[] {
     const countDrink = participants.filter(participant => participant.drink)
     const countFood = participants.filter(participant => participant.food)
