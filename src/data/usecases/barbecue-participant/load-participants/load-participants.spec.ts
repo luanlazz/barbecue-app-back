@@ -44,6 +44,13 @@ describe('LoadParticipants use case', () => {
     expect(loadByIdSpy).toHaveBeenCalledWith('any_barbecue_id')
   })
 
+  test('Should throws if LoadBarbecueByIdRepository throws', async () => {
+    const { sut, loadBarbecueByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadBarbecueByIdRepositoryStub, 'loadById').mockImplementation(throwError)
+    const barbecue = sut.load('any_barbecue_id')
+    await expect(barbecue).rejects.toThrow()
+  })
+
   test('Should a list of participants on success', async () => {
     const { sut } = makeSut()
     const participants = await sut.load('any_barbecue_id')
