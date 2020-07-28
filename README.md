@@ -12,6 +12,7 @@
 4. [List barbecues](./requirements/list-barbecues.md)
 
 5. [Save participant](./requirements/save-participant.md)
+6. [List participant](./requirements/list-participants.md)
 
 ## Principles
 
