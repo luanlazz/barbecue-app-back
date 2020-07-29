@@ -28,7 +28,13 @@ describe('RemoveParticipant use case', () => {
   test('Should throws if RemoveParticipantRepository throws', async () => {
     const { sut, removeParticipantRepositoryStub } = makeSut()
     jest.spyOn(removeParticipantRepositoryStub, 'remove').mockImplementation(throwError)
-    const participants = sut.remove('any_barbecue_id', 'any_participant_id')
-    await expect(participants).rejects.toThrow()
+    const count = sut.remove('any_barbecue_id', 'any_participant_id')
+    await expect(count).rejects.toThrow()
+  })
+
+  test('Should return 1 on success', async () => {
+    const { sut } = makeSut()
+    const count = await sut.remove('any_barbecue_id', 'any_participant_id')
+    expect(count).toBe(1)
   })
 })
