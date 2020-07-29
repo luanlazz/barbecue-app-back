@@ -1,7 +1,7 @@
 import { ParticipantsMongoRepository } from './participants'
 import { mockParticipantParams } from '@/domain/test'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
-import { Collection } from 'mongodb'
+import { Collection, ObjectID } from 'mongodb'
 
 let participantsCollection: Collection
 let barbecueCollection: Collection
@@ -143,6 +143,24 @@ describe('Participants Mongo Repository', () => {
       const sut = makeSut()
       const result = await sut.remove(barbecueId, id)
       expect(result).toBe(1)
+      const count = await participantsCollection.count()
+      expect(count).toBe(0)
+    })
+
+    test('Should return 0 if not remove a participant', async () => {
+      const barbecueId = await makeBarbecue(90, 150)
+      await participantsCollection.insertOne({
+        barbecueId,
+        name: 'any_name',
+        food: false,
+        drink: true,
+        pay: false
+      })
+      const sut = makeSut()
+      const result = await sut.remove(barbecueId, new ObjectID().toHexString())
+      expect(result).toBe(0)
+      const count = await participantsCollection.count()
+      expect(count).toBe(1)
     })
   })
 })
