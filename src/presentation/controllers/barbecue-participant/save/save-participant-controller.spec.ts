@@ -40,9 +40,8 @@ const mockRequest = (): HttpRequest => ({
   },
   body: {
     name: 'any_name',
-    food: true,
-    drink: true,
-    pay: false
+    pay: false,
+    value: 10
   },
   accountId: 'any_account_id'
 })

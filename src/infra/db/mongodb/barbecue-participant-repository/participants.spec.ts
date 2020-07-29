@@ -1,19 +1,25 @@
 import { ParticipantsMongoRepository } from './participants'
 import { mockParticipantParams } from '@/domain/test'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
+import { SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-participant'
+import { barbecueParams } from '@/domain/usecases/barbecue/save-barbecue'
 import { Collection, ObjectID } from 'mongodb'
 
 let participantsCollection: Collection
 let barbecueCollection: Collection
 
-const makeBarbecue = async (valueTotalDrink: number = 0, valueTotalFood: number = 0): Promise<string> => {
-  const barbecue = {
-    accountId: '5f1b89c1480b9674bd2d724c',
-    date: '25/08/2020',
+const makeBarbecue = async (accountId: string = new ObjectID().toHexString()): Promise<string> => {
+  const barbecue: barbecueParams = {
+    barbecueId: new ObjectID().toHexString(),
+    accountId,
+    date: new Date('25/08/2020'),
     description: 'Primeiro churras!',
     observation: 'teste',
-    valueTotalDrink,
-    valueTotalFood
+    numParticipants: 0,
+    valueSuggestDrink: 0,
+    valueSuggestFood: 0,
+    valueTotal: 0,
+    valueCollected: 0
   }
 
   const res = await barbecueCollection.insertOne(barbecue)
@@ -21,35 +27,32 @@ const makeBarbecue = async (valueTotalDrink: number = 0, valueTotalFood: number 
 }
 
 const makeParticipants = async (barbecueId: string): Promise<void> => {
-  await participantsCollection.insertMany([{
+  const participants: SaveParticipantParams[] = [{
     barbecueId,
     participantId: 'participant_one',
     name: 'one_name',
-    food: true,
-    drink: false,
-    pay: false
+    pay: false,
+    value: 20
   }, {
     barbecueId,
     participantId: 'participant_two',
     name: 'two_name',
-    food: false,
-    drink: true,
-    pay: false
+    pay: false,
+    value: 10
   }, {
     barbecueId,
     participantId: 'participant_two',
     name: 'three_name',
-    food: true,
-    drink: true,
-    pay: false
+    pay: false,
+    value: 20
   }, {
     barbecueId,
     participantId: 'participant_two',
     name: 'four_name',
-    food: true,
-    drink: true,
-    pay: false
-  }])
+    pay: false,
+    value: 10
+  }]
+  await participantsCollection.insertMany(participants)
 }
 
 describe('Participants Mongo Repository', () => {
@@ -101,7 +104,7 @@ describe('Participants Mongo Repository', () => {
 
   describe('load', () => {
     test('Should load return list of participants', async () => {
-      const barbecueId = await makeBarbecue(90, 150)
+      const barbecueId = await makeBarbecue()
       await makeParticipants(barbecueId)
       const sut = makeSut()
       const participants = await sut.load(barbecueId)
@@ -125,13 +128,12 @@ describe('Participants Mongo Repository', () => {
 
   describe('remove', () => {
     test('Should remove participant by barbecue id and id', async () => {
-      const barbecueId = await makeBarbecue(90, 150)
+      const barbecueId = await makeBarbecue()
       const res = await participantsCollection.insertOne({
         barbecueId,
         name: 'any_name',
-        food: false,
-        drink: true,
-        pay: false
+        pay: false,
+        value: 10
       })
       const id = res.ops[0]._id
       const sut = makeSut()
@@ -142,7 +144,7 @@ describe('Participants Mongo Repository', () => {
     })
 
     test('Should return 0 if not remove a participant', async () => {
-      const barbecueId = await makeBarbecue(90, 150)
+      const barbecueId = await makeBarbecue()
       await participantsCollection.insertOne({
         barbecueId,
         name: 'any_name',

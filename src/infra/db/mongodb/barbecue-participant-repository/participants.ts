@@ -20,9 +20,8 @@ export class ParticipantsMongoRepository implements SaveParticipantRepository,
     }, {
       $set: {
         name: participant.name,
-        drink: participant.drink,
-        food: participant.food,
-        pay: participant.pay
+        pay: participant.pay,
+        value: participant.value
       }
     }, {
       upsert: true

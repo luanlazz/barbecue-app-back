@@ -4,8 +4,6 @@ import { SaveParticipantParams } from '@/domain/usecases/barbecue-participant/sa
 export const mockParticipantModel = (): ParticipantModel => ({
   id: 'any_participant_id',
   name: 'any_name',
-  food: true,
-  drink: true,
   pay: false,
   value: 0
 })
@@ -13,22 +11,16 @@ export const mockParticipantModel = (): ParticipantModel => ({
 export const mockParticipantsModel = (): ParticipantModel[] => ([{
   id: 'any_participant_id',
   name: 'any_name',
-  food: true,
-  drink: true,
   pay: false,
   value: 0
 }, {
   id: 'any_participant_id',
   name: 'any_name',
-  food: true,
-  drink: true,
   pay: false,
   value: 0
 }, {
   id: 'any_participant_id',
   name: 'any_name',
-  food: true,
-  drink: true,
   pay: false,
   value: 0
 }])
@@ -36,22 +28,16 @@ export const mockParticipantsModel = (): ParticipantModel[] => ([{
 export const mockParticipantsContribution = (): ParticipantModel[] => ([{
   id: 'any_participant_id',
   name: 'any_name',
-  food: true,
-  drink: true,
   pay: false,
   value: 10
 }, {
   id: 'any_participant_id',
   name: 'any_name',
-  food: true,
-  drink: true,
   pay: false,
   value: 20
 }, {
   id: 'any_participant_id',
   name: 'any_name',
-  food: true,
-  drink: true,
   pay: false,
   value: 30
 }])
@@ -60,7 +46,6 @@ export const mockParticipantParams = (): SaveParticipantParams => ({
   barbecueId: 'any_barbecue_id',
   participantId: 'any_participant_id',
   name: 'any_name',
-  food: true,
-  drink: true,
-  pay: false
+  pay: false,
+  value: 10
 })

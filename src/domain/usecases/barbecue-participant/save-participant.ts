@@ -2,9 +2,8 @@ export type SaveParticipantParams = {
   barbecueId: string
   participantId: string
   name: string
-  food: boolean
-  drink: boolean
   pay: boolean
+  value: number
 }
 
 export interface SaveParticipant {
