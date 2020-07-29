@@ -3,6 +3,7 @@ import { LoadParticipantsByBqRepository } from '@/data/protocols/db/barbecue-par
 import { SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-participant'
 import { ParticipantModel } from '@/domain/models/participant'
 import { mockParticipantsModel } from '@/domain/test/mock-participant'
+import { RemoveParticipantRepository } from '../protocols/db/barbecue-participant/db-remove-participant'
 
 export const mockSaveParticipantRepository = (): SaveParticipantRepository => {
   class SaveParticipantRepositoryStub implements SaveParticipantRepository {
@@ -20,4 +21,13 @@ export const mockLoadParticipantByBqRepository = (): LoadParticipantsByBqReposit
     }
   }
   return new LoadParticipantsByBqRepositoryStub()
+}
+
+export const mockRemoveParticipantRepository = (): RemoveParticipantRepository => {
+  class RemoveParticipantRepositoryStub implements RemoveParticipantRepository {
+    async remove (barbecueId: string, participantId: string): Promise<ParticipantModel[]> {
+      return Promise.resolve(mockParticipantsModel())
+    }
+  }
+  return new RemoveParticipantRepositoryStub()
 }
