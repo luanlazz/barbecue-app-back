@@ -6,7 +6,8 @@ export class DbSaveParticipant implements SaveParticipant {
     private readonly saveParticipantRepository: SaveParticipantRepository
   ) {}
 
-  async save (participant: SaveParticipantParams): Promise<void> {
-    await this.saveParticipantRepository.save(participant)
+  async save (participant: SaveParticipantParams): Promise<boolean> {
+    const result = await this.saveParticipantRepository.save(participant)
+    return !!result
   }
 }

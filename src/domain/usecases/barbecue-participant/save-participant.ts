@@ -8,5 +8,5 @@ export type SaveParticipantParams = {
 }
 
 export interface SaveParticipant {
-  save (participant: SaveParticipantParams): Promise<void>
+  save (participant: SaveParticipantParams): Promise<boolean>
 }
