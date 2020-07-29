@@ -2,7 +2,7 @@ import { SaveParticipantController } from './save-participant-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validation } from '@/presentation/protocols/validation'
 import { mockValidation, mockLoadBarbecueById } from '@/presentation/test'
-import { badRequest, serverError, noContent } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError, noContent, unauthorized } from '@/presentation/helpers/http/http-helper'
 import { mockSaveParticipant } from '@/presentation/test/mock-participant'
 import { SaveParticipant } from '@/domain/usecases/barbecue-participant/save-participant'
 import { throwError } from '@/domain/test'
@@ -69,6 +69,13 @@ describe('SaveBarbecue Controller', () => {
     jest.spyOn(loadBarbecueByIdStub, 'loadById').mockImplementation(throwError)
     const error = await sut.handle(mockRequest())
     expect(error).toEqual(serverError(new Error()))
+  })
+
+  test('should return 401 if LoadBarbecueById not return a barbecue', async () => {
+    const { sut, loadBarbecueByIdStub } = makeSut()
+    jest.spyOn(loadBarbecueByIdStub, 'loadById').mockReturnValueOnce(null)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(unauthorized())
   })
 
   test('should call SaveParticipant with correct values', async () => {
