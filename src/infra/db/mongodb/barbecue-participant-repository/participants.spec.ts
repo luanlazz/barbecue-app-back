@@ -128,4 +128,21 @@ describe('Participants Mongo Repository', () => {
       expect(participants.length).toBe(0)
     })
   })
+
+  describe('remove', () => {
+    test('Should remove participant by barbecue id and id', async () => {
+      const barbecueId = await makeBarbecue(90, 150)
+      const res = await participantsCollection.insertOne({
+        barbecueId,
+        name: 'any_name',
+        food: false,
+        drink: true,
+        pay: false
+      })
+      const id = res.ops[0]._id
+      const sut = makeSut()
+      const result = await sut.remove(barbecueId, id)
+      expect(result).toBe(1)
+    })
+  })
 })
