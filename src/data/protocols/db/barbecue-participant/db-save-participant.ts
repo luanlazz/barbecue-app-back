@@ -1,5 +1,5 @@
-import { SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-participant'
+import { SaveParticipantParams, SaveParticipantReturn } from '@/domain/usecases/barbecue-participant/save-participant'
 
 export interface SaveParticipantRepository {
-  save(participant: SaveParticipantParams): Promise<number>
+  save(participant: SaveParticipantParams): Promise<SaveParticipantReturn>
 }

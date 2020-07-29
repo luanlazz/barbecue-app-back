@@ -1,7 +1,7 @@
 import { DbSaveParticipant } from './save-participant'
 import { SaveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-save-participant'
 import { mockSaveParticipantRepository } from '@/data/test'
-import { mockParticipantParams, throwError } from '@/domain/test'
+import { mockParticipantParams, throwError, mockParticipantModel } from '@/domain/test'
 
 type SutTypes = {
   sut: DbSaveParticipant
@@ -32,9 +32,10 @@ describe('SaveParticipant use case', () => {
     await expect(result).rejects.toThrow()
   })
 
-  test('Should return true on success', async () => {
+  test('Should return a participant on success', async () => {
     const { sut } = makeSut()
     const result = await sut.save(mockParticipantParams())
-    expect(result).toBeTruthy()
+    expect(result.oldParticipant).toEqual(mockParticipantModel())
+    expect(result.status).toBeTruthy()
   })
 })

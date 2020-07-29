@@ -83,20 +83,28 @@ describe('Participants Mongo Repository', () => {
       participantParams.barbecueId = barbecueId
       participantParams.participantId = null
       const result = await sut.save(participantParams)
-      expect(result).toBe(1)
+      expect(result.oldParticipant).toBeNull()
+      expect(result.status).toBeTruthy()
     })
 
-    test('Should update a participant if its not new', async () => {
+    test('Should update a participant if its already exists', async () => {
       const sut = makeSut()
       const barbecueId = await makeBarbecue()
-      const participantParams = mockParticipantParams()
-      participantParams.barbecueId = barbecueId
-      const res = await participantsCollection.insertOne(participantParams)
+      const participantOld = mockParticipantParams()
+      participantOld.barbecueId = barbecueId
+      const res = await participantsCollection.insertOne(participantOld)
       const id = res.ops[0]._id
-      participantParams.participantId = id
-      participantParams.name = 'other_name'
-      const result = await sut.save(participantParams)
-      expect(result).toBe(1)
+
+      const participantNew = mockParticipantParams()
+      participantNew.barbecueId = barbecueId
+      participantNew.participantId = id
+      participantNew.name = 'other_name'
+
+      const result = await sut.save(participantNew)
+      expect(new ObjectID(result.oldParticipant.id)).toStrictEqual(new ObjectID(id))
+      expect(new ObjectID(result.oldParticipant.barbecueId)).toStrictEqual(new ObjectID(barbecueId))
+      expect(result.oldParticipant.name).toBe('any_name')
+      expect(result.status).toBeTruthy()
       const count = await participantsCollection.count()
       expect(count).toBe(1)
     })

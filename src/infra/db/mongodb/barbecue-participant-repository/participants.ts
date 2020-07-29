@@ -1,7 +1,7 @@
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { SaveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-save-participant'
 import { LoadParticipantsByBqRepository } from '@/data/protocols/db/barbecue-participant/db-load-participants-by-bq'
-import { SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-participant'
+import { SaveParticipantParams, SaveParticipantReturn } from '@/domain/usecases/barbecue-participant/save-participant'
 import { ObjectId } from 'mongodb'
 import { ParticipantModel } from '@/domain/models/participant'
 import { RemoveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-remove-participant'
@@ -9,7 +9,7 @@ import { RemoveParticipantRepository } from '@/data/protocols/db/barbecue-partic
 export class ParticipantsMongoRepository implements SaveParticipantRepository,
                                                     LoadParticipantsByBqRepository,
                                                     RemoveParticipantRepository {
-  async save (participant: SaveParticipantParams): Promise<number> {
+  async save (participant: SaveParticipantParams): Promise<SaveParticipantReturn> {
     const participantCollection = await MongoHelper.getCollection('participants')
 
     if (!participant.participantId) participant.participantId = new ObjectId().toHexString()
@@ -27,7 +27,10 @@ export class ParticipantsMongoRepository implements SaveParticipantRepository,
       upsert: true
     })
 
-    return result.ok
+    return {
+      oldParticipant: result.value && MongoHelper.map(result.value),
+      status: !!result.ok
+    }
   }
 
   async load (barbecueId: string): Promise<ParticipantModel[]> {

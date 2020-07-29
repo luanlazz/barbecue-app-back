@@ -6,6 +6,11 @@ export type SaveParticipantParams = {
   value: number
 }
 
+export type SaveParticipantReturn = {
+  oldParticipant: any
+  status: boolean
+}
+
 export interface SaveParticipant {
-  save (participant: SaveParticipantParams): Promise<boolean>
+  save (participant: SaveParticipantParams): Promise<SaveParticipantReturn>
 }
