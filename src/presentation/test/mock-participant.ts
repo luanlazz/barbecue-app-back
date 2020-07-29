@@ -4,6 +4,7 @@ import { mockParticipantsModel, mockParticipantsContribution } from '@/domain/te
 import { LoadParticipants } from '@/domain/usecases/barbecue-participant/load-participants'
 import { CalculateContribution } from '@/domain/usecases/barbecue-participant/calculate-contribution'
 import { BarbecueModel } from '@/domain/models/barbecue'
+import { RemoveParticipant } from '@/domain/usecases/barbecue-participant/remove-participant'
 
 export const mockSaveParticipant = (): SaveParticipant => {
   class SaveParticipantStub implements SaveParticipant {
@@ -21,6 +22,15 @@ export const mockLoadParticipants = (): LoadParticipants => {
     }
   }
   return new LoadParticipantsStub()
+}
+
+export const mockRemoveParticipant = (): RemoveParticipant => {
+  class RemoveParticipantStub implements RemoveParticipant {
+    async remove (barbecueId: string, participantId: string): Promise<ParticipantModel[]> {
+      return await Promise.resolve(mockParticipantsModel())
+    }
+  }
+  return new RemoveParticipantStub()
 }
 
 export const mockCalculateContribution = (): CalculateContribution => {
