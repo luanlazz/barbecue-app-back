@@ -4,9 +4,11 @@ import { LoadParticipantsByBqRepository } from '@/data/protocols/db/barbecue-par
 import { SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-participant'
 import { ObjectId } from 'mongodb'
 import { ParticipantModel } from '@/domain/models/participant'
+import { RemoveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-remove-participant'
 
 export class ParticipantsMongoRepository implements SaveParticipantRepository,
-                                                    LoadParticipantsByBqRepository {
+                                                    LoadParticipantsByBqRepository,
+                                                    RemoveParticipantRepository {
   async save (participant: SaveParticipantParams): Promise<void> {
     const participantCollection = await MongoHelper.getCollection('participants')
 
@@ -35,5 +37,14 @@ export class ParticipantsMongoRepository implements SaveParticipantRepository,
       barbecueId: new ObjectId(barbecueId)
     }).toArray()
     return MongoHelper.mapCollection(participants)
+  }
+
+  async remove (barbecueId: string, participantId: string): Promise<number> {
+    const participantCollection = await MongoHelper.getCollection('participants')
+    const participant = await participantCollection.deleteOne({
+      _id: new ObjectId(participantId),
+      barbecueId: new ObjectId(barbecueId)
+    })
+    return participant.deletedCount
   }
 }
