@@ -17,7 +17,7 @@ export class SaveBarbecueController implements Controller {
 
       const { barbecueId } = httpRequest.params
       const { accountId } = httpRequest
-      const { date, description, observation, valueTotalDrink, valueTotalFood } = httpRequest.body
+      const { date, description, observation, numParticipants, valueTotalDrink, valueTotalFood, valueCollected } = httpRequest.body
 
       const barbecue = await this.saveBarbecue.save({
         barbecueId,
@@ -25,8 +25,10 @@ export class SaveBarbecueController implements Controller {
         date,
         description,
         observation,
-        valueTotalDrink,
-        valueTotalFood
+        numParticipants: numParticipants || 0,
+        valueTotalDrink: valueTotalDrink || 0,
+        valueTotalFood: valueTotalFood || 0,
+        valueCollected: valueCollected || 0
       })
 
       return ok(barbecue)

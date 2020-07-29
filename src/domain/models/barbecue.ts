@@ -3,6 +3,8 @@ export type BarbecueModel = {
   date: Date
   description: string
   observation: string
+  numParticipants: number
   valueTotalDrink: number
   valueTotalFood: number
+  valueCollected: number
 }

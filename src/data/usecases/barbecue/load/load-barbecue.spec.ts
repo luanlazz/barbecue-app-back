@@ -1,7 +1,7 @@
 import { DbLoadBarbecues } from './load-barbecue'
 import { mockLoadBarbecuesRepository } from '@/data/test'
-import { LoadBarbecuesRepository } from '@/data/protocols/db/barbecue/load-barbecue-repository'
-import { throwError, mockBarbecueList } from '@/domain/test'
+import { LoadBarbecuesRepository } from '@/data/protocols/db/barbecue/load-barbecues-repository'
+import { throwError, mockBarbecuesList } from '@/domain/test'
 
 type SutTypes = {
   sut: DbLoadBarbecues
@@ -35,6 +35,6 @@ describe('LoadBarbecue use case', () => {
   test('Should a list of barbecues on success', async () => {
     const { sut } = makeSut()
     const barbecues = await sut.load('any_account_id')
-    expect(barbecues).toEqual(mockBarbecueList())
+    expect(barbecues).toEqual(mockBarbecuesList())
   })
 })

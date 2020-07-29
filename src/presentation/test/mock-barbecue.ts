@@ -2,7 +2,7 @@ import { SaveBarbecue, barbecueParams } from '@/domain/usecases/barbecue/save-ba
 import { LoadBarbecues } from '@/domain/usecases/barbecue/load-barbecues'
 import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
 import { BarbecueModel } from '@/domain/models/barbecue'
-import { mockBarbecueModel, mockBarbecueList } from '@/domain/test'
+import { mockBarbecueModel, mockBarbecuesList } from '@/domain/test'
 
 export const mockSaveBarbecue = (): SaveBarbecue => {
   class SaveBarbecueStub implements SaveBarbecue {
@@ -16,7 +16,7 @@ export const mockSaveBarbecue = (): SaveBarbecue => {
 export const mockLoadBarbecues = (): LoadBarbecues => {
   class LoadBarbecuesStub implements LoadBarbecues {
     async load (accountId: string): Promise<BarbecueModel[]> {
-      return await Promise.resolve(mockBarbecueList())
+      return await Promise.resolve(mockBarbecuesList())
     }
   }
   return new LoadBarbecuesStub()

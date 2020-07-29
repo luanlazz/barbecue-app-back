@@ -3,7 +3,7 @@ import { SaveBarbecueRepository } from '@/data/protocols/db/barbecue/save-barbec
 import { barbecueParams } from '@/domain/usecases/barbecue/save-barbecue'
 import { BarbecueModel } from '@/domain/models/barbecue'
 import { ObjectId } from 'mongodb'
-import { LoadBarbecuesRepository } from '@/data/protocols/db/barbecue/load-barbecue-repository'
+import { LoadBarbecuesRepository } from '@/data/protocols/db/barbecue/load-barbecues-repository'
 import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
 
 export class BarbecueMongoRepository implements SaveBarbecueRepository,
@@ -22,8 +22,10 @@ export class BarbecueMongoRepository implements SaveBarbecueRepository,
         date: barbecue.date,
         description: barbecue.description,
         observation: barbecue.observation,
+        numParticipants: barbecue.numParticipants,
         valueTotalDrink: barbecue.valueTotalDrink,
-        valueTotalFood: barbecue.valueTotalFood
+        valueTotalFood: barbecue.valueTotalFood,
+        valueCollected: barbecue.valueCollected
       }
     }, {
       upsert: true,

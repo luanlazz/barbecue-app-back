@@ -3,7 +3,7 @@ import { HttpRequest } from '@/presentation/protocols/http'
 import { mockLoadBarbecues } from '@/presentation/test/mock-barbecue'
 import { serverError, noContent, ok } from '@/presentation/helpers/http/http-helper'
 import { LoadBarbecues } from '@/domain/usecases/barbecue/load-barbecues'
-import { throwError, mockBarbecueList } from '@/domain/test'
+import { throwError, mockBarbecuesList } from '@/domain/test'
 
 type SutTypes = {
   sut: LoadBarbecuesController
@@ -48,6 +48,6 @@ describe('LoadBarbecue Controller', () => {
   test('should return 200 with barbecues on success', async () => {
     const { sut } = makeSut()
     const barbecues = await sut.handle(mockRequest())
-    expect(barbecues).toEqual(ok(mockBarbecueList()))
+    expect(barbecues).toEqual(ok(mockBarbecuesList()))
   })
 })

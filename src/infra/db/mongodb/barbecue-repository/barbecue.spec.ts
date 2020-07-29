@@ -1,21 +1,25 @@
 import env from '@/main/config/env'
 import { BarbecueMongoRepository } from './barbecue'
-import { mockBarbecueParams, mockAddAccountParams } from '@/domain/test'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
+import { mockBarbecueParams, mockAddAccountParams } from '@/domain/test'
+import { barbecueParams } from '@/domain/usecases/barbecue/save-barbecue'
 import { Collection, ObjectID } from 'mongodb'
 import { sign } from 'jsonwebtoken'
 
 let barbecueCollection: Collection
 let accountCollection: Collection
 
-const makeBarbecue = async (valueTotalDrink: number = 0, valueTotalFood: number = 0): Promise<string> => {
-  const barbecue = {
-    accountId: new ObjectID('5f1b89c1480b9674bd2d724c'),
-    date: '25/08/2020',
+const makeBarbecue = async (accountId: string = new ObjectID().toHexString(), valueTotalDrink: number = 0, valueTotalFood: number = 0): Promise<string> => {
+  const barbecue: barbecueParams = {
+    barbecueId: new ObjectID().toHexString(),
+    accountId,
+    date: new Date('25/08/2020'),
     description: 'Primeiro churras!',
     observation: 'teste',
+    numParticipants: 0,
     valueTotalDrink,
-    valueTotalFood
+    valueTotalFood,
+    valueCollected: 0
   }
 
   const res = await barbecueCollection.insertOne(barbecue)
@@ -80,30 +84,54 @@ describe('Barbecue Mongo Repository', () => {
       expect(barbecueResult.valueTotalDrink).toEqual(barbecueParams.valueTotalDrink)
       expect(barbecueResult.valueTotalFood).toEqual(barbecueParams.valueTotalFood)
     })
+
+    test('Should update if barbecue exists', async () => {
+      const sut = makeSut()
+      const { accountId } = await makeAccessToken()
+      const barbecueId = await makeBarbecue(accountId)
+      const newBarbecue = mockBarbecueParams()
+      newBarbecue.barbecueId = barbecueId
+      newBarbecue.accountId = accountId
+      const barbecueResult = await sut.save(newBarbecue)
+      expect(barbecueResult).toBeTruthy()
+      expect(barbecueResult.id).toBeTruthy()
+      expect(barbecueResult.date).toEqual(newBarbecue.date)
+      expect(barbecueResult.description).toEqual(newBarbecue.description)
+      expect(barbecueResult.observation).toEqual(newBarbecue.observation)
+      expect(barbecueResult.numParticipants).toEqual(newBarbecue.numParticipants)
+      expect(barbecueResult.valueTotalDrink).toEqual(newBarbecue.valueTotalDrink)
+      expect(barbecueResult.valueTotalFood).toEqual(newBarbecue.valueTotalFood)
+      expect(barbecueResult.valueCollected).toEqual(newBarbecue.valueCollected)
+    })
   })
 
   describe('loadAll', () => {
     test('Should return a list of barbecues on success', async () => {
       const sut = makeSut()
-      const barbecueId = await makeBarbecue()
       const { accountId } = await makeAccessToken()
-      await barbecueCollection.insertMany([{
+      const barbecueId = await makeBarbecue()
+      const barbecues: barbecueParams[] = [{
         barbecueId,
         accountId,
         date: new Date('2020-01-08'),
         description: 'any_description',
         observation: 'any_observation',
+        numParticipants: 0,
         valueTotalDrink: 0,
-        valueTotalFood: 0
+        valueTotalFood: 0,
+        valueCollected: 0
       }, {
         barbecueId,
         accountId,
         date: new Date('2020-02-08'),
         description: 'other_description',
         observation: 'other_observation',
+        numParticipants: 0,
         valueTotalDrink: 0,
-        valueTotalFood: 0
-      }])
+        valueTotalFood: 0,
+        valueCollected: 0
+      }]
+      await barbecueCollection.insertMany(barbecues)
       const barbecueResult = await sut.loadAll(accountId)
       expect(barbecueResult.length).toBe(2)
       expect(barbecueResult[0]).toBeTruthy()

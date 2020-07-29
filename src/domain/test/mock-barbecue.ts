@@ -7,8 +7,10 @@ export const mockBarbecueParams = (): barbecueParams => ({
   date: new Date('2020-01-08'),
   description: 'any_description',
   observation: 'any_observation',
+  numParticipants: 0,
   valueTotalDrink: 0,
-  valueTotalFood: 0
+  valueTotalFood: 0,
+  valueCollected: 0
 })
 
 export const mockBarbecueModel = (): BarbecueModel => ({
@@ -16,25 +18,31 @@ export const mockBarbecueModel = (): BarbecueModel => ({
   date: new Date('2020-01-08'),
   description: 'any_description',
   observation: 'any_observation',
+  numParticipants: 0,
   valueTotalDrink: 0,
-  valueTotalFood: 0
+  valueTotalFood: 0,
+  valueCollected: 0
 })
 
-export const mockBarbecueList = (): BarbecueModel[] => ([
+export const mockBarbecuesList = (): BarbecueModel[] => ([
   {
     id: 'any_id',
     date: new Date('2020-01-08'),
     description: 'any_description',
     observation: 'any_observation',
+    numParticipants: 0,
     valueTotalDrink: 0,
-    valueTotalFood: 0
+    valueTotalFood: 0,
+    valueCollected: 0
   },
   {
     id: 'other_id',
     date: new Date('2020-05-08'),
     description: 'other_description',
     observation: 'other_observation',
-    valueTotalDrink: 200,
-    valueTotalFood: 125
+    numParticipants: 0,
+    valueTotalDrink: 0,
+    valueTotalFood: 0,
+    valueCollected: 0
   }
 ])
