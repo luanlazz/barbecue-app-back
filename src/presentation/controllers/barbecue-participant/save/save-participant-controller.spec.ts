@@ -1,30 +1,34 @@
 import { SaveParticipantController } from './save-participant-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validation } from '@/presentation/protocols/validation'
-import { mockValidation, mockLoadBarbecueById } from '@/presentation/test'
+import { mockValidation, mockLoadBarbecueById, mockSaveBarbecue } from '@/presentation/test'
 import { badRequest, serverError, noContent, unauthorized } from '@/presentation/helpers/http/http-helper'
 import { mockSaveParticipant } from '@/presentation/test/mock-participant'
 import { SaveParticipant } from '@/domain/usecases/barbecue-participant/save-participant'
-import { throwError } from '@/domain/test'
+import { throwError, mockBarbecueParams } from '@/domain/test'
 import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
+import { SaveBarbecue } from '@/domain/usecases/barbecue/save-barbecue'
 
 type SutTypes = {
   sut: SaveParticipantController
   validationStub: Validation
   loadBarbecueByIdStub: LoadBarbecueById
   saveParticipantStub: SaveParticipant
+  saveBarbecueStub: SaveBarbecue
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = mockValidation()
   const loadBarbecueByIdStub = mockLoadBarbecueById()
   const saveParticipantStub = mockSaveParticipant()
-  const sut = new SaveParticipantController(validationStub, loadBarbecueByIdStub, saveParticipantStub)
+  const saveBarbecueStub = mockSaveBarbecue()
+  const sut = new SaveParticipantController(validationStub, loadBarbecueByIdStub, saveParticipantStub, saveBarbecueStub)
   return {
     sut,
     validationStub,
     loadBarbecueByIdStub,
-    saveParticipantStub
+    saveParticipantStub,
+    saveBarbecueStub
   }
 }
 
@@ -94,6 +98,17 @@ describe('SaveBarbecue Controller', () => {
     jest.spyOn(saveParticipantStub, 'save').mockImplementation(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('should call SaveBarbecue with correct values', async () => {
+    const { sut, saveBarbecueStub } = makeSut()
+    const loadSpy = jest.spyOn(saveBarbecueStub, 'save')
+    const barbecueMock = mockBarbecueParams()
+    barbecueMock.barbecueId = mockRequest().params.barbecueId
+    barbecueMock.accountId = mockRequest().accountId
+    barbecueMock.numParticipants = barbecueMock.numParticipants + 1
+    await sut.handle(mockRequest())
+    expect(loadSpy).toHaveBeenCalledWith(barbecueMock)
   })
 
   test('should return 204 on success', async () => {
