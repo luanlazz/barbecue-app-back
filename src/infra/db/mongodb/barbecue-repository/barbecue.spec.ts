@@ -9,7 +9,7 @@ import { sign } from 'jsonwebtoken'
 let barbecueCollection: Collection
 let accountCollection: Collection
 
-const makeBarbecue = async (accountId: string = new ObjectID().toHexString(), valueTotalDrink: number = 0, valueTotalFood: number = 0): Promise<string> => {
+const makeBarbecue = async (accountId: string = new ObjectID().toHexString()): Promise<string> => {
   const barbecue: barbecueParams = {
     barbecueId: new ObjectID().toHexString(),
     accountId,
@@ -17,8 +17,8 @@ const makeBarbecue = async (accountId: string = new ObjectID().toHexString(), va
     description: 'Primeiro churras!',
     observation: 'teste',
     numParticipants: 0,
-    valueTotalDrink,
-    valueTotalFood,
+    valueTotalDrink: 0,
+    valueTotalFood: 0,
     valueCollected: 0
   }
 

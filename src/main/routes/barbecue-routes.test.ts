@@ -2,7 +2,8 @@ import env from '@/main/config/env'
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { mockAddAccountParams, mockBarbecueParams } from '@/domain/test'
-import { Collection } from 'mongodb'
+import { barbecueParams } from '@/domain/usecases/barbecue/save-barbecue'
+import { Collection, ObjectID } from 'mongodb'
 import { sign } from 'jsonwebtoken'
 import request from 'supertest'
 
@@ -29,6 +30,23 @@ const makeAccessToken = async (): Promise<mockAccount> => {
     accessToken,
     accountId: id
   }
+}
+
+const makeBarbecue = async (accountId: string = new ObjectID().toHexString()): Promise<string> => {
+  const barbecue: barbecueParams = {
+    barbecueId: new ObjectID().toHexString(),
+    accountId,
+    date: new Date('25/08/2020'),
+    description: 'Primeiro churras!',
+    observation: 'teste',
+    numParticipants: 0,
+    valueTotalDrink: 0,
+    valueTotalFood: 0,
+    valueCollected: 0
+  }
+
+  const res = await barbecueCollection.insertOne(barbecue)
+  return res.ops[0]._id
 }
 
 describe('Barbecue Routes', () => {
@@ -58,12 +76,13 @@ describe('Barbecue Routes', () => {
     test('Should return 200 on save barbecue with valid accessToken', async () => {
       const { accessToken } = await makeAccessToken()
       const barbecue = {
-        barbecueId: null,
         date: new Date('01/08/2020'),
         description: 'any_description',
         observation: 'any_observation',
+        numParticipants: 0,
         valueTotalDrink: 100,
-        valueTotalFood: 100
+        valueTotalFood: 100,
+        valueCollected: 0
       }
       await request(app)
         .put('/api/barbecue')
@@ -74,21 +93,15 @@ describe('Barbecue Routes', () => {
 
     test('Should save exists barbecue and return 200', async () => {
       const { accessToken, accountId } = await makeAccessToken()
-      const res = await barbecueCollection.insertOne({
-        accountId,
-        date: new Date('01/08/2020'),
-        description: 'any_description',
-        observation: 'any_observation',
-        valueTotalDrink: 100,
-        valueTotalFood: 100
-      })
-      const barbecueId = res.ops[0]._id
+      const barbecueId = await makeBarbecue(accountId)
       const barbecue = {
         date: new Date('01/08/2020'),
         description: 'other_description',
         observation: 'other_observation',
+        numParticipants: 0,
         valueTotalDrink: 100,
-        valueTotalFood: 100
+        valueTotalFood: 100,
+        valueCollected: 0
       }
       await request(app)
         .put(`/api/barbecue/${barbecueId}`)
@@ -108,9 +121,7 @@ describe('Barbecue Routes', () => {
 
     test('Should return 200 on success', async () => {
       const { accessToken, accountId } = await makeAccessToken()
-      const barbecueBase = mockBarbecueParams()
-      barbecueBase.accountId = accountId
-      await barbecueCollection.insertOne(barbecueBase)
+      await makeBarbecue(accountId)
       await request(app)
         .get('/api/barbecue')
         .set('x-access-token', accessToken)
