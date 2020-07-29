@@ -1,10 +1,11 @@
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { Controller } from '@/presentation/protocols/controller'
 import { Validation } from '@/presentation/protocols/validation'
-import { badRequest, serverError, noContent, unauthorized } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError, noContent, forbidden } from '@/presentation/helpers/http/http-helper'
 import { SaveParticipant } from '@/domain/usecases/barbecue-participant/save-participant'
 import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
 import { SaveBarbecue } from '@/domain/usecases/barbecue/save-barbecue'
+import { InvalidParamError } from '@/presentation/errors'
 
 export class SaveParticipantController implements Controller {
   constructor (
@@ -24,7 +25,7 @@ export class SaveParticipantController implements Controller {
       const { accountId } = httpRequest
 
       const barbecue = await this.loadBarbecueById.loadById(barbecueId)
-      if (!barbecue) return unauthorized()
+      if (!barbecue) return forbidden(new InvalidParamError('barbecueId'))
 
       await this.saveParticipant.save({ barbecueId, participantId, name, food, drink, pay })
 
