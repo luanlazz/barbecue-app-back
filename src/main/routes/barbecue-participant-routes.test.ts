@@ -80,7 +80,7 @@ describe('Participants Routes', () => {
         .put(`/api/barbecue/${barbecueId}/participants`)
         .set('x-access-token', accessToken)
         .send(participant)
-        .expect(200)
+        .expect(204)
     })
 
     test('Should update a participant on success', async () => {
@@ -94,7 +94,7 @@ describe('Participants Routes', () => {
         .put(`/api/barbecue/${barbecueId}/participants/${participantId}`)
         .set('x-access-token', accessToken)
         .send(participant)
-        .expect(200)
+        .expect(204)
     })
   })
 
