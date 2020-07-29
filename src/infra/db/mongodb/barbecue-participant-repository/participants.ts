@@ -9,12 +9,12 @@ import { RemoveParticipantRepository } from '@/data/protocols/db/barbecue-partic
 export class ParticipantsMongoRepository implements SaveParticipantRepository,
                                                     LoadParticipantsByBqRepository,
                                                     RemoveParticipantRepository {
-  async save (participant: SaveParticipantParams): Promise<void> {
+  async save (participant: SaveParticipantParams): Promise<number> {
     const participantCollection = await MongoHelper.getCollection('participants')
 
     if (!participant.participantId) participant.participantId = new ObjectId().toHexString()
 
-    await participantCollection.findOneAndUpdate({
+    const result = await participantCollection.findOneAndUpdate({
       _id: new ObjectId(participant.participantId),
       barbecueId: new ObjectId(participant.barbecueId)
     }, {
@@ -28,7 +28,7 @@ export class ParticipantsMongoRepository implements SaveParticipantRepository,
       upsert: true
     })
 
-    return null
+    return result.ok
   }
 
   async load (barbecueId: string): Promise<ParticipantModel[]> {

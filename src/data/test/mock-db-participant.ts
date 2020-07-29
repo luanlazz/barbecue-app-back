@@ -7,8 +7,8 @@ import { RemoveParticipantRepository } from '../protocols/db/barbecue-participan
 
 export const mockSaveParticipantRepository = (): SaveParticipantRepository => {
   class SaveParticipantRepositoryStub implements SaveParticipantRepository {
-    async save (participant: SaveParticipantParams): Promise<void> {
-      return Promise.resolve()
+    async save (participant: SaveParticipantParams): Promise<number> {
+      return Promise.resolve(1)
     }
   }
   return new SaveParticipantRepositoryStub()
