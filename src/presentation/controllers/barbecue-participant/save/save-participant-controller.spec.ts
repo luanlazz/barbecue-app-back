@@ -2,12 +2,13 @@ import { SaveParticipantController } from './save-participant-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validation } from '@/presentation/protocols/validation'
 import { mockValidation, mockLoadBarbecueById, mockSaveBarbecue } from '@/presentation/test'
-import { badRequest, serverError, noContent, unauthorized } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError, noContent, forbidden } from '@/presentation/helpers/http/http-helper'
 import { mockSaveParticipant } from '@/presentation/test/mock-participant'
 import { SaveParticipant } from '@/domain/usecases/barbecue-participant/save-participant'
 import { throwError, mockBarbecueParams } from '@/domain/test'
 import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
 import { SaveBarbecue } from '@/domain/usecases/barbecue/save-barbecue'
+import { InvalidParamError } from '@/presentation/errors'
 
 type SutTypes = {
   sut: SaveParticipantController
@@ -75,11 +76,11 @@ describe('SaveBarbecue Controller', () => {
     expect(error).toEqual(serverError(new Error()))
   })
 
-  test('should return 401 if LoadBarbecueById not return a barbecue', async () => {
+  test('should return 403 if LoadBarbecueById not return a barbecue', async () => {
     const { sut, loadBarbecueByIdStub } = makeSut()
     jest.spyOn(loadBarbecueByIdStub, 'loadById').mockReturnValueOnce(null)
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(unauthorized())
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('barbecueId')))
   })
 
   test('should call SaveParticipant with correct values', async () => {
