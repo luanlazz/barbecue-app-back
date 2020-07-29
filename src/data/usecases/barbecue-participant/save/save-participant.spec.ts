@@ -1,4 +1,4 @@
-import { DbSaveParticipant } from './save-barbecue-participant'
+import { DbSaveParticipant } from './save-participant'
 import { SaveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-save-participant'
 import { mockSaveParticipantRepository } from '@/data/test'
 import { mockParticipantParams, throwError } from '@/domain/test'
