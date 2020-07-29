@@ -32,12 +32,13 @@ export class SaveParticipantController implements Controller {
       await this.saveBarbecue.save({
         barbecueId,
         accountId,
-        numParticipants: barbecue.numParticipants + 1,
         date: barbecue.date,
         description: barbecue.description,
         observation: barbecue.observation,
-        valueTotalDrink: barbecue.valueTotalDrink,
-        valueTotalFood: barbecue.valueTotalFood,
+        numParticipants: barbecue.numParticipants + 1,
+        valueSuggestDrink: barbecue.valueSuggestDrink,
+        valueSuggestFood: barbecue.valueSuggestFood,
+        valueTotal: barbecue.valueTotal,
         valueCollected: barbecue.valueCollected
       })
 

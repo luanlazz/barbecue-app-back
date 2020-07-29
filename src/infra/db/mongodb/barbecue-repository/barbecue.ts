@@ -23,8 +23,9 @@ export class BarbecueMongoRepository implements SaveBarbecueRepository,
         description: barbecue.description,
         observation: barbecue.observation,
         numParticipants: barbecue.numParticipants,
-        valueTotalDrink: barbecue.valueTotalDrink,
-        valueTotalFood: barbecue.valueTotalFood,
+        valueSuggestDrink: barbecue.valueSuggestDrink,
+        valueSuggestFood: barbecue.valueSuggestFood,
+        valueTotal: barbecue.valueTotal,
         valueCollected: barbecue.valueCollected
       }
     }, {

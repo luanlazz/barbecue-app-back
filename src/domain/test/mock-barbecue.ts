@@ -8,8 +8,9 @@ export const mockBarbecueParams = (): barbecueParams => ({
   description: 'any_description',
   observation: 'any_observation',
   numParticipants: 0,
-  valueTotalDrink: 0,
-  valueTotalFood: 0,
+  valueSuggestDrink: 0,
+  valueSuggestFood: 0,
+  valueTotal: 0,
   valueCollected: 0
 })
 
@@ -19,8 +20,9 @@ export const mockBarbecueModel = (): BarbecueModel => ({
   description: 'any_description',
   observation: 'any_observation',
   numParticipants: 0,
-  valueTotalDrink: 0,
-  valueTotalFood: 0,
+  valueSuggestDrink: 0,
+  valueSuggestFood: 0,
+  valueTotal: 0,
   valueCollected: 0
 })
 
@@ -31,8 +33,9 @@ export const mockBarbecuesList = (): BarbecueModel[] => ([
     description: 'any_description',
     observation: 'any_observation',
     numParticipants: 0,
-    valueTotalDrink: 0,
-    valueTotalFood: 0,
+    valueSuggestDrink: 0,
+    valueSuggestFood: 0,
+    valueTotal: 0,
     valueCollected: 0
   },
   {
@@ -41,8 +44,9 @@ export const mockBarbecuesList = (): BarbecueModel[] => ([
     description: 'other_description',
     observation: 'other_observation',
     numParticipants: 0,
-    valueTotalDrink: 0,
-    valueTotalFood: 0,
+    valueSuggestDrink: 0,
+    valueSuggestFood: 0,
+    valueTotal: 0,
     valueCollected: 0
   }
 ])

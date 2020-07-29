@@ -17,8 +17,9 @@ const makeBarbecue = async (accountId: string = new ObjectID().toHexString()): P
     description: 'Primeiro churras!',
     observation: 'teste',
     numParticipants: 0,
-    valueTotalDrink: 0,
-    valueTotalFood: 0,
+    valueSuggestDrink: 0,
+    valueSuggestFood: 0,
+    valueTotal: 0,
     valueCollected: 0
   }
 
@@ -81,8 +82,11 @@ describe('Barbecue Mongo Repository', () => {
       expect(barbecueResult.date).toEqual(barbecueParams.date)
       expect(barbecueResult.description).toEqual(barbecueParams.description)
       expect(barbecueResult.observation).toEqual(barbecueParams.observation)
-      expect(barbecueResult.valueTotalDrink).toEqual(barbecueParams.valueTotalDrink)
-      expect(barbecueResult.valueTotalFood).toEqual(barbecueParams.valueTotalFood)
+      expect(barbecueResult.numParticipants).toEqual(barbecueParams.numParticipants)
+      expect(barbecueResult.valueSuggestDrink).toEqual(barbecueParams.valueSuggestDrink)
+      expect(barbecueResult.valueSuggestFood).toEqual(barbecueParams.valueSuggestFood)
+      expect(barbecueResult.valueTotal).toEqual(barbecueParams.valueTotal)
+      expect(barbecueResult.valueCollected).toEqual(barbecueParams.valueCollected)
     })
 
     test('Should update if barbecue exists', async () => {
@@ -99,8 +103,9 @@ describe('Barbecue Mongo Repository', () => {
       expect(barbecueResult.description).toEqual(newBarbecue.description)
       expect(barbecueResult.observation).toEqual(newBarbecue.observation)
       expect(barbecueResult.numParticipants).toEqual(newBarbecue.numParticipants)
-      expect(barbecueResult.valueTotalDrink).toEqual(newBarbecue.valueTotalDrink)
-      expect(barbecueResult.valueTotalFood).toEqual(newBarbecue.valueTotalFood)
+      expect(barbecueResult.valueSuggestDrink).toEqual(newBarbecue.valueSuggestDrink)
+      expect(barbecueResult.valueSuggestFood).toEqual(newBarbecue.valueSuggestFood)
+      expect(barbecueResult.valueTotal).toEqual(newBarbecue.valueTotal)
       expect(barbecueResult.valueCollected).toEqual(newBarbecue.valueCollected)
     })
   })
@@ -117,9 +122,10 @@ describe('Barbecue Mongo Repository', () => {
         description: 'any_description',
         observation: 'any_observation',
         numParticipants: 0,
-        valueTotalDrink: 0,
-        valueTotalFood: 0,
-        valueCollected: 0
+        valueSuggestDrink: 0,
+        valueSuggestFood: 0,
+        valueCollected: 0,
+        valueTotal: 0
       }, {
         barbecueId,
         accountId,
@@ -127,9 +133,10 @@ describe('Barbecue Mongo Repository', () => {
         description: 'other_description',
         observation: 'other_observation',
         numParticipants: 0,
-        valueTotalDrink: 0,
-        valueTotalFood: 0,
-        valueCollected: 0
+        valueSuggestDrink: 0,
+        valueSuggestFood: 0,
+        valueCollected: 0,
+        valueTotal: 0
       }]
       await barbecueCollection.insertMany(barbecues)
       const barbecueResult = await sut.loadAll(accountId)

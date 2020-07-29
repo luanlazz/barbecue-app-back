@@ -40,8 +40,9 @@ const makeBarbecue = async (accountId: string = new ObjectID().toHexString()): P
     description: 'Primeiro churras!',
     observation: 'teste',
     numParticipants: 0,
-    valueTotalDrink: 0,
-    valueTotalFood: 0,
+    valueSuggestDrink: 0,
+    valueSuggestFood: 0,
+    valueTotal: 0,
     valueCollected: 0
   }
 
@@ -80,8 +81,9 @@ describe('Barbecue Routes', () => {
         description: 'any_description',
         observation: 'any_observation',
         numParticipants: 0,
-        valueTotalDrink: 100,
-        valueTotalFood: 100,
+        valueSuggestDrink: 100,
+        valueSuggestFood: 100,
+        valueTotal: 0,
         valueCollected: 0
       }
       await request(app)
@@ -99,8 +101,9 @@ describe('Barbecue Routes', () => {
         description: 'other_description',
         observation: 'other_observation',
         numParticipants: 0,
-        valueTotalDrink: 100,
-        valueTotalFood: 100,
+        valueSuggestDrink: 100,
+        valueSuggestFood: 100,
+        valueTotal: 0,
         valueCollected: 0
       }
       await request(app)

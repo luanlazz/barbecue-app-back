@@ -4,7 +4,8 @@ export type BarbecueModel = {
   description: string
   observation: string
   numParticipants: number
-  valueTotalDrink: number
-  valueTotalFood: number
+  valueSuggestDrink: number
+  valueSuggestFood: number
+  valueTotal: number
   valueCollected: number
 }

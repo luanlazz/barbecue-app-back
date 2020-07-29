@@ -32,14 +32,17 @@ const makeAccessToken = async (): Promise<mockAccount> => {
   }
 }
 
-const makeBarbecue = async (valueTotalDrink: number = 0, valueTotalFood: number = 0): Promise<string> => {
+const makeBarbecue = async (accountId: string): Promise<string> => {
   const barbecue = {
-    accountId: '5f1b89c1480b9674bd2d724c',
+    accountId,
     date: '25/08/2020',
     description: 'Primeiro churras!',
     observation: 'teste',
-    valueTotalDrink,
-    valueTotalFood
+    numParticipants: 0,
+    valueSuggestDrink: 100,
+    valueSuggestFood: 100,
+    valueTotal: 0,
+    valueCollected: 0
   }
 
   const res = await barbecueCollection.insertOne(barbecue)
@@ -73,9 +76,9 @@ describe('Participants Routes', () => {
     })
 
     test('Should save a participant on success', async () => {
-      const barbecueId = await makeBarbecue()
+      const { accessToken, accountId } = await makeAccessToken()
       const participant = mockParticipantParams()
-      const { accessToken } = await makeAccessToken()
+      const barbecueId = await makeBarbecue(accountId)
       await request(app)
         .put(`/api/barbecue/${barbecueId}/participants`)
         .set('x-access-token', accessToken)
@@ -84,12 +87,12 @@ describe('Participants Routes', () => {
     })
 
     test('Should update a participant on success', async () => {
-      const barbecueId = await makeBarbecue()
+      const { accessToken, accountId } = await makeAccessToken()
+      const barbecueId = await makeBarbecue(accountId)
       const participant = mockParticipantParams()
       participant.barbecueId = barbecueId
       const res = await participantsCollection.insertOne(participant)
       const participantId = res.ops[0]._id
-      const { accessToken } = await makeAccessToken()
       await request(app)
         .put(`/api/barbecue/${barbecueId}/participants/${participantId}`)
         .set('x-access-token', accessToken)
@@ -108,8 +111,8 @@ describe('Participants Routes', () => {
     })
 
     test('Should return 200 on success', async () => {
-      const { accessToken } = await makeAccessToken()
-      const barbecueId = await makeBarbecue()
+      const { accessToken, accountId } = await makeAccessToken()
+      const barbecueId = await makeBarbecue(accountId)
       await participantsCollection.insertMany([{
         barbecueId,
         name: 'any_name',
@@ -140,8 +143,8 @@ describe('Participants Routes', () => {
     })
 
     test('Should return 200 on success', async () => {
-      const { accessToken } = await makeAccessToken()
-      const barbecueId = await makeBarbecue()
+      const { accessToken, accountId } = await makeAccessToken()
+      const barbecueId = await makeBarbecue(accountId)
       await request(app)
         .get(`/api/barbecue/${barbecueId}/participants`)
         .set('x-access-token', accessToken)
