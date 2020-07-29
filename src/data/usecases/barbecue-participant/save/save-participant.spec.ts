@@ -28,7 +28,13 @@ describe('SaveParticipant use case', () => {
   test('Should throws if SaveParticipant throws', async () => {
     const { sut, saveParticipantRepositoryStub } = makeSut()
     jest.spyOn(saveParticipantRepositoryStub, 'save').mockImplementation(throwError)
-    const participants = sut.save(mockParticipantParams())
-    await expect(participants).rejects.toThrow()
+    const result = sut.save(mockParticipantParams())
+    await expect(result).rejects.toThrow()
+  })
+
+  test('Should return true on success', async () => {
+    const { sut } = makeSut()
+    const result = await sut.save(mockParticipantParams())
+    expect(result).toBeTruthy()
   })
 })
