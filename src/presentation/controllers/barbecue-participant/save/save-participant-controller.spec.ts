@@ -2,29 +2,25 @@ import { SaveParticipantController } from './save-participant-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { Validation } from '@/presentation/protocols/validation'
 import { mockValidation } from '@/presentation/test'
-import { badRequest, serverError, ok } from '@/presentation/helpers/http/http-helper'
-import { mockSaveParticipant, mockLoadParticipants } from '@/presentation/test/mock-participant'
+import { badRequest, serverError, noContent } from '@/presentation/helpers/http/http-helper'
+import { mockSaveParticipant } from '@/presentation/test/mock-participant'
 import { SaveParticipant } from '@/domain/usecases/barbecue-participant/save-participant'
-import { throwError, mockParticipantsModel } from '@/domain/test'
-import { LoadParticipants } from '@/domain/usecases/barbecue-participant/load-participants'
+import { throwError } from '@/domain/test'
 
 type SutTypes = {
   sut: SaveParticipantController
   validationStub: Validation
   saveParticipantStub: SaveParticipant
-  loadParticipantsStub: LoadParticipants
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = mockValidation()
   const saveParticipantStub = mockSaveParticipant()
-  const loadParticipantsStub = mockLoadParticipants()
-  const sut = new SaveParticipantController(validationStub, saveParticipantStub, loadParticipantsStub)
+  const sut = new SaveParticipantController(validationStub, saveParticipantStub)
   return {
     sut,
     validationStub,
-    saveParticipantStub,
-    loadParticipantsStub
+    saveParticipantStub
   }
 }
 
@@ -75,23 +71,9 @@ describe('SaveBarbecue Controller', () => {
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
-  test('should call LoadParticipants with correct values', async () => {
-    const { sut, loadParticipantsStub } = makeSut()
-    const loadSpy = jest.spyOn(loadParticipantsStub, 'load')
-    await sut.handle(mockRequest())
-    expect(loadSpy).toHaveBeenCalledWith(mockRequest().params.barbecueId)
-  })
-
-  test('should throws if LoadParticipants throws', async () => {
-    const { sut, loadParticipantsStub } = makeSut()
-    jest.spyOn(loadParticipantsStub, 'load').mockImplementation(throwError)
-    const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(serverError(new Error()))
-  })
-
-  test('should return participants on success', async () => {
+  test('should return 204 on success', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(ok(mockParticipantsModel()))
+    expect(httpResponse).toEqual(noContent())
   })
 })
