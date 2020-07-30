@@ -100,6 +100,21 @@ describe('SaveBarbecue Controller', () => {
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
+  test('should not call SaveBarbecue if SaveParticipant fails', async () => {
+    const { sut, saveBarbecueStub, saveParticipantStub } = makeSut()
+    const loadSpy = jest.spyOn(saveBarbecueStub, 'save')
+    jest.spyOn(saveParticipantStub, 'save').mockReturnValueOnce(Promise.resolve({
+      oldParticipant: null,
+      status: false
+    }))
+    const barbecueMock = mockBarbecueParams()
+    barbecueMock.barbecueId = mockRequest().params.barbecueId
+    barbecueMock.accountId = mockRequest().accountId
+    barbecueMock.numParticipants = barbecueMock.numParticipants + 1
+    await sut.handle(mockRequest())
+    expect(loadSpy).not.toHaveBeenCalled()
+  })
+
   test('should call SaveBarbecue with correct values', async () => {
     const { sut, saveBarbecueStub } = makeSut()
     const loadSpy = jest.spyOn(saveBarbecueStub, 'save')
