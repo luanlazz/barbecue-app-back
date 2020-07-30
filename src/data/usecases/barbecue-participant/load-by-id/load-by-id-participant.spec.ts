@@ -1,6 +1,7 @@
 import { DbLoadParticipantById } from './load-by-id-participant'
 import { mockLoadParticipantByIdRepository } from '@/data/test'
 import { LoadParticipantsByIdRepository } from '@/data/protocols/db/barbecue-participant/db-load-participants-by-id'
+import { throwError } from '@/domain/test'
 
 type SutTypes = {
   sut: DbLoadParticipantById
@@ -22,5 +23,12 @@ describe('LoadParticipantById use case', () => {
     const loadSpy = jest.spyOn(loadParticipantsByIdRepositoryStub, 'loadById')
     await sut.loadById('any_participant_id')
     expect(loadSpy).toHaveBeenCalledWith('any_participant_id')
+  })
+
+  test('Should throws if LoadParticipantsByIdRepository throws', async () => {
+    const { sut, loadParticipantsByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadParticipantsByIdRepositoryStub, 'loadById').mockImplementation(throwError)
+    const participant = sut.loadById('any_barbecue_id')
+    await expect(participant).rejects.toThrow()
   })
 })
