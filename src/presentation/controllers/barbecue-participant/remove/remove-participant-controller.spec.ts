@@ -47,8 +47,8 @@ describe('RemoveParticipant Controller', () => {
   test('should return 500 if LoadBarbecueById throws', async () => {
     const { sut, loadBarbecueByIdStub } = makeSut()
     jest.spyOn(loadBarbecueByIdStub, 'loadById').mockImplementation(throwError)
-    const error = await sut.handle(mockRequest())
-    expect(error).toEqual(serverError(new Error()))
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('should return 403 if LoadBarbecueById not return a barbecue', async () => {
@@ -63,6 +63,13 @@ describe('RemoveParticipant Controller', () => {
     const loadSpy = jest.spyOn(loadParticipantByIdStub, 'loadById')
     await sut.handle(mockRequest())
     expect(loadSpy).toHaveBeenCalledWith(mockRequest().params.participantId)
+  })
+
+  test('should return 500 if LoadParticipantById throws', async () => {
+    const { sut, loadParticipantByIdStub } = makeSut()
+    jest.spyOn(loadParticipantByIdStub, 'loadById').mockImplementation(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('should call RemoveParticipant with correct values', async () => {
