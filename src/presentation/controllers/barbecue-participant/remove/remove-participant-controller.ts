@@ -1,7 +1,7 @@
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { Controller } from '@/presentation/protocols/controller'
-import { serverError, noContent, forbidden } from '@/presentation/helpers/http/http-helper'
-import { InvalidParamError } from '@/presentation/errors'
+import { serverError, noContent, forbidden, serviceUnavailable } from '@/presentation/helpers/http/http-helper'
+import { InvalidParamError, UnexpectedError } from '@/presentation/errors'
 import { RemoveParticipant } from '@/domain/usecases/barbecue-participant/remove-participant'
 import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
 import { LoadParticipantById } from '@/domain/usecases/barbecue-participant/load-participant-by-id'
@@ -23,7 +23,8 @@ export class RemoveParticipantController implements Controller {
       const participant = await this.loadParticipantById.loadById(participantId)
       if (!participant) return forbidden(new InvalidParamError('participantId'))
 
-      await this.removeParticipants.remove(barbecueId, participantId)
+      const remove = await this.removeParticipants.remove(barbecueId, participantId)
+      if (!remove) return serviceUnavailable(new UnexpectedError('remove participant'))
 
       return noContent()
     } catch (error) {

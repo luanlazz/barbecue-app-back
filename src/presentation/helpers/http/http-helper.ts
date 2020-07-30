@@ -30,3 +30,8 @@ export const serverError = (error: Error): HttpResponse => ({
   statusCode: 500,
   body: new ServerError(error.stack)
 })
+
+export const serviceUnavailable = (error: Error): HttpResponse => ({
+  statusCode: 503,
+  body: error
+})
