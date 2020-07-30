@@ -2,9 +2,9 @@
 
 ### Success
 
-1. ✅ validate access token and barbecue id;
+1. ❌ validate access token and barbecue id;
 2. ✅ return 204 if doesn't exists guests;
-3. ✅ return 200 with participants and respective values;
+3. ✅ return 200 with participants;
 
 ### Exceptions
 

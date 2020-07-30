@@ -4,9 +4,9 @@
 
 1. ✅ put in route /api/barbecue/:barbecueId/participants/:participantId?;
 2. ✅ validate required field name;
-3. ✅ optional fields drink or food consume;
+3. ✅ optional value and paid;
 4. ✅ validate access token and barbecue id;
-5. ✅ return 200 with participants;
+5. ✅ return 200 with participant;
 
 ### Exceptions
 
