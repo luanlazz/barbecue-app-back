@@ -20,7 +20,8 @@ export class RemoveParticipantController implements Controller {
       const barbecue = await this.loadBarbecueById.loadById(barbecueId)
       if (!barbecue) return forbidden(new InvalidParamError('barbecueId'))
 
-      await this.loadParticipantById.loadById(participantId)
+      const participant = await this.loadParticipantById.loadById(participantId)
+      if (!participant) return forbidden(new InvalidParamError('participantId'))
 
       await this.removeParticipants.remove(barbecueId, participantId)
 
