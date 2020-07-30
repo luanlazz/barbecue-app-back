@@ -72,6 +72,13 @@ describe('RemoveParticipant Controller', () => {
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
+  test('should return 403 if LoadParticipantById not return a barbecue', async () => {
+    const { sut, loadParticipantByIdStub } = makeSut()
+    jest.spyOn(loadParticipantByIdStub, 'loadById').mockReturnValueOnce(null)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('participantId')))
+  })
+
   test('should call RemoveParticipant with correct values', async () => {
     const { sut, removeParticipantStub } = makeSut()
     const removeSpy = jest.spyOn(removeParticipantStub, 'remove')
