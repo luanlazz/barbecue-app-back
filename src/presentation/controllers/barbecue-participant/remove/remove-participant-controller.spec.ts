@@ -1,8 +1,8 @@
 import { RemoveParticipantController } from './remove-participant-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { mockRemoveParticipant, mockLoadParticipantById } from '@/presentation/test/mock-participant'
-import { serverError, noContent, forbidden } from '@/presentation/helpers/http/http-helper'
-import { InvalidParamError } from '@/presentation/errors'
+import { serverError, noContent, forbidden, serviceUnavailable } from '@/presentation/helpers/http/http-helper'
+import { InvalidParamError, UnexpectedError } from '@/presentation/errors'
 import { mockLoadBarbecueById } from '@/presentation/test'
 import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
 import { LoadParticipantById } from '@/domain/usecases/barbecue-participant/load-participant-by-id'
@@ -91,6 +91,13 @@ describe('RemoveParticipant Controller', () => {
     jest.spyOn(removeParticipantStub, 'remove').mockImplementation(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('should return 503 if RemoveParticipant return false', async () => {
+    const { sut, removeParticipantStub } = makeSut()
+    jest.spyOn(removeParticipantStub, 'remove').mockReturnValueOnce(Promise.resolve(false))
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serviceUnavailable(new UnexpectedError('remove participant')))
   })
 
   test('should return 204 on success', async () => {
