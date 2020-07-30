@@ -6,8 +6,8 @@ export class DbRemoveParticipant implements RemoveParticipant {
     private readonly removeParticipantRepository: RemoveParticipantRepository
   ) {}
 
-  async remove (barbecueId: string, participantId: string): Promise<number> {
-    const count = await this.removeParticipantRepository.remove(barbecueId, participantId)
-    return count
+  async remove (barbecueId: string, participantId: string): Promise<boolean> {
+    const result = await this.removeParticipantRepository.remove(barbecueId, participantId)
+    return !!result
   }
 }

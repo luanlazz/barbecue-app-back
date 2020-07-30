@@ -1,3 +1,3 @@
 export interface RemoveParticipant {
-  remove(barbecueId: string, participantId: string): Promise<number>
+  remove(barbecueId: string, participantId: string): Promise<boolean>
 }

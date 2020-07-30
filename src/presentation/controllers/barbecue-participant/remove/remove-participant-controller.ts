@@ -4,10 +4,12 @@ import { serverError, noContent, forbidden } from '@/presentation/helpers/http/h
 import { InvalidParamError } from '@/presentation/errors'
 import { RemoveParticipant } from '@/domain/usecases/barbecue-participant/remove-participant'
 import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
+import { LoadParticipantById } from '@/domain/usecases/barbecue-participant/load-participant-by-id'
 
 export class RemoveParticipantController implements Controller {
   constructor (
     private readonly loadBarbecueById: LoadBarbecueById,
+    private readonly loadParticipantById: LoadParticipantById,
     private readonly removeParticipants: RemoveParticipant
   ) {}
 
@@ -17,6 +19,8 @@ export class RemoveParticipantController implements Controller {
 
       const barbecue = await this.loadBarbecueById.loadById(barbecueId)
       if (!barbecue) return forbidden(new InvalidParamError('barbecueId'))
+
+      await this.loadParticipantById.loadById(participantId)
 
       await this.removeParticipants.remove(barbecueId, participantId)
 

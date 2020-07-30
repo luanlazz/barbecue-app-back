@@ -25,8 +25,8 @@ export const mockLoadParticipantByBqRepository = (): LoadParticipantsByBqReposit
 
 export const mockRemoveParticipantRepository = (): RemoveParticipantRepository => {
   class RemoveParticipantRepositoryStub implements RemoveParticipantRepository {
-    async remove (barbecueId: string, participantId: string): Promise<number> {
-      return Promise.resolve(1)
+    async remove (barbecueId: string, participantId: string): Promise<boolean> {
+      return Promise.resolve(true)
     }
   }
   return new RemoveParticipantRepositoryStub()

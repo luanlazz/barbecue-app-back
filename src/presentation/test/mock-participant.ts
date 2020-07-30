@@ -2,6 +2,7 @@ import { SaveParticipant, SaveParticipantParams } from '@/domain/usecases/barbec
 import { ParticipantModel } from '@/domain/models/participant'
 import { mockParticipantsModel, mockParticipantModel } from '@/domain/test'
 import { LoadParticipants } from '@/domain/usecases/barbecue-participant/load-participants'
+import { LoadParticipantById } from '@/domain/usecases/barbecue-participant/load-participant-by-id'
 import { RemoveParticipant } from '@/domain/usecases/barbecue-participant/remove-participant'
 
 export const mockSaveParticipant = (): SaveParticipant => {
@@ -22,10 +23,19 @@ export const mockLoadParticipants = (): LoadParticipants => {
   return new LoadParticipantsStub()
 }
 
+export const mockLoadParticipantById = (): LoadParticipantById => {
+  class LoadParticipantsStub implements LoadParticipantById {
+    async loadById (participantId: string): Promise<ParticipantModel> {
+      return await Promise.resolve(mockParticipantModel())
+    }
+  }
+  return new LoadParticipantsStub()
+}
+
 export const mockRemoveParticipant = (): RemoveParticipant => {
   class RemoveParticipantStub implements RemoveParticipant {
-    async remove (barbecueId: string, participantId: string): Promise<number> {
-      return await Promise.resolve(1)
+    async remove (barbecueId: string, participantId: string): Promise<boolean> {
+      return await Promise.resolve(true)
     }
   }
   return new RemoveParticipantStub()

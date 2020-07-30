@@ -1,3 +1,3 @@
 export interface RemoveParticipantRepository {
-  remove (barbecueId: string, participantId: string): Promise<number>
+  remove (barbecueId: string, participantId: string): Promise<boolean>
 }

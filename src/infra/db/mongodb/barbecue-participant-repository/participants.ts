@@ -39,12 +39,12 @@ export class ParticipantsMongoRepository implements SaveParticipantRepository,
     return MongoHelper.mapCollection(participants)
   }
 
-  async remove (barbecueId: string, participantId: string): Promise<number> {
+  async remove (barbecueId: string, participantId: string): Promise<boolean> {
     const participantCollection = await MongoHelper.getCollection('participants')
     const participant = await participantCollection.deleteOne({
       _id: new ObjectId(participantId),
       barbecueId: new ObjectId(barbecueId)
     })
-    return participant.deletedCount
+    return !!participant.deletedCount
   }
 }
