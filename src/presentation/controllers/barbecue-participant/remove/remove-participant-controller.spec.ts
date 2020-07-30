@@ -1,7 +1,8 @@
 import { RemoveParticipantController } from './remove-participant-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { mockRemoveParticipant } from '@/presentation/test/mock-participant'
-import { serverError, noContent } from '@/presentation/helpers/http/http-helper'
+import { serverError, noContent, forbidden } from '@/presentation/helpers/http/http-helper'
+import { InvalidParamError } from '@/presentation/errors'
 import { mockLoadBarbecueById } from '@/presentation/test'
 import { RemoveParticipant } from '@/domain/usecases/barbecue-participant/remove-participant'
 import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
@@ -44,6 +45,13 @@ describe('RemoveParticipant Controller', () => {
     jest.spyOn(loadBarbecueByIdStub, 'loadById').mockImplementation(throwError)
     const error = await sut.handle(mockRequest())
     expect(error).toEqual(serverError(new Error()))
+  })
+
+  test('should return 403 if LoadBarbecueById not return a barbecue', async () => {
+    const { sut, loadBarbecueByIdStub } = makeSut()
+    jest.spyOn(loadBarbecueByIdStub, 'loadById').mockReturnValueOnce(null)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('barbecueId')))
   })
 
   test('should call RemoveParticipant with correct values', async () => {
