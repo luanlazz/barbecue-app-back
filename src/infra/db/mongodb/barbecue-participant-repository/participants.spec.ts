@@ -146,7 +146,7 @@ describe('Participants Mongo Repository', () => {
       const id = res.ops[0]._id
       const sut = makeSut()
       const result = await sut.remove(barbecueId, id)
-      expect(result).toBe(1)
+      expect(result).toBeTruthy()
       const count = await participantsCollection.count()
       expect(count).toBe(0)
     })
@@ -162,7 +162,7 @@ describe('Participants Mongo Repository', () => {
       })
       const sut = makeSut()
       const result = await sut.remove(barbecueId, new ObjectID().toHexString())
-      expect(result).toBe(0)
+      expect(result).toBeFalsy()
       const count = await participantsCollection.count()
       expect(count).toBe(1)
     })

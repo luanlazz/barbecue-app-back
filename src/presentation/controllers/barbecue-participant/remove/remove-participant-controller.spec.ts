@@ -1,26 +1,30 @@
 import { RemoveParticipantController } from './remove-participant-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
-import { mockRemoveParticipant } from '@/presentation/test/mock-participant'
+import { mockRemoveParticipant, mockLoadParticipantById } from '@/presentation/test/mock-participant'
 import { serverError, noContent, forbidden } from '@/presentation/helpers/http/http-helper'
 import { InvalidParamError } from '@/presentation/errors'
 import { mockLoadBarbecueById } from '@/presentation/test'
-import { RemoveParticipant } from '@/domain/usecases/barbecue-participant/remove-participant'
 import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
+import { LoadParticipantById } from '@/domain/usecases/barbecue-participant/load-participant-by-id'
+import { RemoveParticipant } from '@/domain/usecases/barbecue-participant/remove-participant'
 import { throwError } from '@/domain/test'
 
 type SutTypes = {
   sut: RemoveParticipantController
   loadBarbecueByIdStub: LoadBarbecueById
+  loadParticipantByIdStub: LoadParticipantById
   removeParticipantStub: RemoveParticipant
 }
 
 const makeSut = (): SutTypes => {
   const loadBarbecueByIdStub = mockLoadBarbecueById()
+  const loadParticipantByIdStub = mockLoadParticipantById()
   const removeParticipantStub = mockRemoveParticipant()
-  const sut = new RemoveParticipantController(loadBarbecueByIdStub, removeParticipantStub)
+  const sut = new RemoveParticipantController(loadBarbecueByIdStub, loadParticipantByIdStub, removeParticipantStub)
   return {
     sut,
     loadBarbecueByIdStub,
+    loadParticipantByIdStub,
     removeParticipantStub
   }
 }
@@ -52,6 +56,13 @@ describe('RemoveParticipant Controller', () => {
     jest.spyOn(loadBarbecueByIdStub, 'loadById').mockReturnValueOnce(null)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('barbecueId')))
+  })
+
+  test('should call LoadParticipantById with correct participant id', async () => {
+    const { sut, loadParticipantByIdStub } = makeSut()
+    const loadSpy = jest.spyOn(loadParticipantByIdStub, 'loadById')
+    await sut.handle(mockRequest())
+    expect(loadSpy).toHaveBeenCalledWith(mockRequest().params.participantId)
   })
 
   test('should call RemoveParticipant with correct values', async () => {
