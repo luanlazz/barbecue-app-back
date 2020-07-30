@@ -5,8 +5,10 @@ import { SaveParticipantParams } from '@/domain/usecases/barbecue-participant/sa
 import { ObjectId } from 'mongodb'
 import { ParticipantModel } from '@/domain/models/participant'
 import { RemoveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-remove-participant'
+import { LoadParticipantsByIdRepository } from '@/data/protocols/db/barbecue-participant/db-load-participants-by-id'
 
 export class ParticipantsMongoRepository implements SaveParticipantRepository,
+                                                    LoadParticipantsByIdRepository,
                                                     LoadParticipantsByBqRepository,
                                                     RemoveParticipantRepository {
   async save (participant: SaveParticipantParams): Promise<ParticipantModel> {
@@ -29,6 +31,15 @@ export class ParticipantsMongoRepository implements SaveParticipantRepository,
     })
 
     return result.value && MongoHelper.map(result.value)
+  }
+
+  async loadById (participantId: string): Promise<ParticipantModel> {
+    const participantCollection = await MongoHelper.getCollection('participants')
+    const participant = await participantCollection.findOne({
+      _id: new ObjectId(participantId)
+    })
+
+    return participant && MongoHelper.map(participant)
   }
 
   async load (barbecueId: string): Promise<ParticipantModel[]> {
