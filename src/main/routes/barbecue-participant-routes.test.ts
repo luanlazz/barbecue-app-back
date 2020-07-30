@@ -152,4 +152,13 @@ describe('Participants Routes', () => {
         .expect(204)
     })
   })
+
+  describe('Remove participant', () => {
+    test('Should return 403 on remove participant without accessToken', async () => {
+      await request(app)
+        .put('/api/barbecue/any_barbecue_id/participants/any_participant_id')
+        .send(mockParticipantParams())
+        .expect(403)
+    })
+  })
 })
