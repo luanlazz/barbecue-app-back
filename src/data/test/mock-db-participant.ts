@@ -1,5 +1,6 @@
 import { SaveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-save-participant'
 import { LoadParticipantsByBqRepository } from '@/data/protocols/db/barbecue-participant/db-load-participants-by-bq'
+import { LoadParticipantsByIdRepository } from '@/data/protocols/db/barbecue-participant/db-load-participants-by-id'
 import { SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-participant'
 import { ParticipantModel } from '@/domain/models/participant'
 import { mockParticipantsModel, mockParticipantModel } from '@/domain/test/mock-participant'
@@ -12,6 +13,15 @@ export const mockSaveParticipantRepository = (): SaveParticipantRepository => {
     }
   }
   return new SaveParticipantRepositoryStub()
+}
+
+export const mockLoadParticipantByIdRepository = (): LoadParticipantsByIdRepository => {
+  class LoadParticipantsByIdRepositoryStub implements LoadParticipantsByIdRepository {
+    async loadById (participantId: string): Promise<ParticipantModel> {
+      return Promise.resolve(mockParticipantModel())
+    }
+  }
+  return new LoadParticipantsByIdRepositoryStub()
 }
 
 export const mockLoadParticipantByBqRepository = (): LoadParticipantsByBqRepository => {
