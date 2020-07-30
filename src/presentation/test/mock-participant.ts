@@ -1,4 +1,4 @@
-import { SaveParticipant, SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-participant'
+import { SaveParticipant, SaveParticipantParams, SaveParticipantReturn } from '@/domain/usecases/barbecue-participant/save-participant'
 import { ParticipantModel } from '@/domain/models/participant'
 import { mockParticipantsModel } from '@/domain/test'
 import { LoadParticipants } from '@/domain/usecases/barbecue-participant/load-participants'
@@ -6,8 +6,11 @@ import { RemoveParticipant } from '@/domain/usecases/barbecue-participant/remove
 
 export const mockSaveParticipant = (): SaveParticipant => {
   class SaveParticipantStub implements SaveParticipant {
-    async save (participant: SaveParticipantParams): Promise<boolean> {
-      return await Promise.resolve(true)
+    async save (participant: SaveParticipantParams): Promise<SaveParticipantReturn> {
+      return await Promise.resolve({
+        oldParticipant: null,
+        status: true
+      })
     }
   }
   return new SaveParticipantStub()

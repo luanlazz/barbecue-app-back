@@ -27,20 +27,22 @@ export class SaveParticipantController implements Controller {
       const barbecue = await this.loadBarbecueById.loadById(barbecueId)
       if (!barbecue) return forbidden(new InvalidParamError('barbecueId'))
 
-      await this.saveParticipant.save({ barbecueId, participantId, name, pay, value })
+      const result = await this.saveParticipant.save({ barbecueId, participantId, name, pay, value })
 
-      await this.saveBarbecue.save({
-        barbecueId,
-        accountId,
-        date: barbecue.date,
-        description: barbecue.description,
-        observation: barbecue.observation,
-        numParticipants: barbecue.numParticipants + 1,
-        valueSuggestDrink: barbecue.valueSuggestDrink,
-        valueSuggestFood: barbecue.valueSuggestFood,
-        valueTotal: barbecue.valueTotal,
-        valueCollected: barbecue.valueCollected
-      })
+      if (result.status) {
+        await this.saveBarbecue.save({
+          barbecueId,
+          accountId,
+          date: barbecue.date,
+          description: barbecue.description,
+          observation: barbecue.observation,
+          numParticipants: barbecue.numParticipants + 1,
+          valueSuggestDrink: barbecue.valueSuggestDrink,
+          valueSuggestFood: barbecue.valueSuggestFood,
+          valueTotal: barbecue.valueTotal,
+          valueCollected: barbecue.valueCollected
+        })
+      }
 
       return noContent()
     } catch (error) {
