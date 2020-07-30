@@ -1,14 +1,21 @@
-export const participantPath = {
+export const participantWithIdPath = {
   put: {
     security: [{
       apiKeyAuth: []
     }],
     tags: ['Participants'],
-    summary: 'API to add a new participant',
+    summary: 'API save participant',
     parameters: [{
       in: 'path',
       name: 'barbecueId',
       required: true,
+      schema: {
+        type: 'string'
+      }
+    }, {
+      in: 'path',
+      name: 'participantId',
+      required: false,
       schema: {
         type: 'string'
       }
@@ -47,12 +54,12 @@ export const participantPath = {
       }
     }
   },
-  get: {
+  delete: {
     security: [{
       apiKeyAuth: []
     }],
     tags: ['Participants'],
-    summary: 'API to list all participants by barbecue',
+    summary: 'API to remove a participant by id',
     parameters: [{
       in: 'path',
       name: 'barbecueId',
@@ -60,18 +67,15 @@ export const participantPath = {
       schema: {
         type: 'string'
       }
+    }, {
+      in: 'path',
+      name: 'participantId',
+      required: true,
+      schema: {
+        type: 'string'
+      }
     }],
     responses: {
-      200: {
-        description: 'Success',
-        content: {
-          'application/json': {
-            schema: {
-              $ref: '#/schemas/participants'
-            }
-          }
-        }
-      },
       204: {
         $ref: '#/components/noContent'
       },
@@ -83,6 +87,9 @@ export const participantPath = {
       },
       500: {
         $ref: '#/components/serverError'
+      },
+      503: {
+        $ref: '#/components/serviceUnavailable'
       }
     }
   }

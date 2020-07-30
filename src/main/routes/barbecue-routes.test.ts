@@ -69,7 +69,7 @@ describe('Barbecue Routes', () => {
   describe('Save route', () => {
     test('Should return 403 on save barbecue without accessToken', async () => {
       await request(app)
-        .put('/api/barbecue')
+        .put('/api/barbecue/')
         .send(mockBarbecueParams())
         .expect(403)
     })
@@ -87,7 +87,7 @@ describe('Barbecue Routes', () => {
         valueCollected: 0
       }
       await request(app)
-        .put('/api/barbecue')
+        .put('/api/barbecue/')
         .set('x-access-token', accessToken)
         .send(barbecue)
         .expect(200)

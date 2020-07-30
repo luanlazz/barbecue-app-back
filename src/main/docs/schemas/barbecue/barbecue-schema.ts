@@ -9,7 +9,10 @@ export const barbecueSchema = {
     },
     description: { type: 'string' },
     observation: { type: 'string' },
-    valueTotalDrink: { type: 'number' },
-    valueTotalFood: { type: 'number' }
+    valueSuggestDrink: { type: 'number' },
+    valueSuggestFood: { type: 'number' },
+    valueTotal: { type: 'number' },
+    numParticipants: { type: 'number' },
+    valueCollected: { type: 'number' }
   }
 }

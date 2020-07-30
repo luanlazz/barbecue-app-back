@@ -7,7 +7,7 @@ export const saveBarbecueParamsSchema = {
     },
     description: { type: 'string' },
     observation: { type: 'string' },
-    valueTotalDrink: { type: 'number' },
-    valueTotalFood: { type: 'number' }
+    valueSuggestDrink: { type: 'number' },
+    valueSuggestFood: { type: 'number' }
   }
 }
