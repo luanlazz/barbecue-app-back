@@ -1,3 +1,5 @@
+import { ParticipantModel } from '@/domain/models/participant'
+
 export type SaveParticipantParams = {
   barbecueId: string
   participantId: string
@@ -6,11 +8,6 @@ export type SaveParticipantParams = {
   value: number
 }
 
-export type SaveParticipantReturn = {
-  oldParticipant: any
-  status: boolean
-}
-
 export interface SaveParticipant {
-  save (participant: SaveParticipantParams): Promise<SaveParticipantReturn>
+  save (participant: SaveParticipantParams): Promise<ParticipantModel>
 }
