@@ -49,6 +49,18 @@ const makeBarbecue = async (accountId: string): Promise<string> => {
   return res.ops[0]._id
 }
 
+const makeParticipant = async (barbecueId: string): Promise<string> => {
+  const participant = {
+    barbecueId,
+    name: 'any_name',
+    pay: false,
+    value: 10
+  }
+
+  const res = await participantsCollection.insertOne(participant)
+  return res.ops[0]._id
+}
+
 describe('Participants Routes', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
@@ -156,9 +168,20 @@ describe('Participants Routes', () => {
   describe('Remove participant', () => {
     test('Should return 403 on remove participant without accessToken', async () => {
       await request(app)
-        .put('/api/barbecue/any_barbecue_id/participants/any_participant_id')
+        .delete('/api/barbecue/any_barbecue_id/participants/any_participant_id')
         .send(mockParticipantParams())
         .expect(403)
+    })
+
+    test('Should remove a participant on success', async () => {
+      const { accessToken, accountId } = await makeAccessToken()
+      const barbecueId = await makeBarbecue(accountId)
+      const participantId = await makeParticipant(barbecueId)
+      await request(app)
+        .delete(`/api/barbecue/${barbecueId}/participants/${participantId}`)
+        .set('x-access-token', accessToken)
+        .send()
+        .expect(204)
     })
   })
 })
