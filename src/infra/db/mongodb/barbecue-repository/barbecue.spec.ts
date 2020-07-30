@@ -114,9 +114,8 @@ describe('Barbecue Mongo Repository', () => {
     test('Should return a list of barbecues on success', async () => {
       const sut = makeSut()
       const { accountId } = await makeAccessToken()
-      const barbecueId = await makeBarbecue()
       const barbecues: barbecueParams[] = [{
-        barbecueId,
+        barbecueId: new ObjectID().toHexString(),
         accountId,
         date: new Date('2020-01-08'),
         description: 'any_description',
@@ -127,7 +126,7 @@ describe('Barbecue Mongo Repository', () => {
         valueCollected: 0,
         valueTotal: 0
       }, {
-        barbecueId,
+        barbecueId: new ObjectID().toHexString(),
         accountId,
         date: new Date('2020-02-08'),
         description: 'other_description',
