@@ -133,6 +133,12 @@ describe('Participants Mongo Repository', () => {
       expect(participant.id).toBeTruthy()
       expect(participant.name).toBe('any_name')
     })
+
+    test('Should return null if not find participant', async () => {
+      const sut = makeSut()
+      const participant = await sut.loadById(new ObjectID().toHexString())
+      expect(participant).toBeNull()
+    })
   })
 
   describe('load', () => {
