@@ -26,6 +26,19 @@ const makeBarbecue = async (accountId: string = new ObjectID().toHexString()): P
   return res.ops[0]._id
 }
 
+const makeParticipant = async (barbecueId: string): Promise<string> => {
+  const participant: SaveParticipantParams = {
+    barbecueId,
+    participantId: 'any_participant_id',
+    name: 'any_name',
+    pay: false,
+    value: 20
+  }
+
+  const res = await participantsCollection.insertOne(participant)
+  return res.ops[0]._id
+}
+
 const makeParticipants = async (barbecueId: string): Promise<void> => {
   const participants: SaveParticipantParams[] = [{
     barbecueId,
@@ -107,6 +120,18 @@ describe('Participants Mongo Repository', () => {
       expect(result.name).toEqual(participantNew.name)
       const count = await participantsCollection.count()
       expect(count).toBe(1)
+    })
+  })
+
+  describe('loadById', () => {
+    test('Should load by id return a participant', async () => {
+      const barbecueId = await makeBarbecue()
+      const participantId = await makeParticipant(barbecueId)
+      const sut = makeSut()
+      const participant = await sut.loadById(participantId)
+      expect(participant).toBeTruthy()
+      expect(participant.id).toBeTruthy()
+      expect(participant.name).toBe('any_name')
     })
   })
 
