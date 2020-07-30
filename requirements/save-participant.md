@@ -13,4 +13,4 @@
 1. ✅ 400 badRequest: validate field fails or invalid barbecue id;
 2. ✅ 401 unauthorized: if not receive a valid access token;
 3. ✅ 404 notFound: if route doesn't exists;
-4. ✅ 500 serverError: any error in data or infra layer;
+4. ✅ 500 serverError;

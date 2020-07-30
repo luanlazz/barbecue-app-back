@@ -14,7 +14,6 @@
 ### Exceptions
 
 1. ✅ 400 badRequest: validate fields fails;
-2. ✅ 403 forbidden: if not receive a invalid access token;
-3. ❌ 403 forbidden: if not receive a valid barbecue id;
-4. ✅ 404 notFound: if route doesn't exists;
-5. ✅ 500 serverError: if create/update fails;
+2. ✅ 403 forbidden: if access token is invalid;
+3. ✅ 404 notFound: if route doesn't exists;
+4. ✅ 500 serverError;
