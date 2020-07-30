@@ -35,7 +35,6 @@ describe('SaveParticipant use case', () => {
   test('Should return a participant on success', async () => {
     const { sut } = makeSut()
     const result = await sut.save(mockParticipantParams())
-    expect(result.oldParticipant).toEqual(mockParticipantModel())
-    expect(result.status).toBeTruthy()
+    expect(result).toEqual(mockParticipantModel())
   })
 })
