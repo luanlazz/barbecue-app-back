@@ -15,11 +15,8 @@ const makeBarbecue = async (accountId: string = new ObjectID().toHexString()): P
     date: new Date('25/08/2020'),
     description: 'Primeiro churras!',
     observation: 'teste',
-    numParticipants: 0,
-    valueSuggestDrink: 0,
-    valueSuggestFood: 0,
-    valueTotal: 0,
-    valueCollected: 0
+    valueSuggestDrink: 10,
+    valueSuggestFood: 20
   }
 
   const res = await barbecueCollection.insertOne(barbecue)

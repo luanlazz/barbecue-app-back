@@ -7,11 +7,8 @@ export const mockBarbecueParams = (): barbecueParams => ({
   date: new Date('2020-01-08'),
   description: 'any_description',
   observation: 'any_observation',
-  numParticipants: 0,
   valueSuggestDrink: 0,
-  valueSuggestFood: 0,
-  valueTotal: 0,
-  valueCollected: 0
+  valueSuggestFood: 0
 })
 
 export const mockBarbecueModel = (): BarbecueModel => ({

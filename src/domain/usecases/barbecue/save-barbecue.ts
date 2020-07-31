@@ -6,11 +6,8 @@ export type barbecueParams = {
   date: Date
   description: string
   observation: string
-  numParticipants: number
   valueSuggestDrink: number
   valueSuggestFood: number
-  valueTotal: number
-  valueCollected: number
 }
 
 export interface SaveBarbecue {

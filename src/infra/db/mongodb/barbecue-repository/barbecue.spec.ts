@@ -16,11 +16,8 @@ const makeBarbecue = async (accountId: string = new ObjectID().toHexString()): P
     date: new Date('25/08/2020'),
     description: 'Primeiro churras!',
     observation: 'teste',
-    numParticipants: 0,
     valueSuggestDrink: 0,
-    valueSuggestFood: 0,
-    valueTotal: 0,
-    valueCollected: 0
+    valueSuggestFood: 0
   }
 
   const res = await barbecueCollection.insertOne(barbecue)
@@ -82,11 +79,8 @@ describe('Barbecue Mongo Repository', () => {
       expect(barbecueResult.date).toEqual(barbecueParams.date)
       expect(barbecueResult.description).toEqual(barbecueParams.description)
       expect(barbecueResult.observation).toEqual(barbecueParams.observation)
-      expect(barbecueResult.numParticipants).toEqual(barbecueParams.numParticipants)
       expect(barbecueResult.valueSuggestDrink).toEqual(barbecueParams.valueSuggestDrink)
       expect(barbecueResult.valueSuggestFood).toEqual(barbecueParams.valueSuggestFood)
-      expect(barbecueResult.valueTotal).toEqual(barbecueParams.valueTotal)
-      expect(barbecueResult.valueCollected).toEqual(barbecueParams.valueCollected)
     })
 
     test('Should update if barbecue exists', async () => {
@@ -102,11 +96,8 @@ describe('Barbecue Mongo Repository', () => {
       expect(barbecueResult.date).toEqual(newBarbecue.date)
       expect(barbecueResult.description).toEqual(newBarbecue.description)
       expect(barbecueResult.observation).toEqual(newBarbecue.observation)
-      expect(barbecueResult.numParticipants).toEqual(newBarbecue.numParticipants)
       expect(barbecueResult.valueSuggestDrink).toEqual(newBarbecue.valueSuggestDrink)
       expect(barbecueResult.valueSuggestFood).toEqual(newBarbecue.valueSuggestFood)
-      expect(barbecueResult.valueTotal).toEqual(newBarbecue.valueTotal)
-      expect(barbecueResult.valueCollected).toEqual(newBarbecue.valueCollected)
     })
   })
 
@@ -120,22 +111,16 @@ describe('Barbecue Mongo Repository', () => {
         date: new Date('2020-01-08'),
         description: 'any_description',
         observation: 'any_observation',
-        numParticipants: 0,
         valueSuggestDrink: 0,
-        valueSuggestFood: 0,
-        valueCollected: 0,
-        valueTotal: 0
+        valueSuggestFood: 0
       }, {
         barbecueId: new ObjectID().toHexString(),
         accountId,
         date: new Date('2020-02-08'),
         description: 'other_description',
         observation: 'other_observation',
-        numParticipants: 0,
         valueSuggestDrink: 0,
-        valueSuggestFood: 0,
-        valueCollected: 0,
-        valueTotal: 0
+        valueSuggestFood: 0
       }]
       await barbecueCollection.insertMany(barbecues)
       const barbecueResult = await sut.loadAll(accountId)

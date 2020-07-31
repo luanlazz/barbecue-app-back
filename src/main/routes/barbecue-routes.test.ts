@@ -39,11 +39,8 @@ const makeBarbecue = async (accountId: string = new ObjectID().toHexString()): P
     date: new Date('25/08/2020'),
     description: 'Primeiro churras!',
     observation: 'teste',
-    numParticipants: 0,
     valueSuggestDrink: 0,
-    valueSuggestFood: 0,
-    valueTotal: 0,
-    valueCollected: 0
+    valueSuggestFood: 0
   }
 
   const res = await barbecueCollection.insertOne(barbecue)
@@ -100,11 +97,8 @@ describe('Barbecue Routes', () => {
         date: new Date('01/08/2020'),
         description: 'other_description',
         observation: 'other_observation',
-        numParticipants: 0,
         valueSuggestDrink: 100,
-        valueSuggestFood: 100,
-        valueTotal: 0,
-        valueCollected: 0
+        valueSuggestFood: 100
       }
       await request(app)
         .put(`/api/barbecue/${barbecueId}`)

@@ -31,11 +31,8 @@ const mockRequest = (): HttpRequest => ({
     date: 'any_date',
     description: 'any_description',
     observation: 'any_observation',
-    numParticipants: 0,
     valueSuggestDrink: 0,
-    valueSuggestFood: 0,
-    valueTotal: 0,
-    valueCollected: 0
+    valueSuggestFood: 0
   },
   accountId: 'any_account_id'
 })

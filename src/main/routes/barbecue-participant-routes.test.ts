@@ -38,11 +38,8 @@ const makeBarbecue = async (accountId: string): Promise<string> => {
     date: '25/08/2020',
     description: 'Primeiro churras!',
     observation: 'teste',
-    numParticipants: 0,
     valueSuggestDrink: 100,
-    valueSuggestFood: 100,
-    valueTotal: 0,
-    valueCollected: 0
+    valueSuggestFood: 100
   }
 
   const res = await barbecueCollection.insertOne(barbecue)
