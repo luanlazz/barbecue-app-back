@@ -7,12 +7,12 @@
 
 1. [Sign up](./requirements/signup.md)
 2. [Login](./requirements/login.md)
-
 3. [Save barbecue](./requirements/save-barbecue.md)
 4. [List barbecues](./requirements/list-barbecues.md)
-
-5. [Save participant](./requirements/save-participant.md)
-6. [List participant](./requirements/list-participants.md)
+5. [List barbecue by id](./requirements/list-barbecue-by-id.md)
+6. [Save participant](./requirements/save-participant.md)
+7. [List participants](./requirements/list-participants.md)
+8. [Remove participants](./requirements/remove-participant.md)
 
 ## Principles
 

@@ -1,5 +1,5 @@
 export * from './barbecue/barbecue-path'
-export * from './barbecue/barbecue-get-path'
+export * from './barbecue/barbecue-with-id-path'
 export * from './account/login-path'
 export * from './account/signup-path'
 export * from './participant/participant-path'

@@ -1,10 +1,18 @@
-export const barbecuePath = {
+export const barbecueWithIdPath = {
   put: {
     security: [{
       apiKeyAuth: []
     }],
     tags: ['Barbecue'],
-    summary: 'API to create barbecues',
+    summary: 'API to update barbecues',
+    parameters: [{
+      in: 'path',
+      name: 'barbecueId',
+      required: true,
+      schema: {
+        type: 'string'
+      }
+    }],
     requestBody: {
       content: {
         'application/json': {
@@ -44,7 +52,15 @@ export const barbecuePath = {
       apiKeyAuth: []
     }],
     tags: ['Barbecue'],
-    summary: 'API to list all barbecues by user',
+    summary: 'API to list a barbecue by id',
+    parameters: [{
+      in: 'path',
+      name: 'barbecueId',
+      required: true,
+      schema: {
+        type: 'string'
+      }
+    }],
     responses: {
       200: {
         description: 'Success',
@@ -55,9 +71,6 @@ export const barbecuePath = {
             }
           }
         }
-      },
-      204: {
-        $ref: '#/components/noContent'
       },
       403: {
         $ref: '#/components/forbidden'
