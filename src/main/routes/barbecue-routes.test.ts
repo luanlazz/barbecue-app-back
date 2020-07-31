@@ -159,5 +159,15 @@ describe('Barbecue Routes', () => {
         .send()
         .expect(200)
     })
+
+    test('Should return 403 if barbecue id wrong', async () => {
+      const { accessToken } = await makeAccessToken()
+      const barbecueId = new ObjectID().toHexString()
+      await request(app)
+        .get(`/api/barbecue/${barbecueId}/`)
+        .set('x-access-token', accessToken)
+        .send()
+        .expect(403)
+    })
   })
 })
