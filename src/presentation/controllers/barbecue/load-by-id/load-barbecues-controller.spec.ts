@@ -2,6 +2,8 @@ import { LoadBarbecueByIdController } from './load-barbecues-controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { mockLoadBarbecueById } from '@/presentation/test/mock-barbecue'
 import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
+import { throwError } from '@/domain/test'
+import { serverError } from '@/presentation/helpers/http/http-helper'
 
 type SutTypes = {
   sut: LoadBarbecueByIdController
@@ -24,10 +26,17 @@ const mockRequest = (): HttpRequest => ({
 })
 
 describe('LoadBarbecue Controller', () => {
-  test('should call LoadBarbecueById with correct account id', async () => {
+  test('should call LoadBarbecueById with correct barbecue id', async () => {
     const { sut, loadBarbecueByIdStub } = makeSut()
     const loadSpy = jest.spyOn(loadBarbecueByIdStub, 'loadById')
     await sut.handle(mockRequest())
     expect(loadSpy).toHaveBeenCalledWith(mockRequest().params.barbecueId)
+  })
+
+  test('should return 500 if LoadBarbecueById throws', async () => {
+    const { sut, loadBarbecueByIdStub } = makeSut()
+    jest.spyOn(loadBarbecueByIdStub, 'loadById').mockImplementation(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
