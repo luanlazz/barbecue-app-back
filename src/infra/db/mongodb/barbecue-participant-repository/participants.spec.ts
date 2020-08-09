@@ -2,17 +2,16 @@ import { ParticipantsMongoRepository } from './participants'
 import { mockParticipantParams } from '@/domain/test'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-participant'
-import { barbecueParams } from '@/domain/usecases/barbecue/save-barbecue'
 import { Collection, ObjectID } from 'mongodb'
 
 let participantsCollection: Collection
 let barbecueCollection: Collection
 
 const makeBarbecue = async (accountId: string = new ObjectID().toHexString()): Promise<string> => {
-  const barbecue: barbecueParams = {
+  const barbecue = {
     barbecueId: new ObjectID().toHexString(),
     accountId,
-    date: new Date('25/08/2020'),
+    date: new Date('25/08/2020T00:00:00'),
     description: 'Primeiro churras!',
     observation: 'teste',
     valueSuggestDrink: 10,

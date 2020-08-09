@@ -36,7 +36,7 @@ const makeBarbecue = async (accountId: string = new ObjectID().toHexString()): P
   const barbecue: barbecueParams = {
     barbecueId: new ObjectID().toHexString(),
     accountId,
-    date: new Date('25/08/2020'),
+    date: '25/08/2020',
     description: 'Primeiro churras!',
     observation: 'teste',
     valueSuggestDrink: 0,
