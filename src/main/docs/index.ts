@@ -7,7 +7,7 @@ export default {
   info: {
     title: 'Barbecue Api',
     description: 'App to manager barbecues between friends',
-    version: '1.6.0'
+    version: '1.6.1'
   },
   servers: [{
     url: '/api'
