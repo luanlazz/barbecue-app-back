@@ -20,7 +20,7 @@ export class BarbecueMongoRepository implements SaveBarbecueRepository,
       accountId: new ObjectId(barbecue.accountId)
     }, {
       $set: {
-        date: barbecue.date,
+        date: new Date(`${barbecue.date}T00:00:00`),
         description: barbecue.description,
         observation: barbecue.observation,
         valueSuggestDrink: barbecue.valueSuggestDrink,
@@ -31,7 +31,7 @@ export class BarbecueMongoRepository implements SaveBarbecueRepository,
       returnOriginal: false
     })
 
-    return MongoHelper.map(result.value)
+    return MongoHelper.map(this.manipulateResult(result.value))
   }
 
   async loadAll (accountId: string): Promise<BarbecueModel[]> {
@@ -95,7 +95,7 @@ export class BarbecueMongoRepository implements SaveBarbecueRepository,
       .build()
 
     const barbecues = await barbecueCollection.aggregate(query).toArray()
-    return MongoHelper.mapCollection(barbecues)
+    return MongoHelper.mapCollection(barbecues.map(barbecue => this.manipulateResult(barbecue)))
   }
 
   async loadById (barbecueId: string): Promise<BarbecueModel> {
@@ -159,6 +159,17 @@ export class BarbecueMongoRepository implements SaveBarbecueRepository,
       .build()
 
     const barbecue = await barbecueCollection.aggregate(query).toArray()
-    return barbecue[0] ? MongoHelper.map(barbecue[0]) : null
+    return barbecue[0] ? MongoHelper.map(this.manipulateResult(barbecue[0])) : null
+  }
+
+  manipulateResult (barbecue: BarbecueModel): BarbecueModel {
+    return ({
+      ...barbecue,
+      numParticipants: barbecue.numParticipants || 0,
+      valueSuggestDrink: barbecue.valueSuggestDrink || 0,
+      valueSuggestFood: barbecue.valueSuggestFood || 0,
+      valueTotal: barbecue.valueTotal || 0,
+      valueCollected: barbecue.valueCollected || 0
+    })
   }
 }

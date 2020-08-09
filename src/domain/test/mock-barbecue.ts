@@ -4,7 +4,7 @@ import { barbecueParams } from '../usecases/barbecue/save-barbecue'
 export const mockBarbecueParams = (): barbecueParams => ({
   barbecueId: 'any_barbecue_id',
   accountId: 'any_account_id',
-  date: new Date('2020-01-08'),
+  date: '2020-01-08',
   description: 'any_description',
   observation: 'any_observation',
   valueSuggestDrink: 0,
@@ -13,7 +13,7 @@ export const mockBarbecueParams = (): barbecueParams => ({
 
 export const mockBarbecueModel = (): BarbecueModel => ({
   id: 'any_id',
-  date: new Date('2020-01-08'),
+  date: new Date('2020-01-08T00:00:00'),
   description: 'any_description',
   observation: 'any_observation',
   numParticipants: 0,
@@ -26,7 +26,7 @@ export const mockBarbecueModel = (): BarbecueModel => ({
 export const mockBarbecuesList = (): BarbecueModel[] => ([
   {
     id: 'any_id',
-    date: new Date('2020-01-08'),
+    date: new Date('2020-01-08T00:00:00'),
     description: 'any_description',
     observation: 'any_observation',
     numParticipants: 0,
@@ -37,7 +37,7 @@ export const mockBarbecuesList = (): BarbecueModel[] => ([
   },
   {
     id: 'other_id',
-    date: new Date('2020-05-08'),
+    date: new Date('2020-05-08T00:00:00'),
     description: 'other_description',
     observation: 'other_observation',
     numParticipants: 0,

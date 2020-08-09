@@ -13,7 +13,7 @@ const makeBarbecue = async (accountId: string = new ObjectID().toHexString()): P
   const barbecue: barbecueParams = {
     barbecueId: new ObjectID().toHexString(),
     accountId,
-    date: new Date('25/08/2020'),
+    date: '25/08/2020',
     description: 'Primeiro churras!',
     observation: 'teste',
     valueSuggestDrink: 0,
@@ -76,7 +76,7 @@ describe('Barbecue Mongo Repository', () => {
       const barbecueResult = await sut.save(barbecueParams)
       expect(barbecueResult).toBeTruthy()
       expect(barbecueResult.id).toBeTruthy()
-      expect(barbecueResult.date).toEqual(barbecueParams.date)
+      expect(barbecueResult.date).toEqual(new Date(`${barbecueParams.date}T00:00:00`))
       expect(barbecueResult.description).toEqual(barbecueParams.description)
       expect(barbecueResult.observation).toEqual(barbecueParams.observation)
       expect(barbecueResult.valueSuggestDrink).toEqual(barbecueParams.valueSuggestDrink)
@@ -93,7 +93,7 @@ describe('Barbecue Mongo Repository', () => {
       const barbecueResult = await sut.save(newBarbecue)
       expect(barbecueResult).toBeTruthy()
       expect(barbecueResult.id).toBeTruthy()
-      expect(barbecueResult.date).toEqual(newBarbecue.date)
+      expect(barbecueResult.date).toEqual(new Date(`${newBarbecue.date}T00:00:00`))
       expect(barbecueResult.description).toEqual(newBarbecue.description)
       expect(barbecueResult.observation).toEqual(newBarbecue.observation)
       expect(barbecueResult.valueSuggestDrink).toEqual(newBarbecue.valueSuggestDrink)
@@ -108,7 +108,7 @@ describe('Barbecue Mongo Repository', () => {
       const barbecues: barbecueParams[] = [{
         barbecueId: new ObjectID().toHexString(),
         accountId,
-        date: new Date('2020-01-08'),
+        date: '2020-01-08',
         description: 'any_description',
         observation: 'any_observation',
         valueSuggestDrink: 0,
@@ -116,7 +116,7 @@ describe('Barbecue Mongo Repository', () => {
       }, {
         barbecueId: new ObjectID().toHexString(),
         accountId,
-        date: new Date('2020-02-08'),
+        date: '2020-02-08',
         description: 'other_description',
         observation: 'other_observation',
         valueSuggestDrink: 0,
