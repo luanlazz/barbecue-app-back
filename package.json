@@ -2,7 +2,7 @@
   "author": "Luan Lazzari",
   "name": "back",
   "version": "1.6.0",
-  "description": "",
+  "description": "Back to Barbecue App (nodeJs)",
   "main": "index.js",
   "license": "ISC",
   "keywords": [],

@@ -4,7 +4,7 @@ export const barbecueWithIdPath = {
       apiKeyAuth: []
     }],
     tags: ['Barbecue'],
-    summary: 'API to update barbecues',
+    summary: 'API to update a barbecue',
     parameters: [{
       in: 'path',
       name: 'barbecueId',

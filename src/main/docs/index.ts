@@ -6,7 +6,7 @@ export default {
   openapi: '3.0.0',
   info: {
     title: 'Barbecue Api',
-    description: 'App to manager barbecues entry friends',
+    description: 'App to manager barbecues between friends',
     version: '1.6.0'
   },
   servers: [{

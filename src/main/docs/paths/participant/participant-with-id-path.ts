@@ -4,7 +4,7 @@ export const participantWithIdPath = {
       apiKeyAuth: []
     }],
     tags: ['Participants'],
-    summary: 'API save participant',
+    summary: 'API to update a participant',
     parameters: [{
       in: 'path',
       name: 'barbecueId',

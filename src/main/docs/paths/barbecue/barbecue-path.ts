@@ -4,7 +4,7 @@ export const barbecuePath = {
       apiKeyAuth: []
     }],
     tags: ['Barbecue'],
-    summary: 'API to create barbecues',
+    summary: 'API to add a new barbecue',
     requestBody: {
       content: {
         'application/json': {
