@@ -82,7 +82,7 @@ export class BarbecueMongoRepository implements SaveBarbecueRepository,
         valueSuggestFood: 1,
         valueTotal: 1,
         numParticipants: 1,
-        collected: {
+        valueCollected: {
           $reduce: {
             input: '$paid',
             initialValue: '$value',
@@ -146,7 +146,7 @@ export class BarbecueMongoRepository implements SaveBarbecueRepository,
         valueSuggestFood: 1,
         valueTotal: 1,
         numParticipants: 1,
-        collected: {
+        valueCollected: {
           $reduce: {
             input: '$paid',
             initialValue: '$value',
