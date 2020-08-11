@@ -1,7 +1,16 @@
 [![Build Status](https://travis-ci.org/luanlazz/barbecue-app-back.svg?branch=master)](https://travis-ci.org/luanlazz/barbecue-app-back)
 [![Coverage Status](https://coveralls.io/repos/github/luanlazz/barbecue-app-back/badge.svg?branch=master)](https://coveralls.io/github/luanlazz/barbecue-app-back?branch=master)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+[![GitHub release](https://img.shields.io/badge/dynamic/json?color=blue&label=release&prefix=v&query=version&suffix=updated&url=https%3A%2F%2Fraw.githubusercontent.com%2Fluanlazz%2Fbarbecue-app-back%2Fmaster%2Fpackage.json)](https://github.com/luanlazz/barbecue-app-back/releases)
+
 
 # **Barbecue APP (back)**
+
+Api to manager yours barbecues.
+
+## Swagger
+
+[Swagger](https://barbecue-back.herokuapp.com/api-docs/)
 
 ## Features
 
@@ -14,6 +23,12 @@
 7. [List participants](./requirements/list-participants.md)
 8. [Remove participants](./requirements/remove-participant.md)
 
+## Methodologies and Designs
+
+* Test Driven Development (TDD)
+* Clean Architecture
+* Domain-‐Driven Design (DDD)
+
 ## Principles
 
 * SOLID
@@ -22,9 +37,3 @@
 * YAGNI
 * KISS
 * Small Commits
-
-## Methodologies and Designs
-
-* TDD
-* Clean Architecture
-* DDD
