@@ -7,7 +7,7 @@
 
 Api to manager yours barbecues.
 
-## Swagger
+## Documentation
 
 [Swagger](https://barbecue-back.herokuapp.com/api-docs/)
 
