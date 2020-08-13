@@ -13,7 +13,7 @@ const makeBarbecue = async (accountId: string = new ObjectID().toHexString()): P
   const barbecue: barbecueParams = {
     barbecueId: new ObjectID().toHexString(),
     accountId,
-    date: '25/08/2020',
+    date: new Date().toISOString(),
     description: 'Primeiro churras!',
     observation: 'teste',
     valueSuggestDrink: 0,
@@ -73,10 +73,11 @@ describe('Barbecue Mongo Repository', () => {
       const barbecueParams = mockBarbecueParams()
       barbecueParams.accountId = accountId
       barbecueParams.barbecueId = null
+      barbecueParams.date = new Date().toISOString()
       const barbecueResult = await sut.save(barbecueParams)
       expect(barbecueResult).toBeTruthy()
       expect(barbecueResult.id).toBeTruthy()
-      expect(barbecueResult.date).toEqual(new Date(`${barbecueParams.date}T00:00:00`))
+      expect(barbecueResult.date).toEqual(new Date(barbecueParams.date))
       expect(barbecueResult.description).toEqual(barbecueParams.description)
       expect(barbecueResult.observation).toEqual(barbecueParams.observation)
       expect(barbecueResult.valueSuggestDrink).toEqual(barbecueParams.valueSuggestDrink)
@@ -90,10 +91,11 @@ describe('Barbecue Mongo Repository', () => {
       const newBarbecue = mockBarbecueParams()
       newBarbecue.barbecueId = barbecueId
       newBarbecue.accountId = accountId
+      newBarbecue.date = new Date().toISOString()
       const barbecueResult = await sut.save(newBarbecue)
       expect(barbecueResult).toBeTruthy()
       expect(barbecueResult.id).toBeTruthy()
-      expect(barbecueResult.date).toEqual(new Date(`${newBarbecue.date}T00:00:00`))
+      expect(barbecueResult.date).toEqual(new Date(newBarbecue.date))
       expect(barbecueResult.description).toEqual(newBarbecue.description)
       expect(barbecueResult.observation).toEqual(newBarbecue.observation)
       expect(barbecueResult.valueSuggestDrink).toEqual(newBarbecue.valueSuggestDrink)
