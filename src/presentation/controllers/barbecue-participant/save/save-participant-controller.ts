@@ -18,13 +18,13 @@ export class SaveParticipantController implements Controller {
       const error = this.validation.validate(httpRequest.body)
       if (error) return badRequest(error)
 
-      const { name, pay, value } = httpRequest.body
+      const { id, name, pay, value } = httpRequest.body
       const { barbecueId, participantId } = httpRequest.params
 
       const barbecue = await this.loadBarbecueById.loadById(barbecueId)
       if (!barbecue) return forbidden(new InvalidParamError('barbecueId'))
 
-      const participant = await this.saveParticipant.save({ barbecueId, participantId, name, pay, value })
+      const participant = await this.saveParticipant.save({ barbecueId, participantId: participantId || id, name, pay, value })
 
       return ok(participant)
     } catch (error) {
