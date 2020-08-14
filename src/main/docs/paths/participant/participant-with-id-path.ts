@@ -87,9 +87,6 @@ export const participantWithIdPath = {
       },
       500: {
         $ref: '#/components/serverError'
-      },
-      503: {
-        $ref: '#/components/serviceUnavailable'
       }
     }
   }
