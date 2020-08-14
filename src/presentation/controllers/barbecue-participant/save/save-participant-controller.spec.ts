@@ -89,6 +89,20 @@ describe('SaveBarbecue Controller', () => {
     })
   })
 
+  test('should call SaveParticipant with id on body if no participantId on params', async () => {
+    const { sut, saveParticipantStub } = makeSut()
+    const saveSpy = jest.spyOn(saveParticipantStub, 'save')
+    const request = mockRequest()
+    delete request.params.participantId
+    request.body.id = 'any_body_id'
+    await sut.handle(request)
+    expect(saveSpy).toHaveBeenCalledWith({
+      barbecueId: 'any_barbecue_id',
+      participantId: 'any_body_id',
+      ...mockRequest().body
+    })
+  })
+
   test('should throws if SaveParticipant throws', async () => {
     const { sut, saveParticipantStub } = makeSut()
     jest.spyOn(saveParticipantStub, 'save').mockImplementation(throwError)
