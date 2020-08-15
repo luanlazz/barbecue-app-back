@@ -1,6 +1,6 @@
 import env from '@/main/config/env'
 import app from '@/main/config/app'
-import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
+import { MongoHelper } from '@/infra/db/mongodb'
 import { mockAddAccountParams, mockBarbecueParams } from '@/domain/test'
 import { barbecueParams } from '@/domain/usecases/barbecue/save-barbecue'
 import { Collection, ObjectID } from 'mongodb'

@@ -1,5 +1,5 @@
 import app from '@/main/config/app'
-import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
+import { MongoHelper } from '@/infra/db/mongodb'
 import { mockAccountModel } from '@/domain/test'
 import { Collection } from 'mongodb'
 import { hash } from 'bcrypt'

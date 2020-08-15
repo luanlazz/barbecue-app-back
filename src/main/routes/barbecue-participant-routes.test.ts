@@ -1,6 +1,6 @@
 import env from '@/main/config/env'
 import app from '@/main/config/app'
-import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
+import { MongoHelper } from '@/infra/db/mongodb'
 import { mockAddAccountParams, mockParticipantParams } from '@/domain/test'
 import { Collection, ObjectID } from 'mongodb'
 import { sign } from 'jsonwebtoken'
