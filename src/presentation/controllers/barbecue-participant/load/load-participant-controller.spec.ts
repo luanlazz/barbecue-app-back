@@ -3,9 +3,10 @@ import { HttpRequest } from '@/presentation/protocols/http'
 import { mockLoadParticipants } from '@/presentation/test/mock-participant'
 import { LoadParticipants } from '@/domain/usecases/barbecue-participant/load-participants'
 import { throwError, mockParticipantsModel } from '@/domain/test'
-import { serverError, noContent, ok } from '@/presentation/helpers/http/http-helper'
+import { serverError, forbidden, noContent, ok } from '@/presentation/helpers/http/http-helper'
 import { mockLoadBarbecueById } from '@/presentation/test'
 import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
+import { InvalidParamError } from '@/presentation/errors'
 
 type SutTypes = {
   sut: LoadParticipantsController
@@ -43,6 +44,13 @@ describe('LoadParticipant Controller', () => {
     jest.spyOn(loadBarbecueByIdStub, 'loadById').mockImplementation(throwError)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('should return 403 if LoadBarbecueById not return a barbecue', async () => {
+    const { sut, loadBarbecueByIdStub } = makeSut()
+    jest.spyOn(loadBarbecueByIdStub, 'loadById').mockReturnValueOnce(null)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('barbecueId')))
   })
 
   test('should call LoadParticipants with correct barbecue id', async () => {
