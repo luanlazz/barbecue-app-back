@@ -38,6 +38,13 @@ describe('LoadParticipant Controller', () => {
     expect(loadSpy).toHaveBeenCalledWith(mockRequest().params.barbecueId)
   })
 
+  test('should return 500 if LoadBarbecueById throws', async () => {
+    const { sut, loadBarbecueByIdStub } = makeSut()
+    jest.spyOn(loadBarbecueByIdStub, 'loadById').mockImplementation(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
   test('should call LoadParticipants with correct barbecue id', async () => {
     const { sut, loadParticipantsStub } = makeSut()
     const loadSpy = jest.spyOn(loadParticipantsStub, 'load')
