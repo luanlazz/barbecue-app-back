@@ -1,4 +1,5 @@
 import { DateValidatorAdapter } from './date-validator-adapter'
+import faker from 'faker'
 
 const makeSut = (): DateValidatorAdapter => {
   return new DateValidatorAdapter()
@@ -28,6 +29,11 @@ describe('DateValidatorAdapter adapter', () => {
   test('Should return true if day is valid', () => {
     const sut = makeSut()
     const result = sut.isValid('2020-02-29T00:00:00')
+    expect(result).toBeTruthy()
+  })
+  test('Should return true if date is valid', () => {
+    const sut = makeSut()
+    const result = sut.isValid(faker.date.recent().toISOString())
     expect(result).toBeTruthy()
   })
 })
