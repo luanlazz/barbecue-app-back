@@ -12,4 +12,16 @@ describe('Query Builder', () => {
       }
     }])
   })
+
+  test('Should return valid match query', () => {
+    const query = new QueryBuilder()
+      .match({ test: 'any_group' })
+      .build()
+
+    expect(query).toEqual([{
+      $match: {
+        test: 'any_group'
+      }
+    }])
+  })
 })
