@@ -9,9 +9,9 @@ type SutTypes = {
   dateValidatorStub: DateValidator
 }
 
-const makeSut = (field = faker.database.column()): SutTypes => {
+const makeSut = (): SutTypes => {
   const dateValidatorStub = mockDateValidator()
-  const sut = new DateValidation(dateValidatorStub, field)
+  const sut = new DateValidation(dateValidatorStub, 'date')
   return {
     sut,
     dateValidatorStub
@@ -20,19 +20,23 @@ const makeSut = (field = faker.database.column()): SutTypes => {
 
 describe('DateValidation Validation', () => {
   test('Should DateValidation calls dateValidator with correct date', () => {
-    const field = faker.database.column()
-    const { sut, dateValidatorStub } = makeSut(field)
+    const { sut, dateValidatorStub } = makeSut()
     const isValidSpy = jest.spyOn(dateValidatorStub, 'isValid')
     const date = faker.date.recent()
-    sut.validate({ [field]: date })
+    sut.validate({ date })
     expect(isValidSpy).toHaveBeenCalledWith(date)
   })
 
   test('Should return a InvalidParamError if validation fails', () => {
-    const field = faker.database.column()
-    const { sut, dateValidatorStub } = makeSut(field)
+    const { sut, dateValidatorStub } = makeSut()
     jest.spyOn(dateValidatorStub, 'isValid').mockReturnValueOnce(false)
     const error = sut.validate({ date: faker.date.recent() })
-    expect(error).toEqual(new InvalidParamError(field))
+    expect(error).toEqual(new InvalidParamError('date'))
+  })
+
+  test('Should return falsy if validation success', () => {
+    const { sut } = makeSut()
+    const result = sut.validate({ date: faker.date.recent() })
+    expect(result).toBeFalsy()
   })
 })
