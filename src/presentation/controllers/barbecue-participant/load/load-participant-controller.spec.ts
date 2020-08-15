@@ -4,18 +4,23 @@ import { mockLoadParticipants } from '@/presentation/test/mock-participant'
 import { LoadParticipants } from '@/domain/usecases/barbecue-participant/load-participants'
 import { throwError, mockParticipantsModel } from '@/domain/test'
 import { serverError, noContent, ok } from '@/presentation/helpers/http/http-helper'
+import { mockLoadBarbecueById } from '@/presentation/test'
+import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
 
 type SutTypes = {
   sut: LoadParticipantsController
   loadParticipantsStub: LoadParticipants
+  loadBarbecueByIdStub: LoadBarbecueById
 }
 
 const makeSut = (): SutTypes => {
+  const loadBarbecueByIdStub = mockLoadBarbecueById()
   const loadParticipantsStub = mockLoadParticipants()
-  const sut = new LoadParticipantsController(loadParticipantsStub)
+  const sut = new LoadParticipantsController(loadBarbecueByIdStub, loadParticipantsStub)
   return {
     sut,
-    loadParticipantsStub
+    loadParticipantsStub,
+    loadBarbecueByIdStub
   }
 }
 
@@ -26,6 +31,13 @@ const mockRequest = (): HttpRequest => ({
 })
 
 describe('LoadParticipant Controller', () => {
+  test('should call LoadBarbecueById with correct barbecue id', async () => {
+    const { sut, loadBarbecueByIdStub } = makeSut()
+    const loadSpy = jest.spyOn(loadBarbecueByIdStub, 'loadById')
+    await sut.handle(mockRequest())
+    expect(loadSpy).toHaveBeenCalledWith(mockRequest().params.barbecueId)
+  })
+
   test('should call LoadParticipants with correct barbecue id', async () => {
     const { sut, loadParticipantsStub } = makeSut()
     const loadSpy = jest.spyOn(loadParticipantsStub, 'load')
