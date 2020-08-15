@@ -1,9 +1,8 @@
 import env from '@/main/config/env'
-import { Authentication } from '@/domain/usecases/account/authentication'
-import { AccountMongoRepository } from '@/infra/db/mongodb/account-repository/account'
-import { BcryptAdapter } from '@/infra/cryptography/bcrypt-adapter/bcrypt-adapter'
-import { JwtAdapter } from '@/infra/cryptography/jwt-adapter/jwt-adapter'
-import { DbAuthentication } from '@/data/usecases/account/authentication/db-authentication'
+import { Authentication } from '@/domain/usecases'
+import { AccountMongoRepository } from '@/infra/db/mongodb'
+import { BcryptAdapter, JwtAdapter } from '@/infra/cryptography'
+import { DbAuthentication } from '@/data/usecases'
 
 export const makeAuthentication = (): Authentication => {
   const loadAccountRepository = new AccountMongoRepository()

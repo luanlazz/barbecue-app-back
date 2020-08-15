@@ -1,5 +1,5 @@
 import { DbSaveParticipant } from './save-participant'
-import { SaveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-save-participant'
+import { SaveParticipantRepository } from '@/data/protocols/db'
 import { mockSaveParticipantRepository } from '@/data/test'
 import { mockParticipantParams, throwError, mockParticipantModel } from '@/domain/test'
 

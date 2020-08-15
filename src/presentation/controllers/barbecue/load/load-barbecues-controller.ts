@@ -1,7 +1,6 @@
-import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
-import { Controller } from '@/presentation/protocols/controller'
-import { serverError, noContent, ok } from '@/presentation/helpers/http/http-helper'
-import { LoadBarbecues } from '@/domain/usecases/barbecue/load-barbecues'
+import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
+import { serverError, noContent, ok } from '@/presentation/helpers'
+import { LoadBarbecues } from '@/domain/usecases'
 
 export class LoadBarbecuesController implements Controller {
   constructor (private readonly loadBarbecues: LoadBarbecues) {}

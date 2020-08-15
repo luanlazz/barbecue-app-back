@@ -1,6 +1,6 @@
-import { DbLoadParticipants } from './load-participants'
+import { DbLoadParticipants } from './db-load-participants'
+import { LoadParticipantsByBqRepository } from '@/data/protocols/db'
 import { mockLoadParticipantByBqRepository } from '@/data/test'
-import { LoadParticipantsByBqRepository } from '@/data/protocols/db/barbecue-participant/db-load-participants-by-bq'
 import { throwError } from '@/domain/test'
 
 type SutTypes = {

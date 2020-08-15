@@ -1,6 +1,6 @@
-import { DbLoadBarbecues } from '@/data/usecases/barbecue/load/load-barbecue'
-import { BarbecueMongoRepository } from '@/infra/db/mongodb/barbecue-repository/barbecue'
-import { LoadBarbecues } from '@/domain/usecases/barbecue/load-barbecues'
+import { DbLoadBarbecues } from '@/data/usecases'
+import { BarbecueMongoRepository } from '@/infra/db/mongodb'
+import { LoadBarbecues } from '@/domain/usecases'
 
 export const makeDbLoadBarbecues = (): LoadBarbecues => {
   const loadBarbecuesRepository = new BarbecueMongoRepository()

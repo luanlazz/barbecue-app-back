@@ -1,5 +1,5 @@
-import { RemoveParticipant } from '@/domain/usecases/barbecue-participant/remove-participant'
-import { RemoveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-remove-participant'
+import { RemoveParticipantRepository } from '@/data/protocols/db'
+import { RemoveParticipant } from '@/domain/usecases'
 
 export class DbRemoveParticipant implements RemoveParticipant {
   constructor (

@@ -1,6 +1,6 @@
-import { LoadParticipantsByIdRepository } from '@/data/protocols/db/barbecue-participant/db-load-participants-by-id'
-import { LoadParticipantById } from '@/domain/usecases/barbecue-participant/load-participant-by-id'
-import { ParticipantModel } from '@/domain/models/participant'
+import { LoadParticipantsByIdRepository } from '@/data/protocols/db'
+import { LoadParticipantById } from '@/domain/usecases'
+import { ParticipantModel } from '@/domain/models'
 
 export class DbLoadParticipantById implements LoadParticipantById {
   constructor (

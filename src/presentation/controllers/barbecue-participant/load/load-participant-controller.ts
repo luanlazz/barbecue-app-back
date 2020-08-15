@@ -1,9 +1,8 @@
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
-import { Controller } from '@/presentation/protocols/controller'
-import { LoadParticipants } from '@/domain/usecases/barbecue-participant/load-participants'
-import { serverError, noContent, ok, forbidden } from '@/presentation/helpers/http/http-helper'
-import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
+import { Controller } from '@/presentation/protocols'
+import { serverError, noContent, ok, forbidden } from '@/presentation/helpers'
 import { InvalidParamError } from '@/presentation/errors'
+import { LoadParticipants, LoadBarbecueById } from '@/domain/usecases'
 
 export class LoadParticipantsController implements Controller {
   constructor (

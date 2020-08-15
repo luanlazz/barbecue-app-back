@@ -1,15 +1,12 @@
-import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
-import { SaveBarbecueRepository } from '@/data/protocols/db/barbecue/save-barbecue-repository'
-import { barbecueParams } from '@/domain/usecases/barbecue/save-barbecue'
-import { BarbecueModel } from '@/domain/models/barbecue'
+import { LoadBarbecueByIdRepository, SaveBarbecueRepository, LoadBarbecuesRepository } from '@/data/protocols/db'
+import { barbecueParams } from '@/domain/usecases'
+import { BarbecueModel } from '@/domain/models'
+import { QueryBuilder, MongoHelper } from '@/infra/db/mongodb'
 import { ObjectId } from 'mongodb'
-import { LoadBarbecuesRepository } from '@/data/protocols/db/barbecue/load-barbecues-repository'
-import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
-import { QueryBuilder } from '../helpers/query-builder'
 
 export class BarbecueMongoRepository implements SaveBarbecueRepository,
                                                 LoadBarbecuesRepository,
-                                                LoadBarbecueById {
+                                                LoadBarbecueByIdRepository {
   async save (barbecue: barbecueParams): Promise<BarbecueModel> {
     const barbecueCollection = await MongoHelper.getCollection('barbecues')
 

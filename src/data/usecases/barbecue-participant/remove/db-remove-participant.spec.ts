@@ -1,6 +1,6 @@
-import { DbRemoveParticipant } from './remove-participant'
+import { DbRemoveParticipant } from './db-remove-participant'
 import { mockRemoveParticipantRepository } from '@/data/test'
-import { RemoveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-remove-participant'
+import { RemoveParticipantRepository } from '@/data/protocols/db'
 import { throwError } from '@/domain/test'
 
 type SutTypes = {

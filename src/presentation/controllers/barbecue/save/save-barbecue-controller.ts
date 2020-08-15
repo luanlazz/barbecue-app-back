@@ -1,8 +1,6 @@
-import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
-import { Controller } from '@/presentation/protocols/controller'
-import { Validation } from '@/presentation/protocols/validation'
-import { badRequest, serverError, ok } from '@/presentation/helpers/http/http-helper'
-import { SaveBarbecue } from '@/domain/usecases/barbecue/save-barbecue'
+import { Controller, HttpRequest, HttpResponse, Validation } from '@/presentation/protocols'
+import { badRequest, serverError, ok } from '@/presentation/helpers'
+import { SaveBarbecue } from '@/domain/usecases'
 
 export class SaveBarbecueController implements Controller {
   constructor (

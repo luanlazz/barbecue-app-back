@@ -1,8 +1,7 @@
 import { DbAuthentication } from './db-authentication'
-import { LoadAccountByEmailRepository } from '@/data/protocols/db/account/load-account-by-email-repository'
-import { HasherCompare } from '@/data/protocols/cryptography/hasher-compare'
-import { UpdateAccessTokenRepository } from '@/data/protocols/db/account/update-access-token-repository'
-import { Encrypter } from '@/data/protocols/cryptography/encrypter'
+import { LoadAccountByEmailRepository, UpdateAccessTokenRepository } from '@/data/protocols/db'
+import { HasherCompare, Encrypter } from '@/data/protocols/cryptography'
+
 import { mockLoadAccountByEmailRepository, mockHasherCompare, mockEncrypter, mockUpdateAccessTokenRepository } from '@/data/test'
 import { mockAuthParams, throwError, mockAuthenticationModel } from '@/domain/test'
 

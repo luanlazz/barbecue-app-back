@@ -1,11 +1,8 @@
-import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
-import { SaveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-save-participant'
-import { LoadParticipantsByBqRepository } from '@/data/protocols/db/barbecue-participant/db-load-participants-by-bq'
-import { SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-participant'
+import { SaveParticipantRepository, LoadParticipantsByBqRepository, RemoveParticipantRepository, LoadParticipantsByIdRepository } from '@/data/protocols/db'
+import { SaveParticipantParams } from '@/domain/usecases'
+import { ParticipantModel } from '@/domain/models'
+import { MongoHelper } from '@/infra/db/mongodb'
 import { ObjectId } from 'mongodb'
-import { ParticipantModel } from '@/domain/models/participant'
-import { RemoveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-remove-participant'
-import { LoadParticipantsByIdRepository } from '@/data/protocols/db/barbecue-participant/db-load-participants-by-id'
 
 export class ParticipantsMongoRepository implements SaveParticipantRepository,
                                                     LoadParticipantsByIdRepository,

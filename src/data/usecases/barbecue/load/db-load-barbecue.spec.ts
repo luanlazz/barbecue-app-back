@@ -1,6 +1,6 @@
-import { DbLoadBarbecues } from './load-barbecue'
+import { DbLoadBarbecues } from './db-load-barbecue'
 import { mockLoadBarbecuesRepository } from '@/data/test'
-import { LoadBarbecuesRepository } from '@/data/protocols/db/barbecue/load-barbecues-repository'
+import { LoadBarbecuesRepository } from '@/data/protocols/db'
 import { throwError, mockBarbecuesList } from '@/domain/test'
 
 type SutTypes = {

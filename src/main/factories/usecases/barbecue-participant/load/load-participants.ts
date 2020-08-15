@@ -1,6 +1,6 @@
-import { ParticipantsMongoRepository } from '@/infra/db/mongodb/barbecue-participant-repository/participants'
-import { LoadParticipants } from '@/domain/usecases/barbecue-participant/load-participants'
-import { DbLoadParticipants } from '@/data/usecases/barbecue-participant/load/load-participants'
+import { ParticipantsMongoRepository } from '@/infra/db/mongodb'
+import { LoadParticipants } from '@/domain/usecases'
+import { DbLoadParticipants } from '@/data/usecases'
 
 export const makeDbLoadParticipants = (): LoadParticipants => {
   const participantsMongoRepository = new ParticipantsMongoRepository()

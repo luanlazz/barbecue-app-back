@@ -1,10 +1,7 @@
-import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
-import { Controller } from '@/presentation/protocols/controller'
-import { serverError, noContent, forbidden, serviceUnavailable } from '@/presentation/helpers/http/http-helper'
+import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
+import { serverError, noContent, forbidden, serviceUnavailable } from '@/presentation/helpers'
 import { InvalidParamError, UnexpectedError } from '@/presentation/errors'
-import { RemoveParticipant } from '@/domain/usecases/barbecue-participant/remove-participant'
-import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
-import { LoadParticipantById } from '@/domain/usecases/barbecue-participant/load-participant-by-id'
+import { RemoveParticipant, LoadBarbecueById, LoadParticipantById } from '@/domain/usecases'
 
 export class RemoveParticipantController implements Controller {
   constructor (

@@ -1,9 +1,8 @@
 import { SaveBarbecueController } from './save-barbecue-controller'
-import { HttpRequest } from '@/presentation/protocols/http'
-import { Validation } from '@/presentation/protocols/validation'
+import { HttpRequest, Validation } from '@/presentation/protocols'
 import { mockValidation, mockSaveBarbecue } from '@/presentation/test'
-import { badRequest, serverError, ok } from '@/presentation/helpers/http/http-helper'
-import { SaveBarbecue } from '@/domain/usecases/barbecue/save-barbecue'
+import { badRequest, serverError, ok } from '@/presentation/helpers'
+import { SaveBarbecue } from '@/domain/usecases'
 import { throwError, mockBarbecueModel } from '@/domain/test'
 
 type SutTypes = {

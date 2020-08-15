@@ -1,11 +1,10 @@
 import { LoadParticipantsController } from './load-participant-controller'
-import { HttpRequest } from '@/presentation/protocols/http'
-import { mockLoadParticipants } from '@/presentation/test/mock-participant'
-import { LoadParticipants } from '@/domain/usecases/barbecue-participant/load-participants'
+import { HttpRequest } from '@/presentation/protocols'
+import { mockLoadParticipants, mockLoadBarbecueById } from '@/presentation/test'
+import { LoadParticipants, LoadBarbecueById } from '@/domain/usecases'
 import { throwError, mockParticipantsModel } from '@/domain/test'
-import { serverError, forbidden, noContent, ok } from '@/presentation/helpers/http/http-helper'
-import { mockLoadBarbecueById } from '@/presentation/test'
-import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
+import { serverError, forbidden, noContent, ok } from '@/presentation/helpers'
+
 import { InvalidParamError } from '@/presentation/errors'
 
 type SutTypes = {

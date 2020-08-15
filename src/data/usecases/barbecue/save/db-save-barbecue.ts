@@ -1,6 +1,6 @@
-import { SaveBarbecue, barbecueParams } from '@/domain/usecases/barbecue/save-barbecue'
-import { BarbecueModel } from '@/domain/models/barbecue'
-import { SaveBarbecueRepository } from '@/data/protocols/db/barbecue/save-barbecue-repository'
+import { SaveBarbecue, barbecueParams } from '@/domain/usecases'
+import { BarbecueModel } from '@/domain/models'
+import { SaveBarbecueRepository } from '@/data/protocols/db'
 
 export class DbSaveBarbecue implements SaveBarbecue {
   constructor (private readonly saveBarbecueRepository: SaveBarbecueRepository) {}

@@ -1,5 +1,5 @@
-import { DbSaveBarbecue } from './save-barbecue'
-import { SaveBarbecueRepository } from '@/data/protocols/db/barbecue/save-barbecue-repository'
+import { DbSaveBarbecue } from './db-save-barbecue'
+import { SaveBarbecueRepository } from '@/data/protocols/db'
 import { mockSaveBarbecueRepository } from '@/data/test'
 import { mockBarbecueParams, throwError, mockBarbecueModel } from '@/domain/test'
 

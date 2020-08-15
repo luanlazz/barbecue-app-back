@@ -1,4 +1,4 @@
-import { Validation } from '@/presentation/protocols/validation'
+import { Validation } from '@/presentation/protocols'
 import { DateValidator } from '@/validation/protocols'
 import { InvalidParamError } from '@/presentation/errors'
 

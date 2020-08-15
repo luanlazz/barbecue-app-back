@@ -1,9 +1,7 @@
-import { SaveBarbecueRepository } from '@/data/protocols/db/barbecue/save-barbecue-repository'
-import { LoadBarbecuesRepository } from '@/data/protocols/db/barbecue/load-barbecues-repository'
-import { LoadBarbecueByIdRepository } from '@/data/protocols/db/barbecue/load-barbecue-by-id-repository'
-import { BarbecueModel } from '@/domain/models/barbecue'
+import { SaveBarbecueRepository, LoadBarbecuesRepository, LoadBarbecueByIdRepository } from '@/data/protocols/db'
+import { BarbecueModel } from '@/domain/models'
+import { barbecueParams } from '@/domain/usecases'
 import { mockBarbecueModel, mockBarbecuesList } from '@/domain/test'
-import { barbecueParams } from '@/domain/usecases/barbecue/save-barbecue'
 
 export const mockSaveBarbecueRepository = (): SaveBarbecueRepository => {
   class SaveBarbecueRepositoryStub implements SaveBarbecueRepository {

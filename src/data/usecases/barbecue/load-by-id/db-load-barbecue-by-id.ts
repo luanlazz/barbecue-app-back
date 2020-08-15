@@ -1,6 +1,6 @@
-import { LoadBarbecueByIdRepository } from '@/data/protocols/db/barbecue/load-barbecue-by-id-repository'
-import { BarbecueModel } from '@/domain/models/barbecue'
-import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
+import { LoadBarbecueByIdRepository } from '@/data/protocols/db'
+import { BarbecueModel } from '@/domain/models'
+import { LoadBarbecueById } from '@/domain/usecases'
 
 export class DbLoadBarbecueById implements LoadBarbecueById {
   constructor (private readonly loadBarbecueByIdRepository: LoadBarbecueByIdRepository) {}

@@ -1,8 +1,7 @@
-import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
-import { Controller } from '@/presentation/protocols/controller'
-import { serverError, forbidden, ok } from '@/presentation/helpers/http/http-helper'
+import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
+import { serverError, forbidden, ok } from '@/presentation/helpers'
 import { InvalidParamError } from '@/presentation/errors'
-import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
+import { LoadBarbecueById } from '@/domain/usecases'
 
 export class LoadBarbecueByIdController implements Controller {
   constructor (private readonly loadBarbecueById: LoadBarbecueById) {}

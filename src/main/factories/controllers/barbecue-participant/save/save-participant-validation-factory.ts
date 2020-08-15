@@ -1,5 +1,4 @@
-import { ValidationComposite } from '@/validation/validators/validation-composite'
-import { RequiredFieldValidation } from '@/validation/validators/required-field/required-field-validation'
+import { ValidationComposite, RequiredFieldValidation } from '@/validation/validators'
 import { Validation } from '@/presentation/protocols/validation'
 
 export const makeSaveParticipantValidation = (): ValidationComposite => {

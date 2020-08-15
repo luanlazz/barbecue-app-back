@@ -1,10 +1,7 @@
-import { SaveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-save-participant'
-import { LoadParticipantsByBqRepository } from '@/data/protocols/db/barbecue-participant/db-load-participants-by-bq'
-import { LoadParticipantsByIdRepository } from '@/data/protocols/db/barbecue-participant/db-load-participants-by-id'
-import { SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-participant'
-import { ParticipantModel } from '@/domain/models/participant'
-import { mockParticipantsModel, mockParticipantModel } from '@/domain/test/mock-participant'
-import { RemoveParticipantRepository } from '../protocols/db/barbecue-participant/db-remove-participant'
+import { SaveParticipantRepository, LoadParticipantsByBqRepository, LoadParticipantsByIdRepository, RemoveParticipantRepository } from '@/data/protocols/db'
+import { SaveParticipantParams } from '@/domain/usecases'
+import { ParticipantModel } from '@/domain/models'
+import { mockParticipantsModel, mockParticipantModel } from '@/domain/test'
 
 export const mockSaveParticipantRepository = (): SaveParticipantRepository => {
   class SaveParticipantRepositoryStub implements SaveParticipantRepository {

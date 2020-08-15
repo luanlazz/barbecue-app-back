@@ -1,12 +1,9 @@
 import { RemoveParticipantController } from './remove-participant-controller'
-import { HttpRequest } from '@/presentation/protocols/http'
-import { mockRemoveParticipant, mockLoadParticipantById } from '@/presentation/test/mock-participant'
-import { serverError, noContent, forbidden, serviceUnavailable } from '@/presentation/helpers/http/http-helper'
+import { HttpRequest } from '@/presentation/protocols'
+import { mockRemoveParticipant, mockLoadParticipantById, mockLoadBarbecueById } from '@/presentation/test'
+import { serverError, noContent, forbidden, serviceUnavailable } from '@/presentation/helpers'
 import { InvalidParamError, UnexpectedError } from '@/presentation/errors'
-import { mockLoadBarbecueById } from '@/presentation/test'
-import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
-import { LoadParticipantById } from '@/domain/usecases/barbecue-participant/load-participant-by-id'
-import { RemoveParticipant } from '@/domain/usecases/barbecue-participant/remove-participant'
+import { LoadBarbecueById, LoadParticipantById, RemoveParticipant } from '@/domain/usecases'
 import { throwError } from '@/domain/test'
 
 type SutTypes = {

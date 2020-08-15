@@ -1,7 +1,7 @@
-import { makeLogControllerDecorator } from '@/main/factories/decorators/log-controller-decorator-factory'
-import { makeDbLoadBarbecueById } from '@/main/factories/usecases/barbecue/load-by-id/load-barbecue-by-id'
-import { LoadBarbecueByIdController } from '@/presentation/controllers/barbecue/load-by-id/load-barbecues-controller'
-import { Controller } from '@/presentation/protocols/controller'
+import { makeLogControllerDecorator } from '@/main/factories/decorators'
+import { makeDbLoadBarbecueById } from '@/main/factories/usecases'
+import { LoadBarbecueByIdController } from '@/presentation/controllers'
+import { Controller } from '@/presentation/protocols'
 
 export const makeLoadBarbecueByIdController = (): Controller => {
   const controller = new LoadBarbecueByIdController(makeDbLoadBarbecueById())

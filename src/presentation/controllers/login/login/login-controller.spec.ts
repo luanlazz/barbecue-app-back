@@ -1,11 +1,10 @@
 import { LoginController } from './login-controller'
-import { HttpRequest } from '@/presentation/protocols/http'
-import { Validation } from '@/presentation/protocols/validation'
+import { HttpRequest, Validation } from '@/presentation/protocols'
 import { MissingParamError, ServerError } from '@/presentation/errors'
-import { badRequest, serverError, unauthorized, ok } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError, unauthorized, ok } from '@/presentation/helpers'
 import { mockValidation, mockAuthentication } from '@/presentation/test'
 import { throwError, mockAuthenticationModel } from '@/domain/test'
-import { Authentication } from '@/domain/usecases/account/authentication'
+import { Authentication } from '@/domain/usecases'
 
 type SutTypes = {
   sut: LoginController

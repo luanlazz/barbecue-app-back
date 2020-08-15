@@ -1,7 +1,7 @@
 import { ParticipantsMongoRepository } from './participants'
 import { mockParticipantParams } from '@/domain/test'
-import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
-import { SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-participant'
+import { MongoHelper } from '@/infra/db/mongodb'
+import { SaveParticipantParams } from '@/domain/usecases'
 import { Collection, ObjectID } from 'mongodb'
 
 let participantsCollection: Collection

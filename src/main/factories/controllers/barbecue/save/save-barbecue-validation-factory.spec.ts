@@ -1,7 +1,7 @@
 import { makeSaveBarbecueValidation } from './save-barbecue-validation-factory'
-import { Validation } from '@/presentation/protocols/validation'
-import { RequiredFieldValidation } from '@/validation/validators/required-field/required-field-validation'
-import { ValidationComposite } from '@/validation/validators/validation-composite'
+import { Validation } from '@/presentation/protocols'
+import { RequiredFieldValidation, ValidationComposite, DateValidation } from '@/validation/validators'
+import { DateValidatorAdapter } from '@/infra/validators'
 
 jest.mock('@/validation/validators/validation-composite.ts')
 
@@ -14,6 +14,8 @@ describe('SaveBarbecueValidation Factory', () => {
     for (const field of ['date', 'description']) {
       validations.push(new RequiredFieldValidation(field))
     }
+
+    validations.push(new DateValidation(new DateValidatorAdapter(), 'date'))
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })

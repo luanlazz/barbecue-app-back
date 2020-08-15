@@ -1,6 +1,6 @@
-import { ParticipantsMongoRepository } from '@/infra/db/mongodb/barbecue-participant-repository/participants'
-import { RemoveParticipant } from '@/domain/usecases/barbecue-participant/remove-participant'
-import { DbRemoveParticipant } from '@/data/usecases/barbecue-participant/remove/remove-participant'
+import { ParticipantsMongoRepository } from '@/infra/db/mongodb'
+import { RemoveParticipant } from '@/domain/usecases'
+import { DbRemoveParticipant } from '@/data/usecases'
 
 export const makeDbRemoveParticipant = (): RemoveParticipant => {
   const participantsMongoRepository = new ParticipantsMongoRepository()

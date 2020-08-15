@@ -1,8 +1,8 @@
 import env from '@/main/config/env'
 import { BarbecueMongoRepository } from './barbecue'
-import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
+import { MongoHelper } from '@/infra/db/mongodb'
 import { mockBarbecueParams, mockAddAccountParams } from '@/domain/test'
-import { barbecueParams } from '@/domain/usecases/barbecue/save-barbecue'
+import { barbecueParams } from '@/domain/usecases'
 import { Collection, ObjectID } from 'mongodb'
 import { sign } from 'jsonwebtoken'
 

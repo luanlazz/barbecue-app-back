@@ -1,6 +1,6 @@
-import { SaveParticipant, SaveParticipantParams } from '@/domain/usecases/barbecue-participant/save-participant'
-import { SaveParticipantRepository } from '@/data/protocols/db/barbecue-participant/db-save-participant'
-import { ParticipantModel } from '@/domain/models/participant'
+import { SaveParticipantRepository } from '@/data/protocols/db'
+import { SaveParticipant, SaveParticipantParams } from '@/domain/usecases'
+import { ParticipantModel } from '@/domain/models'
 
 export class DbSaveParticipant implements SaveParticipant {
   constructor (

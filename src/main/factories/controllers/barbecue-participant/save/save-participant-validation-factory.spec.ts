@@ -1,7 +1,6 @@
 import { makeSaveParticipantValidation } from './save-participant-validation-factory'
-import { Validation } from '@/presentation/protocols/validation'
-import { RequiredFieldValidation } from '@/validation/validators/required-field/required-field-validation'
-import { ValidationComposite } from '@/validation/validators/validation-composite'
+import { Validation } from '@/presentation/protocols'
+import { RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
 
 jest.mock('@/validation/validators/validation-composite.ts')
 

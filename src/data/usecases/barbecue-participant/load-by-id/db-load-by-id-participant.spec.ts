@@ -1,6 +1,6 @@
-import { DbLoadParticipantById } from './load-by-id-participant'
+import { DbLoadParticipantById } from './db-load-by-id-participant'
 import { mockLoadParticipantByIdRepository } from '@/data/test'
-import { LoadParticipantsByIdRepository } from '@/data/protocols/db/barbecue-participant/db-load-participants-by-id'
+import { LoadParticipantsByIdRepository } from '@/data/protocols/db'
 import { throwError, mockParticipantModel } from '@/domain/test'
 
 type SutTypes = {

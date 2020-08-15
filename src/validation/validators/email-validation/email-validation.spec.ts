@@ -1,6 +1,6 @@
 import { EmailValidation } from './email-validation'
 import { InvalidParamError } from '@/presentation/errors'
-import { EmailValidator } from '@/validation/protocols/email-validation'
+import { EmailValidator } from '@/validation/protocols'
 import { mockEmailValidator } from '@/validation/test'
 import faker from 'faker'
 

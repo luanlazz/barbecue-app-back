@@ -1,9 +1,9 @@
 import { LoadBarbecueByIdController } from './load-barbecues-controller'
-import { HttpRequest } from '@/presentation/protocols/http'
-import { mockLoadBarbecueById } from '@/presentation/test/mock-barbecue'
-import { serverError, forbidden, ok } from '@/presentation/helpers/http/http-helper'
+import { HttpRequest } from '@/presentation/protocols'
+import { serverError, forbidden, ok } from '@/presentation/helpers'
+import { mockLoadBarbecueById } from '@/presentation/test'
 import { InvalidParamError } from '@/presentation/errors'
-import { LoadBarbecueById } from '@/domain/usecases/barbecue/load-barbecue-by-id'
+import { LoadBarbecueById } from '@/domain/usecases'
 import { throwError, mockBarbecueModel } from '@/domain/test'
 
 type SutTypes = {

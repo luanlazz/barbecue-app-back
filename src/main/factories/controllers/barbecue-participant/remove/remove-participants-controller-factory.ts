@@ -1,9 +1,7 @@
-import { makeLogControllerDecorator } from '@/main/factories/decorators/log-controller-decorator-factory'
-import { makeDbRemoveParticipant } from '@/main/factories/usecases/barbecue-participant/remove/remove-participants'
-import { makeDbLoadBarbecueById } from '@/main/factories/usecases/barbecue/load-by-id/load-barbecue-by-id'
-import { RemoveParticipantController } from '@/presentation/controllers/barbecue-participant/remove/remove-participant-controller'
-import { Controller } from '@/presentation/protocols/controller'
-import { makeDbLoadParticipantById } from '@/main/factories/usecases/barbecue-participant/load-by-id/load-participant-by-id'
+import { makeLogControllerDecorator } from '@/main/factories/decorators'
+import { makeDbRemoveParticipant, makeDbLoadBarbecueById, makeDbLoadParticipantById } from '@/main/factories/usecases'
+import { RemoveParticipantController } from '@/presentation/controllers'
+import { Controller } from '@/presentation/protocols'
 
 export const makeRemoveParticipantController = (): Controller => {
   const controller = new RemoveParticipantController(makeDbLoadBarbecueById(), makeDbLoadParticipantById(), makeDbRemoveParticipant())

@@ -1,5 +1,5 @@
 import { LogMongoRepository } from './log-error-repository'
-import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
+import { MongoHelper } from '@/infra/db/mongodb'
 import { Collection } from 'mongodb'
 
 let logErrorCollection: Collection
