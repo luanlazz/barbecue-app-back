@@ -1,50 +1,10 @@
-import env from '@/main/config/env'
 import { BarbecueMongoRepository } from './barbecue'
 import { MongoHelper } from '@/infra/db/mongodb'
-import { mockBarbecueParams, mockAddAccountParams } from '@/domain/test'
-import { barbecueParams } from '@/domain/usecases'
+import { makeAccessToken, mockBarbecueParams, makeBarbecue, makeBarbecues } from '@/infra/db/mongodb/test'
 import { Collection, ObjectID } from 'mongodb'
-import { sign } from 'jsonwebtoken'
 
 let barbecueCollection: Collection
 let accountCollection: Collection
-
-const makeBarbecue = async (accountId: string = new ObjectID().toHexString()): Promise<string> => {
-  const barbecue: barbecueParams = {
-    barbecueId: new ObjectID().toHexString(),
-    accountId,
-    date: new Date().toISOString(),
-    description: 'Primeiro churras!',
-    observation: 'teste',
-    valueSuggestDrink: 0,
-    valueSuggestFood: 0
-  }
-
-  const res = await barbecueCollection.insertOne(barbecue)
-  return res.ops[0]._id
-}
-
-type mockAccount = {
-  accessToken: string
-  accountId: string
-}
-
-const makeAccessToken = async (): Promise<mockAccount> => {
-  const res = await accountCollection.insertOne(mockAddAccountParams())
-  const id = res.ops[0]._id
-  const accessToken = sign({ id }, env.jwtSecret)
-  await accountCollection.updateOne({
-    _id: id
-  }, {
-    $set: {
-      accessToken
-    }
-  })
-  return {
-    accessToken,
-    accountId: id
-  }
-}
 
 describe('Barbecue Mongo Repository', () => {
   beforeAll(async () => {
@@ -69,11 +29,9 @@ describe('Barbecue Mongo Repository', () => {
   describe('save', () => {
     test('Should return an barbecue on success', async () => {
       const sut = makeSut()
-      const { accountId } = await makeAccessToken()
-      const barbecueParams = mockBarbecueParams()
-      barbecueParams.accountId = accountId
+      const { accountId } = await makeAccessToken(accountCollection)
+      const barbecueParams = mockBarbecueParams(accountId)
       barbecueParams.barbecueId = null
-      barbecueParams.date = new Date().toISOString()
       const barbecueResult = await sut.save(barbecueParams)
       expect(barbecueResult).toBeTruthy()
       expect(barbecueResult.id).toBeTruthy()
@@ -86,12 +44,10 @@ describe('Barbecue Mongo Repository', () => {
 
     test('Should update if barbecue exists', async () => {
       const sut = makeSut()
-      const { accountId } = await makeAccessToken()
-      const barbecueId = await makeBarbecue(accountId)
-      const newBarbecue = mockBarbecueParams()
+      const { accountId } = await makeAccessToken(accountCollection)
+      const barbecueId = await makeBarbecue(barbecueCollection, accountId)
+      const newBarbecue = mockBarbecueParams(accountId)
       newBarbecue.barbecueId = barbecueId
-      newBarbecue.accountId = accountId
-      newBarbecue.date = new Date().toISOString()
       const barbecueResult = await sut.save(newBarbecue)
       expect(barbecueResult).toBeTruthy()
       expect(barbecueResult.id).toBeTruthy()
@@ -106,25 +62,8 @@ describe('Barbecue Mongo Repository', () => {
   describe('loadAll', () => {
     test('Should return a list of barbecues on success', async () => {
       const sut = makeSut()
-      const { accountId } = await makeAccessToken()
-      const barbecues: barbecueParams[] = [{
-        barbecueId: new ObjectID().toHexString(),
-        accountId,
-        date: '2020-01-08',
-        description: 'any_description',
-        observation: 'any_observation',
-        valueSuggestDrink: 0,
-        valueSuggestFood: 0
-      }, {
-        barbecueId: new ObjectID().toHexString(),
-        accountId,
-        date: '2020-02-08',
-        description: 'other_description',
-        observation: 'other_observation',
-        valueSuggestDrink: 0,
-        valueSuggestFood: 0
-      }]
-      await barbecueCollection.insertMany(barbecues)
+      const { accountId } = await makeAccessToken(accountCollection)
+      await makeBarbecues(barbecueCollection, accountId)
       const barbecueResult = await sut.loadAll(accountId)
       expect(barbecueResult.length).toBe(2)
       expect(barbecueResult[0]).toBeTruthy()
@@ -135,7 +74,7 @@ describe('Barbecue Mongo Repository', () => {
 
     test('Should return a empty list if no find any barbecue', async () => {
       const sut = makeSut()
-      const { accountId } = await makeAccessToken()
+      const { accountId } = await makeAccessToken(accountCollection)
       const barbecueResult = await sut.loadAll(accountId)
       expect(barbecueResult.length).toBe(0)
     })
@@ -144,7 +83,8 @@ describe('Barbecue Mongo Repository', () => {
   describe('loadById', () => {
     test('Should return a barbecue on success', async () => {
       const sut = makeSut()
-      const barbecueId = await makeBarbecue()
+      const { accountId } = await makeAccessToken(accountCollection)
+      const barbecueId = await makeBarbecue(barbecueCollection, accountId)
       const barbecueResult = await sut.loadById(barbecueId)
       expect(barbecueResult).toBeTruthy()
       expect(barbecueResult.id).toBeTruthy()

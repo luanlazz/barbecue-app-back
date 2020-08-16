@@ -32,6 +32,7 @@ export class ParticipantsMongoRepository implements SaveParticipantRepository,
 
   async loadById (participantId: string): Promise<ParticipantModel> {
     const participantCollection = await MongoHelper.getCollection('participants')
+
     const participant = await participantCollection.findOne({
       _id: new ObjectId(participantId)
     })
@@ -41,18 +42,22 @@ export class ParticipantsMongoRepository implements SaveParticipantRepository,
 
   async load (barbecueId: string): Promise<ParticipantModel[]> {
     const participantCollection = await MongoHelper.getCollection('participants')
+
     const participants = await participantCollection.find({
       barbecueId: new ObjectId(barbecueId)
     }).toArray()
+
     return MongoHelper.mapCollection(participants)
   }
 
   async remove (barbecueId: string, participantId: string): Promise<boolean> {
     const participantCollection = await MongoHelper.getCollection('participants')
+
     const participant = await participantCollection.deleteOne({
       _id: new ObjectId(participantId),
       barbecueId: new ObjectId(barbecueId)
     })
+
     return !!participant.deletedCount
   }
 }
