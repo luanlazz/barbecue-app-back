@@ -2,7 +2,7 @@ import { DateValidator } from '@/validation/protocols'
 
 export class DateValidatorAdapter implements DateValidator {
   isValid (dateParam: string): boolean {
-    const dateRegex = /(\d{4})-([0]?[1-9]|[1][0-2])-([12][0-9]|3[01]|0?[1-9])T.*/
+    const dateRegex = /(\d{4})-([0][1-9]|[1][0-2])-([12][0-9]|3[01]|0?[1-9])T((?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d)/
 
     if (!dateRegex.test(dateParam)) {
       return false
