@@ -4,7 +4,7 @@
 
 1. ✅ put in route /api/barbecue/:barbecueId;
 2. ✅ validate required fields (date and description);
-3. ❌ validate date;
+3. ✅ validate date;
 4. ✅ optional fields (observation, cost drink, cost food);
 5. ✅ validate access token;
 6. ✅ validate barbecue id;

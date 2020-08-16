@@ -5,7 +5,7 @@ export const barbecueSchema = {
     accountId: { type: 'string' },
     date: {
       type: 'string',
-      format: 'date'
+      format: 'date-time'
     },
     description: { type: 'string' },
     observation: { type: 'string' },

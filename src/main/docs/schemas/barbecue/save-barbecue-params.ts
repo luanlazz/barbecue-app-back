@@ -3,7 +3,7 @@ export const saveBarbecueParamsSchema = {
   properties: {
     date: {
       type: 'string',
-      format: 'date'
+      format: 'date-time'
     },
     description: { type: 'string' },
     observation: { type: 'string' },
