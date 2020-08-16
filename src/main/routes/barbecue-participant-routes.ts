@@ -1,8 +1,6 @@
-import { makeLoadParticipantsController } from '@/main/factories/controllers/barbecue-participant/load/load-participants-controller-factory'
-import { makeRemoveParticipantController } from '@/main/factories/controllers/barbecue-participant/remove/remove-participants-controller-factory'
-import { makeSaveParticipantController } from '@/main/factories/controllers/barbecue-participant/save/save-participant-controller-factory'
-import { adaptRoute } from '@/main/adapters/express-route-adapter'
-import { auth } from '@/main/middlewares/auth/auth'
+import { makeLoadParticipantsController, makeRemoveParticipantController, makeSaveParticipantController } from '@/main/factories/controllers'
+import { adaptRoute } from '@/main/adapters'
+import { auth } from '@/main/middlewares'
 import { Router } from 'express'
 
 export default (route: Router): void => {

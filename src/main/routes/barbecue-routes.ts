@@ -1,8 +1,6 @@
-import { makeSaveBarbecueController } from '@/main/factories/controllers/barbecue/save/save-barbecue-controller-factory'
-import { makeLoadBarbecueByIdController } from '../factories/controllers/barbecue/load-by-id/load-barbecue-by-id-controller-factory'
-import { makeLoadBarbecuesController } from '@/main/factories/controllers/barbecue/load-all/load-barbecues-controller-factory'
-import { adaptRoute } from '@/main/adapters/express-route-adapter'
-import { auth } from '@/main/middlewares/auth/auth'
+import { makeSaveBarbecueController, makeLoadBarbecuesController, makeLoadBarbecueByIdController } from '@/main/factories/controllers'
+import { adaptRoute } from '@/main/adapters'
+import { auth } from '@/main/middlewares'
 import { Router } from 'express'
 
 export default (route: Router): void => {

@@ -1,7 +1,7 @@
 import { Collection, ObjectID } from 'mongodb'
 import faker from 'faker'
 
-const mockParticipantParams = (barbecueId: string): any => ({
+export const mockParticipantParams = (barbecueId: string): any => ({
   barbecueId: new ObjectID(barbecueId),
   participantId: new ObjectID(),
   name: faker.name.findName(),

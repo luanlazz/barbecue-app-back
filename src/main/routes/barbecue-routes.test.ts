@@ -1,51 +1,11 @@
-import env from '@/main/config/env'
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db/mongodb'
-import { mockAddAccountParams, mockBarbecueParams } from '@/domain/test'
-import { barbecueParams } from '@/domain/usecases/barbecue/save-barbecue'
+import { makeAccessToken, mockBarbecueParams, makeBarbecue } from '@/infra/db/mongodb/test'
 import { Collection, ObjectID } from 'mongodb'
-import { sign } from 'jsonwebtoken'
 import request from 'supertest'
 
 let barbecueCollection: Collection
 let accountCollection: Collection
-
-type mockAccount = {
-  accessToken: string
-  accountId: string
-}
-
-const makeAccessToken = async (): Promise<mockAccount> => {
-  const res = await accountCollection.insertOne(mockAddAccountParams())
-  const id = res.ops[0]._id
-  const accessToken = sign({ id }, env.jwtSecret)
-  await accountCollection.updateOne({
-    _id: id
-  }, {
-    $set: {
-      accessToken
-    }
-  })
-  return {
-    accessToken,
-    accountId: id
-  }
-}
-
-const makeBarbecue = async (accountId: string = new ObjectID().toHexString()): Promise<string> => {
-  const barbecue: barbecueParams = {
-    barbecueId: new ObjectID().toHexString(),
-    accountId,
-    date: '25/08/2020',
-    description: 'Primeiro churras!',
-    observation: 'teste',
-    valueSuggestDrink: 0,
-    valueSuggestFood: 0
-  }
-
-  const res = await barbecueCollection.insertOne(barbecue)
-  return res.ops[0]._id
-}
 
 describe('Barbecue Routes', () => {
   beforeAll(async () => {
@@ -67,22 +27,13 @@ describe('Barbecue Routes', () => {
     test('Should return 403 on save barbecue without accessToken', async () => {
       await request(app)
         .put('/api/barbecue/')
-        .send(mockBarbecueParams())
+        .send(mockBarbecueParams(null))
         .expect(403)
     })
 
     test('Should return 200 on save barbecue with valid accessToken', async () => {
-      const { accessToken } = await makeAccessToken()
-      const barbecue = {
-        date: new Date('01/08/2020'),
-        description: 'any_description',
-        observation: 'any_observation',
-        numParticipants: 0,
-        valueSuggestDrink: 100,
-        valueSuggestFood: 100,
-        valueTotal: 0,
-        valueCollected: 0
-      }
+      const { accessToken, accountId } = await makeAccessToken(accountCollection)
+      const barbecue = mockBarbecueParams(accountId)
       await request(app)
         .put('/api/barbecue/')
         .set('x-access-token', accessToken)
@@ -91,15 +42,9 @@ describe('Barbecue Routes', () => {
     })
 
     test('Should save exists barbecue and return 200', async () => {
-      const { accessToken, accountId } = await makeAccessToken()
-      const barbecueId = await makeBarbecue(accountId)
-      const barbecue = {
-        date: new Date('01/08/2020'),
-        description: 'other_description',
-        observation: 'other_observation',
-        valueSuggestDrink: 100,
-        valueSuggestFood: 100
-      }
+      const { accessToken, accountId } = await makeAccessToken(accountCollection)
+      const barbecueId = await makeBarbecue(barbecueCollection, accountId)
+      const barbecue = mockBarbecueParams(accountId)
       await request(app)
         .put(`/api/barbecue/${barbecueId}`)
         .set('x-access-token', accessToken)
@@ -117,8 +62,8 @@ describe('Barbecue Routes', () => {
     })
 
     test('Should return 200 on success', async () => {
-      const { accessToken, accountId } = await makeAccessToken()
-      await makeBarbecue(accountId)
+      const { accessToken, accountId } = await makeAccessToken(accountCollection)
+      await makeBarbecue(barbecueCollection, accountId)
       await request(app)
         .get('/api/barbecue')
         .set('x-access-token', accessToken)
@@ -127,7 +72,7 @@ describe('Barbecue Routes', () => {
     })
 
     test('Should return 204 if barbecues is empty', async () => {
-      const { accessToken } = await makeAccessToken()
+      const { accessToken } = await makeAccessToken(accountCollection)
       await request(app)
         .get('/api/barbecue')
         .set('x-access-token', accessToken)
@@ -145,8 +90,8 @@ describe('Barbecue Routes', () => {
     })
 
     test('Should return 200 on success', async () => {
-      const { accessToken, accountId } = await makeAccessToken()
-      const barbecueId = await makeBarbecue(accountId)
+      const { accessToken, accountId } = await makeAccessToken(accountCollection)
+      const barbecueId = await makeBarbecue(barbecueCollection, accountId)
       await request(app)
         .get(`/api/barbecue/${barbecueId}/`)
         .set('x-access-token', accessToken)
@@ -155,7 +100,7 @@ describe('Barbecue Routes', () => {
     })
 
     test('Should return 403 if barbecue id wrong', async () => {
-      const { accessToken } = await makeAccessToken()
+      const { accessToken } = await makeAccessToken(accountCollection)
       const barbecueId = new ObjectID().toHexString()
       await request(app)
         .get(`/api/barbecue/${barbecueId}/`)

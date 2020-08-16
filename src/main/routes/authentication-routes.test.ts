@@ -4,6 +4,7 @@ import { mockAccountModel } from '@/domain/test'
 import { Collection } from 'mongodb'
 import { hash } from 'bcrypt'
 import request from 'supertest'
+import faker from 'faker'
 
 let accountCollection: Collection
 
@@ -23,13 +24,15 @@ describe('SignUp Routes', () => {
 
   describe('SignUp route', () => {
     test('Should return an account on success', async () => {
+      const password = faker.internet.password()
+
       await request(app)
         .post('/api/signup')
         .send({
-          name: 'luan',
-          email: 'luan@mail.com',
-          password: '12345',
-          passwordConfirmation: '12345'
+          name: faker.internet.userName(),
+          email: faker.internet.email(),
+          password: password,
+          passwordConfirmation: password
         })
         .expect(200)
     })
