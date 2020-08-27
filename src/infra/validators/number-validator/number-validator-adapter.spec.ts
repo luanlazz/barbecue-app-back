@@ -27,4 +27,10 @@ describe('NumberValidatorAdapter adapter', () => {
     const isValid = sut.isValid(faker.random.number({ min: 0 }).toString())
     expect(isValid).toBeFalsy()
   })
+
+  test('Should return true is value is valid', () => {
+    const sut = makeSut()
+    const isValid = sut.isValid(faker.random.number({ min: 0 }).toString())
+    expect(isValid).toBeTruthy()
+  })
 })
