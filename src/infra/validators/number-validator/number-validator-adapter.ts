@@ -3,7 +3,7 @@ import validator from 'validator'
 
 export class NumberValidatorAdapter implements NumberValidator {
   isValid (value: string): boolean {
-    validator.isNumeric(value)
-    return null
+    const isValid = validator.isNumeric(value)
+    return isValid
   }
 }
