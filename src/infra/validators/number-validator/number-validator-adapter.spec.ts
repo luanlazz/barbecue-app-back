@@ -20,4 +20,11 @@ describe('NumberValidatorAdapter adapter', () => {
     sut.isValid(value)
     expect(isNumericSpy).toHaveBeenCalledWith(value)
   })
+
+  test('Should return false is value is invalid', () => {
+    const sut = makeSut()
+    jest.spyOn(validator, 'isNumeric').mockReturnValueOnce(false)
+    const isValid = sut.isValid(faker.random.number({ min: 0 }).toString())
+    expect(isValid).toBeFalsy()
+  })
 })
