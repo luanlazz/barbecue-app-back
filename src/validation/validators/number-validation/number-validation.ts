@@ -9,7 +9,7 @@ export class NumberValidation implements Validation {
   ) {}
 
   validate (input: any): Error {
-    const isValid = this.numberValidation.isValid(input)
+    const isValid = this.numberValidation.isValid(input[this.field])
     if (!isValid) return new InvalidParamError(this.field)
   }
 }
