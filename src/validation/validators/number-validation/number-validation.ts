@@ -1,10 +1,15 @@
 import { Validation } from '@/presentation/protocols'
 import { InvalidParamError } from '@/presentation/errors'
+import { NumberValidator } from '@/validation/protocols'
 
 export class NumberValidation implements Validation {
-  constructor (private readonly field: any) {}
+  constructor (
+    private readonly numberValidation: NumberValidator,
+    private readonly field: any
+  ) {}
 
   validate (input: any): Error {
-    return new InvalidParamError(this.field)
+    const isValid = this.numberValidation.isValid(input)
+    if (!isValid) return new InvalidParamError(this.field)
   }
 }
