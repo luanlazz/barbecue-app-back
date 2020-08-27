@@ -1,6 +1,6 @@
-import { ValidationComposite, RequiredFieldValidation, DateValidation } from '@/validation/validators'
+import { ValidationComposite, RequiredFieldValidation, DateValidation, NumberValidation } from '@/validation/validators'
 import { Validation } from '@/presentation/protocols'
-import { DateValidatorAdapter } from '@/infra/validators'
+import { DateValidatorAdapter, NumberValidatorAdapter } from '@/infra/validators'
 
 export const makeSaveBarbecueValidation = (): ValidationComposite => {
   const validations: Validation[] = []
@@ -10,6 +10,9 @@ export const makeSaveBarbecueValidation = (): ValidationComposite => {
   }
 
   validations.push(new DateValidation(new DateValidatorAdapter(), 'date'))
+
+  validations.push(new NumberValidation(new NumberValidatorAdapter(), 'valueSuggestDrink'))
+  validations.push(new NumberValidation(new NumberValidatorAdapter(), 'valueSuggestFood'))
 
   return new ValidationComposite(validations)
 }
