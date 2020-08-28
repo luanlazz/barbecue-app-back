@@ -2,8 +2,8 @@ import { NumberValidator } from '@/validation/protocols'
 import validator from 'validator'
 
 export class NumberValidatorAdapter implements NumberValidator {
-  isValid (value: string): boolean {
-    const isValid = validator.isNumeric(value)
+  isValid (value: any): boolean {
+    const isValid = validator.isNumeric(value.toString(), { no_symbols: true })
     return isValid
   }
 }
